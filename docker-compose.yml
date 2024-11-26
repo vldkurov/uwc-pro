@@ -1,7 +1,8 @@
 services:
   web:
     build: .
-    command: python /uwc/manage.py runserver 0.0.0.0:8000
+#    command: python /uwc/manage.py runserver 0.0.0.0:8000
+    command: gunicorn django_project.wsgi -b 0.0.0.0:8000
     volumes:
       - .:/uwc
     ports:
@@ -11,6 +12,13 @@ services:
     environment:
       - "DJANGO_SECRET_KEY=phb2h2$$ibh5nv--r4nea0+eygyrr@s$$z@%9!a9k9jg2+!=135_"
       - "DJANGO_DEBUG=True"
+      - "DJANGO_SECURE_SSL_REDIRECT=False"
+      - "DJANGO_SECURE_HSTS_SECONDS=0"
+      - "DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS=False"
+      - "DJANGO_SECURE_HSTS_PRELOAD=False"
+      - "DJANGO_SESSION_COOKIE_SECURE=False"
+      - "DJANGO_CSRF_COOKIE_SECURE=False"
+      - "X_FRAME_OPTIONS=DENY"
   db:
     image: postgres:16
     volumes:
