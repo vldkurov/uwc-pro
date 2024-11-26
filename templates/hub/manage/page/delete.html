@@ -1,0 +1,18 @@
+{% extends 'hub/_hub_base.html' %}
+{% load static %}
+{% block cms_css %}
+    <link rel="stylesheet" href="{% static 'css/cms.css' %}">
+{% endblock cms_css %}
+
+{% block title %}Delete Page{% endblock title %}
+
+{% block content %}
+    <h1>Delete page {{ object.title }}</h1>
+    <div>
+        <form action="" method="post">
+            {% csrf_token %}
+            <p>Are you sure you want to delete "{{ object }}"?</p>
+            <input type="submit" value="Confirm">
+        </form>
+    </div>
+{% endblock content %}

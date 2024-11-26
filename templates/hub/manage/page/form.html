@@ -1,0 +1,67 @@
+
+{% extends 'hub/_hub_base.html' %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load static %}
+{% block cms_css %}
+    <link rel="stylesheet" href="{% static 'css/cms.css' %}">
+{% endblock cms_css %}
+
+{% block title %}
+    {% if object %}
+        {{ object.title }}
+    {% else %}
+        {% trans 'Create a new Page' %}
+    {% endif %}
+{% endblock title %}
+
+{% block content %}
+    <h1>
+        {% if object %}
+            {{ object.title }}
+        {% else %}
+            {% trans 'Create a new Page' %}
+        {% endif %}
+    </h1>
+    <div>
+        <h2>{% trans 'Page info' %}</h2>
+        <form action="" method="post" style="display: flex; flex-direction: column; margin-top: 1.5rem;">
+            {% csrf_token %}
+        
+            {% if form.non_field_errors %}
+                <div class="text text-danger">
+                    <ul>
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        
+            {% for field in form %}
+                <div style="margin-bottom: 1.5rem;">
+                    <label for="{{ field.id_for_label|escape }}"
+                           style="display: block; font-weight: bold; margin-bottom: 0.5rem;">
+                        {{ field.label|safe }}
+                    </label>
+                    <div class="flex-grow-1">
+                        {{ field|add_class:"form-control" }}
+                    </div>
+                    {% if field.errors %}
+                        <div class="text text-danger">
+                            <ul>
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        
+            <div style="margin-top: 1rem; text-align: center;">
+                <input type="submit" value="{% trans 'Save page' %}" style="padding: 0.5rem 1rem; font-size: 1rem;">
+            </div>
+        </form>
+    </div>
+{% endblock content %}

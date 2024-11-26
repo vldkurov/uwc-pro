@@ -1,0 +1,18 @@
+{% extends 'hub/_hub_base.html' %}
+{% load static %}
+{% block cms_css %}
+    <link rel="stylesheet" href="{% static 'css/cms.css' %}">
+{% endblock cms_css %}
+
+{% block title %}Publish Section {{ section.title_draft }}{% endblock title %}
+
+{% block content %}
+    <h1 class="mb-4">Publish Section {{ section.title_draft }}</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <p>Are you sure you want to publish section "{{ section.order }}. {{ section.title_draft }}"?</p>
+        <button type="submit" class="btn btn-success">Publish</button>
+        <a href="{% url 'page_section_update' section.page.slug %}" class="btn btn-secondary">Cancel</a>
+    </form>
+{% endblock content %}

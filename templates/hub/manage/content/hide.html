@@ -1,0 +1,27 @@
+{% extends 'hub/_hub_base.html' %}
+{% load static %}
+{% block cms_css %}
+    <link rel="stylesheet" href="{% static 'css/cms.css' %}">
+{% endblock cms_css %}
+
+{% block title %}Confirm Hide Content{% endblock title %}
+
+{% block content %}
+    <h1>Confirm Hide Content</h1>
+    <p>Are you sure you want to hide this content?</p>
+
+    <div class="content-preview">
+        {% if content.item.content_en and content.item.content_uk %}
+            <p><strong>Content (EN):</strong> {{ content.item.content_en }}</p>
+            <p><strong>Content (UK):</strong> {{ content.item.content_uk }}</p>
+        {% else %}
+            <p><strong>Content:</strong> {{ content.item.content }}</p>
+        {% endif %}
+    </div>
+
+    <form method="post" action="">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Confirm Hide</button>
+        <a href="{% url 'section_content_list' content.section.id %}" class="btn btn-secondary">Cancel</a>
+    </form>
+{% endblock content %}

@@ -1,0 +1,80 @@
+{% extends 'pages/_pages_base.html' %}
+
+{% block title %}About{% endblock title %}
+
+{% block content %}
+
+    {% for item in sections %}
+        <div class="section">
+            <h2>{{ item.section.title }}</h2>
+
+            {% if item.section.title|lower == 'about us' or item.section.title|lower == 'про нас' %}
+                {% for content in item.contents %}
+                    {% if content.type == 'text' %}
+                        <p>{{ content.content.content }}</p><br>
+                    {% elif content.type == 'image' %}
+                        <img src="{{ content.content.content.url }}" alt="{{ content.content.title }}">
+                    {% elif content.type == 'file' %}
+                        <a href="{{ content.content.content.url }}" download>{{ content.content.title }}</a>
+                    {% elif content.type == 'video' %}
+                        <video controls>
+                            <source src="{{ content.content.content }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    {% elif content.type == 'url' %}
+                        <a href="{{ content.content.content }}" target="_blank">{{ content.content.title }}</a>
+                    {% endif %}
+                {% endfor %}
+
+            {% elif item.section.title|lower == 'our mission' or item.section.title|lower == 'наша місія' %}
+                <ul>
+                    {% for content in item.contents %}
+                        <li>
+                            {% if content.type == 'text' %}
+                                {{ content.content.content }}
+                            {% elif content.type == 'image' %}
+                                <img src="{{ content.content.content.url }}" alt="{{ content.content.title }}">
+                            {% elif content.type == 'file' %}
+                                <a href="{{ content.content.content.url }}" download>{{ content.content.title }}</a>
+                            {% elif content.type == 'video' %}
+                                <video controls>
+                                    <source src="{{ content.content.content }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            {% elif content.type == 'url' %}
+                                <a href="{{ content.content.content }}" target="_blank">{{ content.content.title }}</a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                {% for content in item.contents %}
+                    <div>
+                        {% if content.type == 'text' %}
+                            {{ content.content.content }}
+                        {% elif content.type == 'image' %}
+                            <div class="text-center">
+                                <img src="{{ content.content.content.url }}"
+                                     alt="{{ content.content.title }}"
+                                     class="img-fluid"
+                                >
+                            </div>
+                        {% elif content.type == 'file' %}
+                            <a href="{{ content.content.content.url }}" download>{{ content.content.title }}</a>
+                        {% elif content.type == 'video' %}
+                            <video controls>
+                                <source src="{{ content.content.content }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        {% elif content.type == 'url' %}
+                            <a href="{{ content.content.content }}" target="_blank">{{ content.content.title }}</a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No sections available.</p>
+    {% endfor %}
+
+{% endblock content %}

@@ -1,0 +1,299 @@
+{% extends 'hub/_hub_base.html' %}
+{% load i18n %}
+{% load static %}
+{% load has_permission %}
+{% load page %}
+{% block cms_css %}
+    <link rel="stylesheet" href="{% static 'css/cms.css' %}">
+{% endblock cms_css %}
+
+{% block title %}
+    Section {{ section.order|add:1 }} {{ section.title }}
+{% endblock title %}
+
+{% block content %}
+    {% with page=section.page %}
+        <h1>Page {{ page.title }}</h1>
+        <div class="contents">
+            <h3>Sections</h3>
+            <ul id="sections">
+                {% for s in page.sections.all %}
+                    <li data-id="{{ s.id }}" {% if s == section %}class="selected"{% endif %}>
+                        <a href="{% url 'section_content_list' s.id %}">
+                            <span>Section 
+                                <span class="order">{{ s.order|add:1 }}</span>
+                            </span>
+                            <br>
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <p class="mb-0" style="cursor: pointer;">{{ s.title_draft }}</p>
+
+                                <div class="d-flex justify-content-end align-items-center">
+
+                                    {% if request.user|has_permission:"hub.publish_section" %}
+                                        {% if s.status != "PB" and s.is_update_confirmed_en and s.is_update_confirmed_uk %}
+                                            <a href="{% url 'publish_section' s.id %}"
+                                               class="btn p-0 ms-2 border-0"
+                                               style="cursor: pointer;"
+                                               data-bs-toggle="tooltip"
+                                               title="Publish Section"
+                                               aria-label="Publish Section">
+                                                <i class="bi bi-file-earmark-arrow-up fs-3 text-success"></i>
+                                            </a>
+                                        {% else %}
+                                            <span class="text-muted ms-2" style="cursor: not-allowed;"
+                                                  aria-disabled="true"
+                                                  data-bs-toggle="tooltip"
+                                                  title="{% if s.status == 'PB' %}Section is already published, action unavailable{% else %}Please confirm all content updates before publishing{% endif %}"
+                                                  aria-label="Disabled Publish Section">
+                                                <i class="bi bi-file-earmark-arrow-up fs-3 text-muted"></i>
+                                        </span>
+                                        {% endif %}
+                                    {% endif %}
+
+                                    {% if request.user|has_permission:"hub.unpublish_section" %}
+                                        {% if s.status == "PB" %}
+                                            <a href="{% url 'unpublish_section' s.id %}"
+                                               class="text-warning ms-2"
+                                               style="cursor: pointer;"
+                                               data-bs-toggle="tooltip"
+                                               title="Unpublish Section"
+                                               aria-label="Unpublish Section">
+                                                <i class="bi bi-file-earmark-excel fs-3 text-warning"></i>
+                                            </a>
+                                        {% else %}
+                                            <span class="text-muted ms-2" style="cursor: not-allowed;"
+                                                  aria-disabled="true"
+                                                  data-bs-toggle="tooltip" title="Section is not published"
+                                                  aria-label="Disabled Unpublish Section">
+                                                <i class="bi bi-file-earmark-excel fs-3 text-muted"></i>
+                                        </span>
+                                        {% endif %}
+                                    {% endif %}
+
+                                    {% if request.user|has_permission:"hub.delete_section" %}
+                                        {% if s.status == "DF" %}
+                                            <a href="{% url 'delete_section' s.id %}"
+                                               class="text-danger ms-2"
+                                               style="cursor: pointer;"
+                                               data-bs-toggle="tooltip"
+                                               title="Delete Section"
+                                               aria-label="Delete Section">
+                                                <i class="bi bi-trash fs-3"></i>
+                                            </a>
+                                        {% else %}
+                                            <span class="text-muted ms-2" style="cursor: not-allowed;"
+                                                  aria-disabled="true"
+                                                  data-bs-toggle="tooltip" title="Cannot delete published section"
+                                                  aria-label="Disabled Delete Section">
+                                                <i class="bi bi-trash fs-3 text-muted"></i>
+                                        </span>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                {% empty %}
+                    <li>No sections yet.</li>
+                {% endfor %}
+            </ul>
+            <p><a href="{% url 'page_section_update' page.slug %}">
+                {% if request.user.role == request.user.Role.VIEWER %}
+                    {% trans 'View sections' %}
+                {% else %}
+                    {% trans 'Edit sections' %}
+                {% endif %}
+            </a></p>
+        </div>
+        <div class="section">
+            <h2>Section {{ section.order|add:1 }}: {{ section.title_draft }}</h2>
+            <p>{{ section.id }}</p>
+            <h3>Section contents:</h3>
+            <div id="section-contents">
+            
+                {% for content in section.contents.all %}
+                    {% if content.item %}
+                    <div data-id="{{ content.id }}">
+                        {% with item=content.item %}
+                            <p>{{ item }} ({{ item|model_name }})</p>
+                            <p>{{ item.content|truncatechars:100 }}</p>
+                            <div class="d-flex justify-content-end align-items-center" style="border:none;">
+
+                                {% if request.user|has_permission:"hub.view_content" %}
+                                    
+                                    <a href="{% url 'section_content_update' section.id item|model_name item.id %}"
+                                       class="btn p-0 me-4"
+                                       data-bs-toggle="tooltip"
+                                       title="{% if request.user.role == request.user.Role.VIEWER %}View Content{% else %}Edit Content{% endif %}"
+                                       aria-label="{% if request.user.role == request.user.Role.VIEWER %}View Content{% else %}Edit Content{% endif %}"
+                                       style="border: none;">
+                                        {% if request.user.role == request.user.Role.VIEWER %}
+                                            <i class="bi bi-file-earmark-text fs-5 text-primary"></i>
+                                        {% else %}
+                                            <i class="bi bi-pencil-square fs-5 text-primary"></i>
+                                        {% endif %}
+                                    </a>
+                                        
+                                {% endif %}
+
+                                {% if request.user|has_permission:"hub.delete_content" %}
+                                    {% if content.status == "HD" %}
+                                        <a href="{% url 'section_content_delete' content.id %}"
+                                           class="btn p-0 me-4 text-danger"
+                                           data-bs-toggle="tooltip"
+                                           title="Delete Content"
+                                           aria-label="Delete Content">
+                                            <i class="bi bi-trash3 fs-5 text-danger"></i>
+                                        </a>
+                                    {% else %}
+                                        <span class="btn p-0 me-4 text-muted"
+                                              style="cursor: not-allowed; border: none;"
+                                              aria-disabled="true"
+                                              data-bs-toggle="tooltip"
+                                              title="To delete, please hide the content first"
+                                              aria-label="Disabled Delete Content">
+                                            <i class="bi bi-trash3 fs-5 text-muted"></i>
+                                    </span>
+                                    {% endif %}
+                                {% endif %}
+
+                                {% if request.user|has_permission:"hub.display" %}
+                                    {% if content.status == "HD" %}
+                                        {% if content.item|model_name == "text" and content.item.is_update_confirmed_en and content.item.is_update_confirmed_uk %}
+                                            <a href="{% url 'section_content_display' content.id %}"
+                                               class="btn p-0 me-4"
+                                               data-bs-toggle="tooltip"
+                                               title="Display Content"
+                                               aria-label="Display Content"
+                                               style="border: none;">
+                                                <i class="bi bi-eye fs-5 text-primary"></i>
+                                            </a>
+                                        {% elif content.item|model_name != "text" and content.item.is_update_confirmed %}
+                                            <a href="{% url 'section_content_display' content.id %}"
+                                               class="btn p-0 me-4"
+                                               data-bs-toggle="tooltip"
+                                               title="Display Content"
+                                               aria-label="Display Content"
+                                               style="border: none;">
+                                                <i class="bi bi-eye fs-5 text-primary"></i>
+                                            </a>
+                                        {% else %}
+                                            <span class="btn p-0 me-4 text-muted"
+                                                  style="cursor: not-allowed;"
+                                                  aria-disabled="true"
+                                                  data-bs-toggle="tooltip"
+                                                  title="Please confirm all updates before displaying"
+                                                  aria-label="Disabled Display Content">
+                                            <i class="bi bi-eye fs-5 text-muted"></i>
+                                        </span>
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="btn p-0 me-4 text-muted"
+                                              style="cursor: not-allowed; border: none;"
+                                              aria-disabled="true"
+                                              data-bs-toggle="tooltip"
+                                              title="This content is already displayed"
+                                              aria-label="Disabled Display Content">
+                                        <i class="bi bi-eye fs-5 text-muted"></i>
+                                    </span>
+                                    {% endif %}
+                                {% endif %}
+
+                                {% if request.user|has_permission:"hub.hide" %}
+                                    <a href="{% url 'section_content_hide' content.id %}"
+                                       class="btn p-0 {% if content.status == "HD" %}disabled{% endif %}"
+                                       data-bs-toggle="tooltip"
+                                       title="Hide Content"
+                                       aria-label="Hide Content"
+                                       style="border: none;"
+                                    >
+                                        <i class="bi bi-eye-slash fs-5 {% if content.status == "HD" %}text-muted{% else %}text-danger{% endif %}"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        {% endwith %}
+                    </div>
+                    {% endif %}
+                {% empty %}
+                    <p>No contents yet.</p>
+                {% endfor %}
+            
+            </div>
+            {% if request.user|has_permission:"hub.add_content" %}
+                <h3>Add new content:</h3>
+                <ul class="content-types">
+                    <li><a href="{% url 'section_content_create' section.id "text" %}">Text</a></li>
+                    <li><a href="{% url 'section_content_create' section.id "file" %}">File</a></li>
+                    <li><a href="{% url 'section_content_create' section.id "image" %}">Image</a></li>
+                    <li><a href="{% url 'section_content_create' section.id "video" %}">Video</a></li>
+                    <li><a href="{% url 'section_content_create' section.id "url" %}">URL</a></li>
+                </ul>
+            {% endif %}
+        </div>
+    {% endwith %}
+{% endblock content %}
+{% block include_js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5sortable/0.14.0/html5sortable.min.js"
+            integrity="sha512-B/yiMlkxhtHzzJxPa5kNOO/+8cq0Fj4ndMUxVo2kGunCCH8g8XrPnzqg+sOon3hQ8RaEY2YytH+PIseTtfstjg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock include_js %}
+{% block domready %}
+    let options = {
+    method: 'POST',
+    mode: 'same-origin',
+    headers: {
+    'Content-Type': 'application/json',
+    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+    }
+    };
+
+    const sectionOrderUrl = '{% url 'section_order' %}';
+    const contentOrderUrl = '{% url 'content_order' %}';
+
+    function handleFetchResponse(response) {
+    if (response.ok) {
+    return response.json();
+    } else {
+    return response.json().then(data => {
+    alert(data.error || "An error occurred. Please try again.");
+    return Promise.reject(data.error);
+    });
+    }
+    }
+
+    sortable('#sections', {forcePlaceholderSize: true, placeholderClass: 'placeholder'})[0]
+    .addEventListener('sortupdate', (evt) => {
+    const sectionsOrder = {};
+    document.querySelectorAll('#sections li').forEach((section, index) => {
+    const sectionId = section.dataset.id;
+    if (sectionId && sectionId !== 'undefined') {
+    sectionsOrder[sectionId] = index;
+    section.querySelector('.order').innerHTML = index + 1;
+    }
+    });
+
+    options.body = JSON.stringify(sectionsOrder);
+    fetch(sectionOrderUrl, options)
+    .then(handleFetchResponse)
+    .then(data => console.log("Section order saved successfully"))
+    .catch(error => console.error(error));
+    });
+
+    sortable('#section-contents', {forcePlaceholderSize: true, placeholderClass: 'placeholder'})[0]
+    .addEventListener('sortupdate', (evt) => {
+    const contentOrder = {};
+    document.querySelectorAll('#section-contents div').forEach((content, index) => {
+    const contentId = content.dataset.id;
+    if (contentId && contentId !== 'undefined') {
+    contentOrder[contentId] = index;
+    }
+    });
+
+    options.body = JSON.stringify(contentOrder);
+    fetch(contentOrderUrl, options)
+    .then(handleFetchResponse)
+    .then(data => console.log("Content order saved successfully"))
+    .catch(error => console.error(error));
+    });
+{% endblock %}

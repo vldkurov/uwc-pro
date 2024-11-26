@@ -1,0 +1,320 @@
+{% extends 'hub/_hub_base.html' %}
+{% load static %}
+{% load has_permission %}
+{% load basename %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% block cms_css %}
+    <link rel="stylesheet" href="{% static 'css/cms.css' %}">
+{% endblock cms_css %}
+
+<style>
+    #spinner-box {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1050; /* Поверх всех элементов */
+        background: rgba(255, 255, 255, 0.8); /* Полупрозрачный фон */
+        width: 100vw;
+        height: 100vh;
+    }
+</style>
+
+{% block title %}
+    {% if object %}
+        Edit Content "{{ object.title }}"
+    {% else %}
+        Add new content
+    {% endif %}
+{% endblock title %}
+
+{% block content %}
+    <h1>
+        {% if object %}
+            Edit Content "{{ object.title }}"
+        {% else %}
+            Add new content
+        {% endif %}
+    </h1>
+    <div>
+        <h2>Page Info</h2>
+        <form id="content-form" action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% if form.content_draft_en and form.content_draft_uk %}
+
+                <!-- Content Draft (EN) -->
+                <div class="content-form mb-4 p-3 border rounded">
+                    <small class="text-muted" style="display: inline-flex; align-items: center;">
+                        <span style="font-weight: bold;">Displayed</span>
+                        <img src="{% static 'img/flags/gb.svg' %}" alt="English"
+                             style="width: 16px; height: 16px; margin-left: 0.2rem; vertical-align: middle;">
+                        <span style="margin-left: 0.2rem; margin-right: 0.2rem;">:</span>
+                        {{ form.instance.content_en|truncatechars:100 }}
+                    </small>
+                    <div class="d-flex align-items-center mb-3 w-100">
+                        <div class="form-floating w-100">
+                            {% if request.user.role == request.user.Role.VIEWER %}
+                                {% if form.instance.is_update_pending_en %}
+                                    {{ form.content_draft_en|add_class:"form-control border border-2 border-warning w-100"|attr:"placeholder:"|attr:"style:height:120px;"|attr:"readonly:readonly" }}
+                                {% elif form.instance.is_update_confirmed_en %}
+                                    {{ form.content_draft_en|add_class:"form-control border border-2 border-success w-100"|attr:"placeholder:"|attr:"style:height:120px;"|attr:"readonly:readonly" }}
+                                {% else %}
+                                    {{ form.content_draft_en|add_class:"form-control border w-100"|attr:"placeholder:"|attr:"style:height:120px;"|attr:"readonly:readonly" }}
+                                {% endif %}
+                            {% else %}
+                                {% if form.instance.is_update_pending_en %}
+                                    {{ form.content_draft_en|add_class:"form-control border border-2 border-warning w-100"|attr:"placeholder:"|attr:"style:height:120px;" }}
+                                {% elif form.instance.is_update_confirmed_en %}
+                                    {{ form.content_draft_en|add_class:"form-control border border-2 border-success w-100"|attr:"placeholder:"|attr:"style:height:120px;" }}
+                                {% else %}
+                                    {{ form.content_draft_en|add_class:"form-control border w-100"|attr:"placeholder:"|attr:"style:height:120px;" }}
+                                {% endif %}
+                            {% endif %}
+
+                            <label for="{{ form.content_draft_en.id_for_label }}">
+                                <span style="display: inline-flex; align-items: center; gap: 0.3rem;">
+                                    Content Draft
+                                    <img src="{% static 'img/flags/gb.svg' %}" alt="English"
+                                         style="width: 16px; height: 16px;">
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="btn-group btn-group-sm mt-1 ms-2" role="group" aria-label="Control button group">
+                            {% if request.user|has_permission:"admin_pages.request_update_en" %}
+                                <button type="submit" name="request_update_en" value="request"
+                                        class="btn p-0" data-bs-toggle="tooltip"
+                                        title="Request Update" aria-label="Request Update"
+                                        style="border: none;"
+                                >
+                                    <i class="bi bi-pencil-square text-warning fs-5"></i>
+                                </button>
+                            {% endif %}
+                            {% if request.user|has_permission:"admin_pages.confirm_update_en" %}
+                                <button type="submit" name="confirm_update_en" value="confirm"
+                                        class="btn p-0 ms-2 border-0" data-bs-toggle="tooltip"
+                                        title="Confirm Update" aria-label="Confirm Update"
+                                        style="border: none;"
+                                        {% if not form.instance.is_update_pending_en %}disabled{% endif %}>
+                                    <i class="bi bi-check-circle fs-5 {% if not form.instance.is_update_pending_en %}text-muted{% else %}text-success{% endif %}"></i>
+                                </button>
+                            {% endif %}
+                            {% if request.user|has_permission:"admin_pages.reject_update_en" %}
+                                <button type="submit" name="reject_update_en" value="reject"
+                                        class="btn p-0 ms-2 border-0" data-bs-toggle="tooltip"
+                                        title="Reject Update" aria-label="Reject Update"
+                                        style="border: none;"
+                                        {% if not form.instance.is_update_pending_en %}disabled{% endif %}>
+                                    <i class="bi bi-x-circle fs-5 {% if not form.instance.is_update_pending_en %}text-muted{% else %}text-danger{% endif %}"></i>
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Draft (UK) -->
+                <div class="content-form mb-4 p-3 border rounded">
+                    <small class="text-muted" style="display: inline-flex; align-items: center;">
+                        <span style="font-weight: bold;">Displayed</span>
+                        <img src="{% static 'img/flags/ua.svg' %}" alt="Ukrainian"
+                             style="width: 16px; height: 16px; margin-left: 0.2rem; vertical-align: middle;">
+                        <span style="margin-left: 0.2rem; margin-right: 0.2rem;">:</span>
+                        {{ form.instance.content_en|truncatechars:100 }}
+                    </small>
+                    <div class="d-flex align-items-center mb-3 w-100">
+                        <div class="form-floating w-100">
+                            {% if request.user.role == request.user.Role.VIEWER %}
+                                {% if form.instance.is_update_pending_uk %}
+                                    {{ form.content_draft_uk|add_class:"form-control border border-2 border-warning w-100"|attr:"placeholder:"|attr:"style:height:120px;"|attr:"readonly:readonly" }}
+                                {% elif form.instance.is_update_confirmed_uk %}
+                                    {{ form.content_draft_uk|add_class:"form-control border border-2 border-success w-100"|attr:"placeholder:"|attr:"style:height:120px;"|attr:"readonly:readonly" }}
+                                {% else %}
+                                    {{ form.content_draft_uk|add_class:"form-control border w-100"|attr:"placeholder:"|attr:"style:height:120px;"|attr:"readonly:readonly" }}
+                                {% endif %}
+                            {% else %}
+                                {% if form.instance.is_update_pending_uk %}
+                                    {{ form.content_draft_uk|add_class:"form-control border border-2 border-warning w-100"|attr:"placeholder:"|attr:"style:height:120px;" }}
+                                {% elif form.instance.is_update_confirmed_uk %}
+                                    {{ form.content_draft_uk|add_class:"form-control border border-2 border-success w-100"|attr:"placeholder:"|attr:"style:height:120px;" }}
+                                {% else %}
+                                    {{ form.content_draft_uk|add_class:"form-control border w-100"|attr:"placeholder:"|attr:"style:height:120px;" }}
+                                {% endif %}
+                            {% endif %}
+
+                            <label for="{{ form.content_draft_en.id_for_label }}">
+                                <span style="display: inline-flex; align-items: center; gap: 0.3rem;">
+                                    Content Draft
+                                    <img src="{% static 'img/flags/ua.svg' %}" alt="Ukrainian"
+                                         style="width: 16px; height: 16px;">
+                                </span>
+                            </label>
+                        </div>
+                        <div class="btn-group btn-group-sm mt-1 ms-2" role="group" aria-label="Control button group">
+                            {% if request.user|has_permission:"admin_pages.request_update_uk" %}
+                                <button type="submit" name="request_update_uk" value="request"
+                                        class="btn p-0" data-bs-toggle="tooltip"
+                                        title="Request Update" aria-label="Request Update"
+                                        style="border: none;"
+                                >
+                                    <i class="bi bi-pencil-square text-warning fs-5"></i>
+                                </button>
+                            {% endif %}
+                            {% if request.user|has_permission:"admin_pages.confirm_update_uk" %}
+                                <button type="submit" name="confirm_update_uk" value="confirm"
+                                        class="btn p-0 ms-2 border-0" data-bs-toggle="tooltip"
+                                        title="Confirm Update" aria-label="Confirm Update"
+                                        style="border: none;"
+                                        {% if not form.instance.is_update_pending_uk %}disabled{% endif %}>
+                                    <i class="bi bi-check-circle fs-5 {% if not form.instance.is_update_pending_uk %}text-muted{% else %}text-success{% endif %}"></i>
+                                </button>
+                            {% endif %}
+                            {% if request.user|has_permission:"admin_pages.reject_update_uk" %}
+                                <button type="submit" name="reject_update_uk" value="reject"
+                                        class="btn p-0 ms-2 border-0" data-bs-toggle="tooltip"
+                                        title="Reject Update" aria-label="Reject Update"
+                                        style="border: none;"
+                                        {% if not form.instance.is_update_pending_uk %}disabled{% endif %}>
+                                    <i class="bi bi-x-circle fs-5 {% if not form.instance.is_update_pending_uk %}text-muted{% else %}text-danger{% endif %}"></i>
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+            {% else %}
+                <!-- Content Draft -->
+                <div class="content-form mb-4 p-3 border rounded">
+                    <small class="text-muted">
+                        {% if form.instance.content %}
+                            Displayed: {{ form.instance.content|basename }}
+                        {% endif %}
+                    </small>
+                    <br>
+                    <small id="loading-text" class="text-muted" style="display: none;">
+                        Loading...
+                    </small>
+                    {% if form.content_draft.value %}
+                        <small id="content-draft" class="text-muted">
+                            Currently:
+                            <a href="{{ form.instance.content_draft.url }}" target="_blank"
+                               class="text-decoration-none">
+                                {{ form.content_draft.value|basename }}
+                            </a>
+                        </small>
+                    {% endif %}
+
+                    <div class="d-flex align-items-center mb-3 w-100">
+                        <div class="w-100">
+                            {% if form.content_draft.field.widget.input_type == "file" or form.content_draft.field.widget.input_type == "image" %}
+                                <div>
+                                    {% if request.user.role == request.user.Role.VIEWER %}
+                                        {% if form.instance.is_update_pending %}
+                                            <input type="file"
+                                                   name="{{ form.content_draft.html_name }}"
+                                                   id="{{ form.content_draft.id_for_label }}"
+                                                   class="form-control border border-2 border-warning w-100"
+                                                   disabled>
+                                        {% elif form.instance.is_update_confirmed %}
+                                            <input type="file"
+                                                   name="{{ form.content_draft.html_name }}"
+                                                   id="{{ form.content_draft.id_for_label }}"
+                                                   class="form-control border border-2 border-success w-100"
+                                                   disabled>
+                                        {% else %}
+                                            <input type="file"
+                                                   name="{{ form.content_draft.html_name }}"
+                                                   id="{{ form.content_draft.id_for_label }}"
+                                                   class="form-control border w-100"
+                                                   disabled>
+                                        {% endif %}
+                                    {% else %}
+                                        {% if form.instance.is_update_pending %}
+                                            <input type="file"
+                                                   name="{{ form.content_draft.html_name }}"
+                                                   id="{{ form.content_draft.id_for_label }}"
+                                                   class="form-control border border-2 border-warning w-100">
+                                        {% elif form.instance.is_update_confirmed %}
+                                            <input type="file"
+                                                   name="{{ form.content_draft.html_name }}"
+                                                   id="{{ form.content_draft.id_for_label }}"
+                                                   class="form-control border border-2 border-success w-100">
+                                        {% else %}
+                                            <input type="file"
+                                                   name="{{ form.content_draft.html_name }}"
+                                                   id="{{ form.content_draft.id_for_label }}"
+                                                   class="form-control border w-100">
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <div class="form-floating" style="height: 100%;">
+                                    {% if request.user.role == request.user.Role.VIEWER %}
+                                        {% if form.instance.is_update_pending %}
+                                            {{ form.content_draft|add_class:"form-control border border-2 border-warning w-100"|attr:"placeholder:"|attr:"readonly:readonly" }}
+                                        {% elif form.instance.is_update_confirmed %}
+                                            {{ form.content_draft|add_class:"form-control border border-2 border-success w-100"|attr:"placeholder:"|attr:"readonly:readonly" }}
+                                        {% else %}
+                                            {{ form.content_draft|add_class:"form-control border w-100"|attr:"placeholder:"|attr:"readonly:readonly" }}
+                                        {% endif %}
+                                    {% else %}
+                                        {% if form.instance.is_update_pending %}
+                                            {{ form.content_draft|add_class:"form-control border border-2 border-warning w-100"|attr:"placeholder:" }}
+                                        {% elif form.instance.is_update_confirmed %}
+                                            {{ form.content_draft|add_class:"form-control border border-2 border-success w-100"|attr:"placeholder:" }}
+                                        {% else %}
+                                            {{ form.content_draft|add_class:"form-control border w-100"|attr:"placeholder:" }}
+                                        {% endif %}
+                                    {% endif %}
+
+                                    <label for="{{ form.content_draft.id_for_label }}" style="line-height: 1.2;">Content
+                                        Draft</label>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="btn-group btn-group-sm ms-2" role="group" aria-label="Control button group">
+                            {% if request.user|has_permission:"admin_pages.request_update" %}
+                                <button type="submit" name="request_update" value="request"
+                                        class="btn p-0" data-bs-toggle="tooltip"
+                                        title="Request Update" aria-label="Request Update"
+                                        style="border: none;"
+                                >
+                                    <i class="bi bi-pencil-square text-warning fs-5"></i>
+                                </button>
+                            {% endif %}
+                            {% if request.user|has_permission:"admin_pages.confirm_update" %}
+                                <button type="submit" name="confirm_update" value="confirm"
+                                        class="btn p-0 ms-2 border-0" data-bs-toggle="tooltip"
+                                        title="Confirm Update" aria-label="Confirm Update"
+                                        style="border: none;"
+                                        {% if not form.instance.is_update_pending %}disabled{% endif %}>
+                                    <i class="bi bi-check-circle fs-5 {% if not form.instance.is_update_pending %}text-muted{% else %}text-success{% endif %}"></i>
+                                </button>
+                            {% endif %}
+                            {% if request.user|has_permission:"admin_pages.reject_update" %}
+                                <button type="submit" name="reject_update" value="reject"
+                                        class="btn p-0 ms-2 border-0" data-bs-toggle="tooltip"
+                                        title="Reject Update" aria-label="Reject Update"
+                                        style="border: none;"
+                                        {% if not form.instance.is_update_pending %}disabled{% endif %}>
+                                    <i class="bi bi-x-circle fs-5 {% if not form.instance.is_update_pending %}text-muted{% else %}text-danger{% endif %}"></i>
+                                </button>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+            {% endif %}
+        </form>
+    </div>
+
+    <div id="spinner-box" style="display: none;" class="text-center">
+        <div class="spinner-grow text-secondary" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+{% endblock content %}

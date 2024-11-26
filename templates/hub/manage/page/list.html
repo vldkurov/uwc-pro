@@ -1,0 +1,65 @@
+{% extends 'hub/_hub_base.html' %}
+{% load i18n %}
+{% load has_group %}
+{% load has_permission %}
+{% load has_role %}
+{% load static %}
+{% block cms_css %}
+    <link rel="stylesheet" href="{% static 'css/cms.css' %}">
+{% endblock cms_css %}
+
+
+{% block title %}{% trans 'All pages' %}{% endblock title %}
+
+{% block content %}
+    <h1>{% trans 'All pages' %}</h1>
+    <div>
+        {% for page in page_list %}
+            <div>
+                <h3>{{ page.title }}</h3>
+                <p>
+                    {% if request.user|has_permission:"hub.change_page" %}
+                        <a href="{% url 'page_edit' page.slug %}">{% trans 'Edit page' %}</a> |
+                    {% endif %}
+
+                    {% if request.user|has_permission:"hub.delete_page" %}
+                        <a href="{% url 'page_delete' page.slug %}">{% trans 'Delete page' %}</a> |
+                    {% endif %}
+
+                    {% if request.user|has_permission:"hub.view_section" %}
+                        <a href="{% url 'page_section_update' page.slug %}">
+                            {% if request.user.role == request.user.Role.VIEWER %}
+                                {% trans 'View sections' %}
+                            {% else %}
+                                {% trans 'Edit sections' %}
+                            {% endif %}
+                        </a> |
+                    {% endif %}
+
+                    {% if page.sections.count > 0 %}
+                        {% if request.user|has_permission:"hub.view_content" %}
+                            <a href="{% url 'section_content_list' page.sections.first.id %}">
+                                {% if request.user.role == request.user.Role.VIEWER %}
+                                    {% trans 'View contents' %}
+                                {% else %}
+                                    {% trans 'Manage contents' %}
+                                {% endif %}
+                            </a>
+                        {% endif %}
+                    {% endif %}
+                </p>
+            </div>
+        {% empty %}
+            <p>You haven't created any pages yet.</p>
+        {% endfor %}
+        {#        {% if request.user|has_role:"OWR" %}#}
+        {#            <p><a href="{% url 'page_create' %}">Create new page</a></p>#}
+        {#        {% endif %}#}
+        {#        {% if request.user|has_group:"Owner" %}#}
+        {#            <p><a href="{% url 'page_create' %}">Create new page</a></p>#}
+        {#        {% endif %}#}
+        {% if request.user|has_permission:"hub.add_page" %}
+            <p><a href="{% url 'page_create' %}">{% trans 'Create new page' %}</a></p>
+        {% endif %}
+    </div>
+{% endblock content %}

@@ -1,0 +1,208 @@
+{% extends 'hub/_hub_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load has_permission %}
+{% block cms_css %}
+    <link rel="stylesheet" href="{% static 'css/cms.css' %}">
+{% endblock cms_css %}
+
+{% block title %}Edit "{{ page.title }}"{% endblock title %}
+
+{% block content %}
+    <h1 class="mb-4">Edit "{{ page.title }}"</h1>
+    <div>
+        <h2 class="mb-3">Page sections</h2>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ formset.management_form }}
+
+            {% for form in formset %}
+
+                {{ form.id }}
+                {{ form.page }}
+
+                <div class="section-form mb-4 p-3 border rounded">
+
+                    <!-- Section title_en -->
+                    <div>
+                        <small class="text-muted" style="display: inline-flex; align-items: center;">
+                            <span style="font-weight: bold;">Displayed</span>
+                            <img src="{% static 'img/flags/gb.svg' %}" alt="English"
+                                 style="width: 16px; height: 16px; margin-left: 0.2rem; vertical-align: middle;">
+                            <span style="margin-left: 0.2rem; margin-right: 0.2rem;">:</span>
+                            {{ form.instance.title_en }}
+                        </small>
+                        <div class="d-flex align-items-center mb-3 w-100">
+                            <div class="form-floating w-100">
+                                {% if request.user.role == request.user.Role.VIEWER %}
+                                    {% if form.instance.is_update_pending_en %}
+                                        {{ form.title_draft_en|add_class:"form-control border border-2 border-warning w-100"|attr:"readonly:readonly" }}
+                                    {% elif form.instance.is_update_confirmed_en %}
+                                        {{ form.title_draft_en|add_class:"form-control border border-2 border-success w-100"|attr:"readonly:readonly" }}
+                                    {% else %}
+                                        {{ form.title_draft_en|add_class:"form-control border w-100"|attr:"readonly:readonly" }}
+                                    {% endif %}
+                                {% else %}
+                                    {% if form.instance.is_update_pending_en %}
+                                        {{ form.title_draft_en|add_class:"form-control border border-2 border-warning w-100" }}
+                                    {% elif form.instance.is_update_confirmed_en %}
+                                        {{ form.title_draft_en|add_class:"form-control border border-2 border-success w-100" }}
+                                    {% else %}
+                                        {{ form.title_draft_en|add_class:"form-control border w-100" }}
+                                    {% endif %}
+                                {% endif %}
+                                <label for="{{ form.title_draft_en.id_for_label }}"
+                                       style="display: inline-flex; align-items: center;">
+                                    Section Title
+                                    <img src="{% static 'img/flags/gb.svg' %}" alt="English"
+                                         style="width: 16px; height: 16px; margin-left: 0.3rem;">
+                                </label>
+                            </div>
+                            <div class="btn-group btn-group-sm mt-1 ms-2" role="group"
+                                 aria-label="Control button group">
+                                {% if request.user|has_permission:"hub.request_update_en" %}
+                                    <button type="submit" name="{{ form.prefix }}-request_update_en" value="request"
+                                            class="btn p-0" data-bs-toggle="tooltip"
+                                            title="Request Update" aria-label="Request Update"
+                                            style="border: none;"
+                                    >
+                                        <i class="bi bi-pencil-square text-warning fs-5"></i>
+                                    </button>
+                                {% endif %}
+                                {% if request.user|has_permission:"hub.confirm_update_en" %}
+                                    <button
+                                            type="submit"
+                                            name="{{ form.prefix }}-confirm_update_en"
+                                            value="confirm"
+                                            class="btn p-0 ms-2 border-0"
+                                            data-bs-toggle="tooltip"
+                                            title="Confirm Update"
+                                            aria-label="Confirm Update"
+                                            style="border: none;"
+                                            {% if not form.instance.is_update_pending_en %}disabled{% endif %}
+                                    >
+                                        <i class="bi bi-check-circle fs-5 {% if not form.instance.is_update_pending_en %}text-muted{% else %}text-success{% endif %}"></i>
+                                    </button>
+                                {% endif %}
+                                {% if request.user|has_permission:"hub.reject_update_en" %}
+                                    <button
+                                            type="submit"
+                                            name="{{ form.prefix }}-reject_update_en"
+                                            value="reject"
+                                            class="btn p-0 ms-2 border-0"
+                                            data-bs-toggle="tooltip"
+                                            title="Reject Update"
+                                            aria-label="Reject Update"
+                                            style="border: none;"
+                                            {% if not form.instance.is_update_pending_en %}disabled{% endif %}
+                                    >
+                                        <i class="bi bi-x-circle fs-5 {% if not form.instance.is_update_pending_en %}text-muted{% else %}text-danger{% endif %}"></i>
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Section title_uk -->
+                    <div>
+                        <small class="text-muted">
+                            <span style="font-weight: bold;">Displayed</span>
+                            <img src="{% static 'img/flags/ua.svg' %}" alt="Ukrainian"
+                                 style="width: 16px; height: 16px; margin-left: 0.1rem; vertical-align: middle;">
+                            <span style="margin-left: 0.2rem;">:</span>
+                            {{ form.instance.title_en }}
+                        </small>
+                        <div class="d-flex align-items-center mb-3 w-100">
+                            <div class="form-floating w-100">
+                                {% if request.user.role == request.user.Role.VIEWER %}
+                                    {% if form.instance.is_update_pending_uk %}
+                                        {{ form.title_draft_uk|add_class:"form-control border border-2 border-warning w-100"|attr:"readonly:readonly" }}
+                                    {% elif form.instance.is_update_confirmed_uk %}
+                                        {{ form.title_draft_uk|add_class:"form-control border border-2  border-success w-100"|attr:"readonly:readonly" }}
+                                    {% else %}
+                                        {{ form.title_draft_uk|add_class:"form-control border w-100"|attr:"readonly:readonly" }}
+                                    {% endif %}
+                                {% else %}
+                                    {% if form.instance.is_update_pending_uk %}
+                                        {{ form.title_draft_uk|add_class:"form-control border border-2 border-warning w-100" }}
+                                    {% elif form.instance.is_update_confirmed_uk %}
+                                        {{ form.title_draft_uk|add_class:"form-control border border-2  border-success w-100" }}
+                                    {% else %}
+                                        {{ form.title_draft_uk|add_class:"form-control border w-100" }}
+                                    {% endif %}
+                                {% endif %}
+
+                                <label for="{{ form.title_draft_en.id_for_label }}"
+                                       style="display: inline-flex; align-items: center;">
+                                    Section Title
+                                    <img src="{% static 'img/flags/ua.svg' %}" alt="Ukrainian"
+                                         style="width: 16px; height: 16px; margin-left: 0.3rem;">
+                                </label>
+                            </div>
+
+                            <div class="btn-group btn-group-sm mt-1 ms-2" role="group"
+                                 aria-label="Control button group">
+                                {% if request.user|has_permission:"hub.request_update_uk" %}
+                                    <button type="submit" name="{{ form.prefix }}-request_update_uk" class="btn p-0"
+                                            data-bs-toggle="tooltip"
+                                            title="Request Update" aria-label="Request Update"
+                                    style="border: none;">
+                                        <i class="bi bi-pencil-square text-warning fs-5"></i>
+                                    </button>
+                                {% endif %}
+                                {% if request.user|has_permission:"hub.confirm_update_uk" %}
+                                    <button
+                                            type="submit"
+                                            name="{{ form.prefix }}-confirm_update_uk"
+                                            value="confirm"
+                                            class="btn p-0 ms-2 border-0"
+                                            data-bs-toggle="tooltip"
+                                            title="Confirm Update"
+                                            aria-label="Confirm Update"
+                                            style="border: none;"
+                                            {% if not form.instance.is_update_pending_uk %}disabled{% endif %}
+                                    >
+                                        <i class="bi bi-check-circle fs-5 {% if not form.instance.is_update_pending_uk %}text-muted{% else %}text-success{% endif %}"></i>
+                                    </button>
+                                {% endif %}
+                                {% if request.user|has_permission:"hub.reject_update_uk" %}
+                                    <button
+                                            type="submit"
+                                            name="{{ form.prefix }}-reject_update_uk"
+                                            value="reject"
+                                            class="btn p-0 ms-2 border-0"
+                                            data-bs-toggle="tooltip"
+                                            title="Reject Update"
+                                            aria-label="Reject Update"
+                                            style="border: none;"
+                                            {% if not form.instance.is_update_pending_uk %}disabled{% endif %}
+                                    >
+                                        <i class="bi bi-x-circle fs-5 {% if not form.instance.is_update_pending_uk %}text-muted{% else %}text-danger{% endif %}"></i>
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            {% if request.user|has_permission:"hub.add_section" %}
+                <button
+                        type="submit"
+                        name="add_new_section"
+                        value="add"
+                        class="btn border-0"
+                        data-bs-toggle="tooltip"
+                        title="Add New Section"
+                        aria-label="Add Section"
+                        style="border: none;"
+                >
+                    <i class="bi bi-plus-circle fs-2 text-primary"></i>
+                </button>
+            {% endif %}
+
+        </form>
+    </div>
+{% endblock content %}
