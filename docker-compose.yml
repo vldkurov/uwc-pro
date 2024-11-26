@@ -1,7 +1,6 @@
 services:
   web:
     build: .
-#    command: python /uwc/manage.py runserver 0.0.0.0:8000
     command: gunicorn django_project.wsgi -b 0.0.0.0:8000
     volumes:
       - .:/uwc

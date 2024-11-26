@@ -8,22 +8,24 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-26 12:42+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2024-11-26 19:44+0000\n"
+"PO-Revision-Date: 2024-11-14 18:44+0000\n"
+"Last-Translator:   <vokur@msn.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-#: django_project/settings.py:153
-msgid "English"
-msgstr ""
+"X-Translated-Using: django-rosetta 0.10.1\n"
 
-#: django_project/settings.py:153
+#: django_project/settings.py:154
+msgid "English"
+msgstr "English"
+
+#: django_project/settings.py:154
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ukrainian"
 
 #: hub/forms.py:31
 msgid "This field is required."
@@ -35,47 +37,49 @@ msgstr ""
 
 #: hub/models.py:36
 msgid "Page Title"
-msgstr ""
+msgstr "Page Title"
 
 #: hub/models.py:43
 msgid "Page"
-msgstr ""
+msgstr "Page"
 
 #: hub/models.py:44 templates/hub/_hub_base.html:48
 msgid "Pages"
-msgstr ""
+msgstr "Pages"
 
 #: hub/models.py:75
 msgid "Section Title"
-msgstr ""
+msgstr "Section Title"
 
 #: hub/models.py:77
 msgid "Section Title Draft"
-msgstr ""
+msgstr "Section Title Draft"
 
 #: hub/models.py:93
 msgid "Section"
-msgstr ""
+msgstr "Section"
 
 #: hub/models.py:94
 msgid "Sections"
-msgstr ""
+msgstr "Sections"
 
 #: hub/models.py:136 hub/models.py:186
 msgid "Content"
-msgstr ""
+msgstr "Content"
 
 #: hub/models.py:137
 msgid "Contents"
-msgstr ""
+msgstr "Contents"
 
 #: hub/models.py:187
 msgid "Content Draft"
-msgstr ""
+msgstr "Content Draft"
 
 #: locations/models.py:25
+#, fuzzy
+#| msgid "Section Title"
 msgid "Division Title"
-msgstr ""
+msgstr "Section Title"
 
 #: locations/models.py:34 locations/models.py:57
 msgid "Division"
@@ -146,8 +150,10 @@ msgid "Phones"
 msgstr ""
 
 #: locations/models.py:143
+#, fuzzy
+#| msgid "Confirm Email Address"
 msgid "Email Address"
-msgstr ""
+msgstr "Confirm Email Address"
 
 #: locations/models.py:146
 msgid "Email"
@@ -160,7 +166,7 @@ msgstr ""
 #: templates/account/email/base_message.txt:1
 #, python-format
 msgid "Hello from %(site_name)s!"
-msgstr ""
+msgstr "Hello from %(site_name)s!"
 
 #: templates/account/email/base_message.txt:5
 #, python-format
@@ -168,6 +174,8 @@ msgid ""
 "Thank you for using %(site_name)s!\n"
 "%(site_domain)s"
 msgstr ""
+"Thank you for using %(site_name)s!\n"
+"%(site_domain)s"
 
 #: templates/account/email/email_confirmation_message.txt:5
 #, python-format
@@ -175,26 +183,30 @@ msgid ""
 "You're receiving this email because user %(user_display)s has given your "
 "email address to register an account on %(site_domain)s."
 msgstr ""
+"You're receiving this email because user %(user_display)s has given your "
+"email address to register an account on %(site_domain)s."
 
 #: templates/account/email/email_confirmation_message.txt:7
 msgid ""
 "Your email verification code is listed below. Please enter it in your open "
 "browser window."
 msgstr ""
+"Your email verification code is listed below. Please enter it in your open "
+"browser window."
 
 #: templates/account/email/email_confirmation_message.txt:9
 #, python-format
 msgid "To confirm this is correct, go to %(activate_url)s"
-msgstr ""
+msgstr "To confirm this is correct, go to %(activate_url)s"
 
 #: templates/account/email/email_confirmation_subject.txt:3
 msgid "Please Confirm Your Email Address"
-msgstr ""
+msgstr "Please Confirm Your Email Address"
 
 #: templates/account/email_confirm.html:6
 #: templates/account/email_confirm.html:10
 msgid "Confirm Email Address"
-msgstr ""
+msgstr "Confirm Email Address"
 
 #: templates/account/email_confirm.html:16
 #, python-format
@@ -202,6 +214,8 @@ msgid ""
 "Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an email "
 "address for user %(user_display)s."
 msgstr ""
+"Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an email "
+"address for user %(user_display)s."
 
 #: templates/account/email_confirm.html:28
 #, python-format
@@ -209,6 +223,8 @@ msgid ""
 "Unable to confirm %(email)s because it is already confirmed by a different "
 "account."
 msgstr ""
+"Unable to confirm %(email)s because it is already confirmed by a different "
+"account."
 
 #: templates/account/email_confirm.html:34
 #, python-format
@@ -216,6 +232,8 @@ msgid ""
 "This email confirmation link expired or is invalid. Please <a "
 "href=\"%(email_url)s\">issue a new email confirmation request</a>."
 msgstr ""
+"This email confirmation link expired or is invalid. Please <a "
+"href=\"%(email_url)s\">issue a new email confirmation request</a>."
 
 #: templates/account/password_change.html:33
 #: templates/account/password_change.html:37
@@ -226,43 +244,47 @@ msgstr ""
 #: templates/account/password_reset_from_key_done.html:20
 #: templates/account/password_reset_from_key_done.html:24
 msgid "Change Password"
-msgstr ""
+msgstr "Change Password"
 
 #: templates/account/password_change.html:47
 msgid "Forgot Password?"
-msgstr ""
+msgstr "Forgot Password?"
 
 #: templates/account/password_reset.html:37
 #: templates/account/password_reset.html:41
 #: templates/account/password_reset_done.html:26
 #: templates/account/password_reset_done.html:30
 msgid "Password Reset"
-msgstr ""
+msgstr "Password Reset"
 
 #: templates/account/password_reset.html:48
 msgid ""
 "Forgotten your password? Enter your email address below, and we'll send you "
 "an email allowing you to reset it."
 msgstr ""
+"Forgotten your password? Enter your email address below, and we'll send you "
+"an email allowing you to reset it."
 
 #: templates/account/password_reset.html:58
 #: templates/account/password_reset_done.html:43
 msgid "Reset My Password"
-msgstr ""
+msgstr "Reset My Password"
 
 #: templates/account/password_reset.html:63
 msgid "Please contact us if you have any trouble resetting your password."
-msgstr ""
+msgstr "Please contact us if you have any trouble resetting your password."
 
 #: templates/account/password_reset_done.html:37
 msgid ""
 "We have emailed you. If you have not received it, please check your spam "
 "folder. Otherwise, contact us if you do not receive it in a few minutes."
 msgstr ""
+"We have emailed you. If you have not received it, please check your spam "
+"folder. Otherwise, contact us if you do not receive it in a few minutes."
 
 #: templates/account/password_reset_from_key.html:50
 msgid "Bad Token"
-msgstr ""
+msgstr "Bad Token"
 
 #: templates/account/password_reset_from_key.html:59
 #, python-format
@@ -271,107 +293,116 @@ msgid ""
 "used. Please request a <a href=\"%(passwd_reset_url)s\">new password reset</"
 "a>."
 msgstr ""
+"The password reset link was invalid, possibly because it has already been "
+"used. Please request a <a href=\"%(passwd_reset_url)s\">new password reset</"
+"a>."
 
 #: templates/account/password_reset_from_key_done.html:25
 msgid "Your password has been changed successfully."
-msgstr ""
+msgstr "Your password has been changed successfully."
 
 #: templates/admin/base_site.html:6
 msgid "Return to site"
-msgstr ""
+msgstr "Return to site"
 
 #: templates/hub/_hub_base.html:10
 msgid "UWC Admin"
-msgstr ""
+msgstr "UWC Admin"
 
 #: templates/hub/_hub_base.html:28 templates/pages/_pages_base.html:24
 msgid "The Ukrainian"
-msgstr ""
+msgstr "The Ukrainian"
 
 #: templates/hub/_hub_base.html:29 templates/pages/_pages_base.html:25
 msgid "Welcome"
-msgstr ""
+msgstr "Welcome"
 
 #: templates/hub/_hub_base.html:30 templates/pages/_pages_base.html:26
 msgid "Centre"
-msgstr ""
+msgstr "Centre"
 
 #: templates/hub/_hub_base.html:41 templates/hub/_hub_base.html:146
 msgid "Offcanvas"
-msgstr ""
+msgstr "Offcanvas"
 
 #: templates/hub/_hub_base.html:45
 msgid "Dashboard"
-msgstr ""
+msgstr "Dashboard"
 
 #: templates/hub/_hub_base.html:53 templates/hub/_hub_base.html:56
+#, fuzzy
+#| msgid "Sections"
 msgid "Locations"
-msgstr ""
+msgstr "Sections"
 
 #: templates/hub/_hub_base.html:63
 msgid "Panel"
-msgstr ""
+msgstr "Panel"
 
 #: templates/hub/_hub_base.html:74 templates/hub/_hub_base.html:76
 #: templates/pages/_pages_base.html:65 templates/pages/_pages_base.html:67
 msgid "Search"
-msgstr ""
+msgstr "Search"
 
 #: templates/hub/_hub_base.html:126
 msgid "Change password"
-msgstr ""
+msgstr "Change Password"
 
 #: templates/hub/_hub_base.html:132
 msgid "Log Out"
-msgstr ""
+msgstr "Log Out"
 
 #: templates/hub/manage/page/form.html:14
 #: templates/hub/manage/page/form.html:23
 msgid "Create a new Page"
-msgstr ""
+msgstr "Create a new Page"
 
 #: templates/hub/manage/page/form.html:27
 msgid "Page info"
-msgstr ""
+msgstr "Page info"
 
 #: templates/hub/manage/page/form.html:63
 msgid "Save page"
-msgstr ""
+msgstr "Save page"
 
 #: templates/hub/manage/page/list.html:12
 #: templates/hub/manage/page/list.html:15
 msgid "All pages"
-msgstr ""
+msgstr "All pages"
 
 #: templates/hub/manage/page/list.html:22
+#, fuzzy
+#| msgid "Edit"
 msgid "Edit page"
-msgstr ""
+msgstr "Edit"
 
 #: templates/hub/manage/page/list.html:26
+#, fuzzy
+#| msgid "Delete"
 msgid "Delete page"
-msgstr ""
+msgstr "Delete"
 
 #: templates/hub/manage/page/list.html:32
 #: templates/hub/manage/section/content_list.html:103
 msgid "View sections"
-msgstr ""
+msgstr "View sections"
 
 #: templates/hub/manage/page/list.html:34
 #: templates/hub/manage/section/content_list.html:105
 msgid "Edit sections"
-msgstr ""
+msgstr "Edit sections"
 
 #: templates/hub/manage/page/list.html:43
 msgid "View contents"
-msgstr ""
+msgstr "View contents"
 
 #: templates/hub/manage/page/list.html:45
 msgid "Manage contents"
-msgstr ""
+msgstr "Manage contents"
 
 #: templates/hub/manage/page/list.html:62
 msgid "Create new page"
-msgstr ""
+msgstr "Create new page"
 
 #: templates/locations/manage/division/list.html:13
 msgid "Create Division"
@@ -379,28 +410,80 @@ msgstr ""
 
 #: templates/locations/manage/division/list.html:50
 msgid "Edit"
-msgstr ""
+msgstr "Edit"
 
 #: templates/locations/manage/division/list.html:53
 msgid "Delete"
-msgstr ""
+msgstr "Delete"
 
 #: templates/pages/_pages_base.html:9
 msgid "Ukrainian Welcome Centre"
-msgstr ""
+msgstr "Ukrainian Welcome Centre"
 
 #: templates/pages/_pages_base.html:38
 msgid "Who we are"
-msgstr ""
+msgstr "Who we are"
 
 #: templates/pages/_pages_base.html:42
 msgid "About Us"
-msgstr ""
+msgstr "About Us"
 
 #: templates/pages/_pages_base.html:52
 msgid "Home"
-msgstr ""
+msgstr "Home"
 
 #: templates/pages/_pages_base.html:106
 msgid "Log In"
-msgstr ""
+msgstr "Log In"
+
+#, fuzzy
+#~ msgid "Section Draft Title"
+#~ msgstr "Section Title"
+
+#~ msgid "Menu Title"
+#~ msgstr "Menu Title"
+
+#~ msgid "Text"
+#~ msgstr "Text"
+
+#~ msgid "Media URL"
+#~ msgstr "Media URL"
+
+#~ msgid "Char"
+#~ msgstr "Char"
+
+#~ msgid "Logout"
+#~ msgstr "Logout"
+
+#~ msgid "My Web Site"
+#~ msgstr "My Web Site"
+
+#~ msgid "Image"
+#~ msgstr "Image"
+
+#~ msgid "List"
+#~ msgstr "List"
+
+#, fuzzy
+#~ msgid "Text Value"
+#~ msgstr "Content Value"
+
+#, fuzzy
+#~ msgid "Image URL"
+#~ msgstr "Image"
+
+#, fuzzy
+#~ msgid "Char Value"
+#~ msgstr "Content Value"
+
+#~ msgid "Content Title"
+#~ msgstr "Content Title"
+
+#~ msgid "Language"
+#~ msgstr "Language"
+
+#~ msgid "Українська"
+#~ msgstr "Українська"
+
+#~ msgid "title"
+#~ msgstr "Title"
