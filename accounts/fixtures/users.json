@@ -1,0 +1,107 @@
+[
+{
+  "model": "accounts.customuser",
+  "pk": "4c7289f8-039b-4cbc-9c3d-ceb314c09ab9",
+  "fields": {
+    "password": "pbkdf2_sha256$870000$XiwRtsqUsCvEZWk5Ydy9RG$/stwJJ1H8F9tA2kzp8sxK7icqvSBATSQGK4grclVijI=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "owner",
+    "first_name": "",
+    "last_name": "",
+    "email": "owner@mail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2024-11-11T09:46:00Z",
+    "role": "OWR",
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": "bafb348b-cb21-4b76-8bba-936f1d0886c8",
+  "fields": {
+    "password": "pbkdf2_sha256$870000$xV1t0iRKw2RWu5MIPo8gAP$icp0rtBWIa5f5mcKw8IJws1V6QVNGHaIfqKpQkWlUYM=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "viewer",
+    "first_name": "",
+    "last_name": "",
+    "email": "viewer@mail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2024-11-11T09:48:01Z",
+    "role": "VWR",
+    "groups": [
+      4
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": "e695368c-b961-49bf-93f1-751b66a5beb5",
+  "fields": {
+    "password": "pbkdf2_sha256$870000$B28e8UmXCdczZNKolREsCs$27Zj75iv3nOr6IKsgLjtgL6omTotUZFlDgUAc26w5Q4=",
+    "last_login": "2024-11-11T11:37:53.998Z",
+    "is_superuser": true,
+    "username": "vokur",
+    "first_name": "",
+    "last_name": "",
+    "email": "vokur@msn.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2024-11-11T09:44:51Z",
+    "role": "VWR",
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": "ede10a9e-82dd-4783-8242-711845a377c9",
+  "fields": {
+    "password": "pbkdf2_sha256$870000$jZusGoQPgnX3PMGsY5vtNE$2hl5nEbupcLN+4ekcek8mBGcmdmlZwVLxmXWE25DPPg=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@mail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2024-11-11T09:46:52Z",
+    "role": "ADM",
+    "groups": [
+      2
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": "f2cca338-d5ba-4c86-bb29-c73edf852d24",
+  "fields": {
+    "password": "pbkdf2_sha256$870000$ph5YTRvK2g7yPpXBByfyld$0eGX8h0gv5exFQWV3XYdZ+ecg6u6nZ2Q9UJz5d3OZLQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "editor",
+    "first_name": "",
+    "last_name": "",
+    "email": "editor@mail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2024-11-11T09:47:32Z",
+    "role": "EDT",
+    "groups": [
+      3
+    ],
+    "user_permissions": []
+  }
+}
+]
