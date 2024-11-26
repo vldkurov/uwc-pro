@@ -227,7 +227,7 @@ class PageCreateViewTest(TestCase):
                 self.assertEqual(response.status_code, 403)
 
     def test_url_resolves_to_view(self):
-        view = resolve("/en/hub/create/")
+        view = resolve("/en/dashboard/hub/create/")
         self.assertEqual(view.func.__name__, PageCreateView.as_view().__name__)
 
 
@@ -317,7 +317,7 @@ class PageUpdateViewTest(TestCase):
             slug="resolve-test-page",
             modified_by=self.user_with_permission,
         )
-        view = resolve(f"/en/hub/{page.slug}/edit/")
+        view = resolve(f"/en/dashboard/hub/{page.slug}/edit/")
         self.assertEqual(view.func.__name__, PageUpdateView.as_view().__name__)
 
 
@@ -364,8 +364,8 @@ class PageDeleteViewTest(TestCase):
             slug="resolve-test-page",
             modified_by=self.user_with_permission,
         )
-        activate("en")  # Активируем английскую локаль
-        view = resolve(f"/en/hub/{page.slug}/delete/")
+        activate("en")
+        view = resolve(f"/en/dashboard/hub/{page.slug}/delete/")
         self.assertEqual(view.func.__name__, PageDeleteView.as_view().__name__)
 
     def test_access_for_user_with_permission(self):
@@ -418,8 +418,8 @@ class PageDeleteViewTest(TestCase):
     def test_delete_page_with_different_locale(self):
         self.login_user("user_with_permission", "password")
 
-        response_en = self.client.get(f"/en/hub/{self.page.slug}/delete/")
+        response_en = self.client.get(f"/en/dashboard/hub/{self.page.slug}/delete/")
         self.assertEqual(response_en.status_code, 200)
 
-        response_uk = self.client.get(f"/uk/hub/{self.page.slug}/delete/")
+        response_uk = self.client.get(f"/uk/dashboard/hub/{self.page.slug}/delete/")
         self.assertEqual(response_uk.status_code, 200)

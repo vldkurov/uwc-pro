@@ -37,8 +37,8 @@ urlpatterns = i18n_patterns(
     # Public routes
     path("", include("pages.urls")),
     # Admin routes
-    path("dashboard/pages/", include("hub.urls")),
-    # path("dashboard/locations/", include("locations.urls")),
+    path("dashboard/hub/", include("hub.urls")),
+    path("dashboard/locations/", include("locations.urls")),
 )
 
 if settings.DEBUG:

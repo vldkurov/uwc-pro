@@ -1,0 +1,28 @@
+{% extends 'hub/_hub_base.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %}
+    {% if object %}
+        Edit Division "{{ object.title }}"
+    {% else %}
+        Add a New Division
+    {% endif %}
+{% endblock title %}
+
+{% block content %}
+    <h1>
+        {% if object %}
+            Edit Division "{{ object.title }}"
+        {% else %}
+            Add a New Division
+        {% endif %}
+    </h1>
+    <div>
+    <h2>Division Info</h2>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <p><input type="submit" value="Save Division" class="btn btn-outline-success"></p>
+        </form>
+    </div>
+{% endblock content %}

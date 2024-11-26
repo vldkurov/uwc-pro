@@ -1,0 +1,409 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-26 12:42+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != "
+"11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % "
+"100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
+"(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+#: django_project/settings.py:153
+msgid "English"
+msgstr ""
+
+#: django_project/settings.py:153
+msgid "Ukrainian"
+msgstr ""
+
+#: hub/forms.py:31
+msgid "This field is required."
+msgstr ""
+
+#: hub/forms.py:33
+msgid "Title must be provided."
+msgstr ""
+
+#: hub/models.py:36
+msgid "Page Title"
+msgstr ""
+
+#: hub/models.py:43
+msgid "Page"
+msgstr ""
+
+#: hub/models.py:44 templates/hub/_hub_base.html:48
+msgid "Pages"
+msgstr ""
+
+#: hub/models.py:75
+msgid "Section Title"
+msgstr ""
+
+#: hub/models.py:77
+msgid "Section Title Draft"
+msgstr ""
+
+#: hub/models.py:93
+msgid "Section"
+msgstr ""
+
+#: hub/models.py:94
+msgid "Sections"
+msgstr ""
+
+#: hub/models.py:136 hub/models.py:186
+msgid "Content"
+msgstr ""
+
+#: hub/models.py:137
+msgid "Contents"
+msgstr ""
+
+#: hub/models.py:187
+msgid "Content Draft"
+msgstr ""
+
+#: locations/models.py:25
+msgid "Division Title"
+msgstr ""
+
+#: locations/models.py:34 locations/models.py:57
+msgid "Division"
+msgstr ""
+
+#: locations/models.py:35
+msgid "Divisions"
+msgstr ""
+
+#: locations/models.py:59
+msgid "Branch Name"
+msgstr ""
+
+#: locations/models.py:61
+msgid "Address"
+msgstr ""
+
+#: locations/models.py:62
+msgid "Postcode"
+msgstr ""
+
+#: locations/models.py:69
+msgid "Branch Chair"
+msgstr ""
+
+#: locations/models.py:77
+msgid "Parish Priest"
+msgstr ""
+
+#: locations/models.py:79
+msgid "URL"
+msgstr ""
+
+#: locations/models.py:86 locations/models.py:123 locations/models.py:141
+msgid "Branch"
+msgstr ""
+
+#: locations/models.py:87
+msgid "Branches"
+msgstr ""
+
+#: locations/models.py:106
+msgid "First Name"
+msgstr ""
+
+#: locations/models.py:107
+msgid "Last Name"
+msgstr ""
+
+#: locations/models.py:110
+msgid "Person"
+msgstr ""
+
+#: locations/models.py:111
+msgid "People"
+msgstr ""
+
+#: locations/models.py:125
+msgid "Phone Number"
+msgstr ""
+
+#: locations/models.py:128
+msgid "Phone"
+msgstr ""
+
+#: locations/models.py:129
+msgid "Phones"
+msgstr ""
+
+#: locations/models.py:143
+msgid "Email Address"
+msgstr ""
+
+#: locations/models.py:146
+msgid "Email"
+msgstr ""
+
+#: locations/models.py:147
+msgid "Emails"
+msgstr ""
+
+#: templates/account/email/base_message.txt:1
+#, python-format
+msgid "Hello from %(site_name)s!"
+msgstr ""
+
+#: templates/account/email/base_message.txt:5
+#, python-format
+msgid ""
+"Thank you for using %(site_name)s!\n"
+"%(site_domain)s"
+msgstr ""
+
+#: templates/account/email/email_confirmation_message.txt:5
+#, python-format
+msgid ""
+"You're receiving this email because user %(user_display)s has given your "
+"email address to register an account on %(site_domain)s."
+msgstr ""
+
+#: templates/account/email/email_confirmation_message.txt:7
+msgid ""
+"Your email verification code is listed below. Please enter it in your open "
+"browser window."
+msgstr ""
+
+#: templates/account/email/email_confirmation_message.txt:9
+#, python-format
+msgid "To confirm this is correct, go to %(activate_url)s"
+msgstr ""
+
+#: templates/account/email/email_confirmation_subject.txt:3
+msgid "Please Confirm Your Email Address"
+msgstr ""
+
+#: templates/account/email_confirm.html:6
+#: templates/account/email_confirm.html:10
+msgid "Confirm Email Address"
+msgstr ""
+
+#: templates/account/email_confirm.html:16
+#, python-format
+msgid ""
+"Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an email "
+"address for user %(user_display)s."
+msgstr ""
+
+#: templates/account/email_confirm.html:28
+#, python-format
+msgid ""
+"Unable to confirm %(email)s because it is already confirmed by a different "
+"account."
+msgstr ""
+
+#: templates/account/email_confirm.html:34
+#, python-format
+msgid ""
+"This email confirmation link expired or is invalid. Please <a "
+"href=\"%(email_url)s\">issue a new email confirmation request</a>."
+msgstr ""
+
+#: templates/account/password_change.html:33
+#: templates/account/password_change.html:37
+#: templates/account/password_change.html:46
+#: templates/account/password_reset_from_key.html:44
+#: templates/account/password_reset_from_key.html:52
+#: templates/account/password_reset_from_key.html:66
+#: templates/account/password_reset_from_key_done.html:20
+#: templates/account/password_reset_from_key_done.html:24
+msgid "Change Password"
+msgstr ""
+
+#: templates/account/password_change.html:47
+msgid "Forgot Password?"
+msgstr ""
+
+#: templates/account/password_reset.html:37
+#: templates/account/password_reset.html:41
+#: templates/account/password_reset_done.html:26
+#: templates/account/password_reset_done.html:30
+msgid "Password Reset"
+msgstr ""
+
+#: templates/account/password_reset.html:48
+msgid ""
+"Forgotten your password? Enter your email address below, and we'll send you "
+"an email allowing you to reset it."
+msgstr ""
+
+#: templates/account/password_reset.html:58
+#: templates/account/password_reset_done.html:43
+msgid "Reset My Password"
+msgstr ""
+
+#: templates/account/password_reset.html:63
+msgid "Please contact us if you have any trouble resetting your password."
+msgstr ""
+
+#: templates/account/password_reset_done.html:37
+msgid ""
+"We have emailed you. If you have not received it, please check your spam "
+"folder. Otherwise, contact us if you do not receive it in a few minutes."
+msgstr ""
+
+#: templates/account/password_reset_from_key.html:50
+msgid "Bad Token"
+msgstr ""
+
+#: templates/account/password_reset_from_key.html:59
+#, python-format
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used. Please request a <a href=\"%(passwd_reset_url)s\">new password reset</"
+"a>."
+msgstr ""
+
+#: templates/account/password_reset_from_key_done.html:25
+msgid "Your password has been changed successfully."
+msgstr ""
+
+#: templates/admin/base_site.html:6
+msgid "Return to site"
+msgstr ""
+
+#: templates/hub/_hub_base.html:10
+msgid "UWC Admin"
+msgstr ""
+
+#: templates/hub/_hub_base.html:28 templates/pages/_pages_base.html:24
+msgid "The Ukrainian"
+msgstr ""
+
+#: templates/hub/_hub_base.html:29 templates/pages/_pages_base.html:25
+msgid "Welcome"
+msgstr ""
+
+#: templates/hub/_hub_base.html:30 templates/pages/_pages_base.html:26
+msgid "Centre"
+msgstr ""
+
+#: templates/hub/_hub_base.html:41 templates/hub/_hub_base.html:146
+msgid "Offcanvas"
+msgstr ""
+
+#: templates/hub/_hub_base.html:45
+msgid "Dashboard"
+msgstr ""
+
+#: templates/hub/_hub_base.html:53 templates/hub/_hub_base.html:56
+msgid "Locations"
+msgstr ""
+
+#: templates/hub/_hub_base.html:63
+msgid "Panel"
+msgstr ""
+
+#: templates/hub/_hub_base.html:74 templates/hub/_hub_base.html:76
+#: templates/pages/_pages_base.html:65 templates/pages/_pages_base.html:67
+msgid "Search"
+msgstr ""
+
+#: templates/hub/_hub_base.html:126
+msgid "Change password"
+msgstr ""
+
+#: templates/hub/_hub_base.html:132
+msgid "Log Out"
+msgstr ""
+
+#: templates/hub/manage/page/form.html:14
+#: templates/hub/manage/page/form.html:23
+msgid "Create a new Page"
+msgstr ""
+
+#: templates/hub/manage/page/form.html:27
+msgid "Page info"
+msgstr ""
+
+#: templates/hub/manage/page/form.html:63
+msgid "Save page"
+msgstr ""
+
+#: templates/hub/manage/page/list.html:12
+#: templates/hub/manage/page/list.html:15
+msgid "All pages"
+msgstr ""
+
+#: templates/hub/manage/page/list.html:22
+msgid "Edit page"
+msgstr ""
+
+#: templates/hub/manage/page/list.html:26
+msgid "Delete page"
+msgstr ""
+
+#: templates/hub/manage/page/list.html:32
+#: templates/hub/manage/section/content_list.html:103
+msgid "View sections"
+msgstr ""
+
+#: templates/hub/manage/page/list.html:34
+#: templates/hub/manage/section/content_list.html:105
+msgid "Edit sections"
+msgstr ""
+
+#: templates/hub/manage/page/list.html:43
+msgid "View contents"
+msgstr ""
+
+#: templates/hub/manage/page/list.html:45
+msgid "Manage contents"
+msgstr ""
+
+#: templates/hub/manage/page/list.html:62
+msgid "Create new page"
+msgstr ""
+
+#: templates/locations/manage/division/list.html:13
+msgid "Create Division"
+msgstr ""
+
+#: templates/locations/manage/division/list.html:50
+msgid "Edit"
+msgstr ""
+
+#: templates/locations/manage/division/list.html:53
+msgid "Delete"
+msgstr ""
+
+#: templates/pages/_pages_base.html:9
+msgid "Ukrainian Welcome Centre"
+msgstr ""
+
+#: templates/pages/_pages_base.html:38
+msgid "Who we are"
+msgstr ""
+
+#: templates/pages/_pages_base.html:42
+msgid "About Us"
+msgstr ""
+
+#: templates/pages/_pages_base.html:52
+msgid "Home"
+msgstr ""
+
+#: templates/pages/_pages_base.html:106
+msgid "Log In"
+msgstr ""

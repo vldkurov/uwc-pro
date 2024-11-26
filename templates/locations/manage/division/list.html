@@ -1,0 +1,62 @@
+{% extends 'hub/_hub_base.html' %}
+{% load i18n %}
+
+{% block title %}Locations{% endblock title %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2>Divisions</h2>
+
+        <!-- Кнопка "Создать" -->
+        <div class="d-flex justify-content-end mb-3">
+            <a href="{% url 'locations:division_create' %}" class="btn btn-outline-primary">
+                {% trans "Create Division" %}
+            </a>
+        </div>
+
+        <!-- Tab navigation -->
+        <ul class="nav nav-tabs" id="divisionTabs" role="tablist">
+            {% for division in division_list %}
+                <li class="nav-item" role="presentation">
+                    <a
+                            class="nav-link {% if request.resolver_match.kwargs.slug == division.slug %}active link-primary{% else %}link-secondary{% endif %}"
+                            id="tab-{{ division.id }}"
+                            href="{% url 'locations:division_list' slug=division.slug %}"
+                            role="tab"
+                            aria-controls="content-{{ division.id }}"
+                            aria-selected="{% if request.resolver_match.kwargs.slug == division.slug %}true{% else %}false{% endif %}"
+                    >
+                        {{ division.title }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        {#        <!-- Tab content -->#}
+        <div class="tab-content mt-3" id="divisionTabsContent">
+            {% for division in division_list %}
+                <div
+                        class="tab-pane fade {% if request.resolver_match.kwargs.slug == division.slug %}show active{% endif %}"
+                        id="content-{{ division.id }}"
+                        role="tabpanel"
+                        aria-labelledby="tab-{{ division.id }}"
+                >
+                    <h4>{{ division.title }}</h4>
+                    <p>Content for {{ division.title }} will go here.</p>
+
+                    <!-- Кнопки "Редактировать" и "Удалить" -->
+                    <div class="d-flex justify-content-end mt-3">
+                        <a href="{% url 'locations:division_edit' slug=division.slug %}" class="btn btn-outline-warning me-2">
+                            {% trans "Edit" %}
+                        </a>
+                        <a href="{% url 'locations:division_delete' slug=division.slug %}" class="btn btn-outline-danger">
+                            {% trans "Delete" %}
+                        </a>
+                    </div>
+
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock %}
