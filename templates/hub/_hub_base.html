@@ -57,8 +57,8 @@
                     {% endif %}
                 </li>
                 {% if request.user.is_authenticated %}
-                    {% if request.user.is_superuser or request.user.role == 'OWR' %}
-                        {#                    {% if request.user.is_superuser %}#}
+{#                    {% if request.user.is_superuser or request.user.role == 'OWR' %}#}
+                                            {% if request.user.is_superuser %}
                         <li class="nav-item">
                             <a class="nav-link" href="/{{ admin_path }}/" aria-label="Panel">{% trans 'Panel' %}</a>
                         </li>
