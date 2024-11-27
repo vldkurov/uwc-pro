@@ -120,10 +120,14 @@ WSGI_APPLICATION = "django_project.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     "default": env.dj_db_url(
+#         "DATABASE_URL", default="postgres://postgres:postgres@db/postgres"
+#     ),
+# }
+
 DATABASES = {
-    "default": env.dj_db_url(
-        "DATABASE_URL", default="postgres://postgres:postgres@db/postgres"
-    ),
+    "default": env.dj_db_url("DATABASE_URL", conn_max_age=600),
 }
 
 # Password validation

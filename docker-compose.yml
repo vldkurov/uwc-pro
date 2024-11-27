@@ -18,6 +18,7 @@ services:
       - "DJANGO_SESSION_COOKIE_SECURE=False"
       - "DJANGO_CSRF_COOKIE_SECURE=False"
       - "X_FRAME_OPTIONS=DENY"
+      - "DATABASE_URL=postgres://postgres:postgres@db/postgres"
   db:
     image: postgres:16
     volumes:
