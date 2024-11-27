@@ -20,7 +20,7 @@ class TrackUserMixin(ModelFormMixin, View):
         return super().form_valid(form)
 
 
-class DivisionMixin(LoginRequiredMixin):
+class DivisionMixin(LoginRequiredMixin, PermissionRequiredMixin):
     model = Division
     success_url = reverse_lazy("locations:division_redirect")
     login_url = "account_login"
