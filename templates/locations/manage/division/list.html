@@ -1,4 +1,4 @@
-{% extends 'hub/_hub_base.html' %}
+{% extends "hub/_hub_base.html" %}
 {% load i18n %}
 
 {% block title %}Locations{% endblock title %}
@@ -6,8 +6,7 @@
 {% block content %}
     <div class="container mt-4">
         <h2>Divisions</h2>
-
-        <!-- Кнопка "Создать" -->
+    
         <div class="d-flex justify-content-end mb-3">
             <a href="{% url 'locations:division_create' %}" class="btn btn-outline-primary">
                 {% trans "Create Division" %}
@@ -17,7 +16,7 @@
         <!-- Tab navigation -->
         <ul class="nav nav-tabs" id="divisionTabs" role="tablist">
             {% for division in division_list %}
-                <li class="nav-item" role="presentation">
+                <li data-id="{{ division.id }}" class="nav-item" role="presentation">
                     <a
                             class="nav-link {% if request.resolver_match.kwargs.slug == division.slug %}active link-primary{% else %}link-secondary{% endif %}"
                             id="tab-{{ division.id }}"
@@ -46,10 +45,12 @@
 
                     <!-- Кнопки "Редактировать" и "Удалить" -->
                     <div class="d-flex justify-content-end mt-3">
-                        <a href="{% url 'locations:division_edit' slug=division.slug %}" class="btn btn-outline-warning me-2">
+                        <a href="{% url 'locations:division_edit' slug=division.slug %}"
+                           class="btn btn-outline-warning me-2">
                             {% trans "Edit" %}
                         </a>
-                        <a href="{% url 'locations:division_delete' slug=division.slug %}" class="btn btn-outline-danger">
+                        <a href="{% url 'locations:division_delete' slug=division.slug %}"
+                           class="btn btn-outline-danger">
                             {% trans "Delete" %}
                         </a>
                     </div>
@@ -57,6 +58,50 @@
                 </div>
             {% endfor %}
         </div>
-
     </div>
+{% endblock %}
+{% block include_js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5sortable/0.14.0/html5sortable.min.js"
+            integrity="sha512-B/yiMlkxhtHzzJxPa5kNOO/+8cq0Fj4ndMUxVo2kGunCCH8g8XrPnzqg+sOon3hQ8RaEY2YytH+PIseTtfstjg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock include_js %}
+{% block domready %}
+    let options = {
+    method: 'POST',
+    mode: 'same-origin',
+    headers: {
+    'Content-Type': 'application/json',
+    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+    }
+    };
+
+    const divisionOrderUrl = '{% url 'locations:division_order' %}';
+
+    function handleFetchResponse(response) {
+    if (response.ok) {
+    return response.json();
+    } else {
+    return response.json().then(data => {
+    alert(data.error || "An error occurred. Please try again.");
+    return Promise.reject(data.error);
+    });
+    }
+    }
+
+    sortable('#divisionTabs', {forcePlaceholderSize: true, placeholderClass: 'placeholder'})[0]
+    .addEventListener('sortupdate', (evt) => {
+    const divisionsOrder = {};
+    document.querySelectorAll('#divisionTabs li').forEach((division, index) => {
+    const divisionId = division.dataset.id;
+    if (divisionId && divisionId !== 'undefined') {
+    divisionsOrder[divisionId] = index;
+    }
+    });
+
+    options.body = JSON.stringify(divisionsOrder);
+    fetch(divisionOrderUrl, options)
+    .then(handleFetchResponse)
+    .then(data => console.log("Division order saved successfully"))
+    .catch(error => console.error(error));
+    });
 {% endblock %}

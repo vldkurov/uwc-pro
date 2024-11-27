@@ -1,10 +1,12 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, ModelFormMixin
+from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 
 from locations.models import Division
 
@@ -60,6 +62,29 @@ class DivisionUpdateView(DivisionMixin, TrackUserMixin, UpdateView):
 
 class DivisionDeleteView(DivisionMixin, DeleteView):
     template_name = "locations/manage/division/delete.html"
+
+
+class DivisionOrderView(
+    CsrfExemptMixin,
+    JsonRequestResponseMixin,
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    View,
+):
+    permission_required = "hub.change_division_order"
+    login_url = "account_login"
+    redirect_field_name = "next"
+
+    def handle_no_permission(self):
+        return JsonResponse(
+            {"error": "You do not have permission to change the Division order."},
+            status=403,
+        )
+
+    def post(self, request):
+        for division_id, order in self.request_json.items():
+            Division.objects.filter(id=division_id).update(order=order)
+        return self.render_json_response({"saved": "OK"})
 
 
 class BranchDetailView(DetailView):

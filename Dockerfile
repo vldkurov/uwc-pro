@@ -11,9 +11,11 @@ ENV PYTHONPATH=/uwc
 # Set work directory
 WORKDIR /uwc
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y gettext
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+# Install system dependencies, including PostgreSQL client
+RUN apt-get update && apt-get install -y \
+    gettext \
+    postgresql-client && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install dependencies
 COPY ./requirements.txt .

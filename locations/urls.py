@@ -13,4 +13,5 @@ urlpatterns = [
         "<slug:slug>/delete", views.DivisionDeleteView.as_view(), name="division_delete"
     ),
     path("<slug:slug>/", views.BranchDetailView.as_view(), name="branch_detail"),
+    path("division/order/", views.DivisionOrderView.as_view(), name="division_order"),
 ]
