@@ -33,6 +33,9 @@ class Division(models.Model):
         ordering = ["order"]
         verbose_name = _("Division")
         verbose_name_plural = _("Divisions")
+        permissions = [
+            ("change_division_order", "Can change division order"),
+        ]
 
     def __str__(self):
         return self.title

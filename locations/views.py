@@ -39,6 +39,7 @@ class DivisionRedirectView(LoginRequiredMixin, View):
 class DivisionListView(DivisionMixin, ListView):
     context_object_name = "division_list"
     template_name = "locations/manage/division/list.html"
+    permission_required = "locations.view_division"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -53,27 +54,27 @@ class DivisionListView(DivisionMixin, ListView):
 class DivisionCreateView(DivisionMixin, TrackUserMixin, CreateView):
     fields = ["title_en", "title_uk"]
     template_name = "locations/manage/division/form.html"
+    permission_required = "locations.add_division"
 
 
 class DivisionUpdateView(DivisionMixin, TrackUserMixin, UpdateView):
     fields = ["title_en", "title_uk"]
     template_name = "locations/manage/division/form.html"
+    permission_required = "locations.change_division"
 
 
 class DivisionDeleteView(DivisionMixin, DeleteView):
     template_name = "locations/manage/division/delete.html"
+    permission_required = "locations.delete_division"
 
 
 class DivisionOrderView(
     CsrfExemptMixin,
     JsonRequestResponseMixin,
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
+    DivisionMixin,
     View,
 ):
-    permission_required = "hub.change_division_order"
-    login_url = "account_login"
-    redirect_field_name = "next"
+    permission_required = "locations.change_division_order"
 
     def handle_no_permission(self):
         return JsonResponse(
