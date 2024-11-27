@@ -1,0 +1,62 @@
+[
+{
+    "model": "locations.division",
+    "pk": "288914ce-552a-4683-bf7e-4851e19fe8dd",
+    "fields": {
+        "created_by": "e695368c-b961-49bf-93f1-751b66a5beb5",
+        "updated_by": null,
+        "title": "Catholic Church",
+        "title_en": "Catholic Church",
+        "title_uk": "Католицька Церква",
+        "slug": "catholic-church",
+        "order": 0,
+        "created": "2024-11-27T08:43:42.939Z",
+        "updated": "2024-11-27T08:43:42.939Z"
+    }
+},
+{
+    "model": "locations.division",
+    "pk": "36fc4661-66fd-465f-a9b5-b81c416905e9",
+    "fields": {
+        "created_by": null,
+        "updated_by": "e695368c-b961-49bf-93f1-751b66a5beb5",
+        "title": "The Association of Ukrainians in Great Britain",
+        "title_en": "The Association of Ukrainians in Great Britain",
+        "title_uk": "Об'єднання українців у Великій Британії",
+        "slug": "the-association-of-ukrainians-in-great-britain",
+        "order": 1,
+        "created": "2024-11-24T19:18:15.998Z",
+        "updated": "2024-11-24T19:18:15.998Z"
+    }
+},
+{
+    "model": "locations.division",
+    "pk": "a84a7731-bdae-4285-b940-287f602b97d3",
+    "fields": {
+        "created_by": "e695368c-b961-49bf-93f1-751b66a5beb5",
+        "updated_by": null,
+        "title": "Orthodox Church",
+        "title_en": "Orthodox Church",
+        "title_uk": "Православна Церква",
+        "slug": "orthodox-church",
+        "order": 2,
+        "created": "2024-11-27T08:43:09.074Z",
+        "updated": "2024-11-27T08:43:09.074Z"
+    }
+},
+{
+    "model": "locations.division",
+    "pk": "b62a65ed-72e4-4d40-9d96-1d992c624965",
+    "fields": {
+        "created_by": null,
+        "updated_by": "e695368c-b961-49bf-93f1-751b66a5beb5",
+        "title": "Ukrainian Hubs and Help Centres",
+        "title_en": "Ukrainian Hubs and Help Centres",
+        "title_uk": "Українські хаби та довідкові центри",
+        "slug": "ukrainian-hubs-and-help-centres",
+        "order": 3,
+        "created": "2024-11-24T19:16:55.913Z",
+        "updated": "2024-11-24T19:16:55.913Z"
+    }
+}
+]
