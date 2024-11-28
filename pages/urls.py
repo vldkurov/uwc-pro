@@ -1,8 +1,14 @@
 from django.urls import path
 
-from .views import HomePageView, AboutPageView
+from . import views
 
 urlpatterns = [
-    path("", HomePageView.as_view(), name="home"),
-    path("<slug:slug>/", AboutPageView.as_view(), name="about"),
+    path("", views.HomePageView.as_view(), name="home"),
+    path("about/<slug:slug>/", views.AboutPageView.as_view(), name="about"),
+    path(
+        "locations/",
+        views.RedirectToFirstDivisionView.as_view(),
+        name="locations_redirect",
+    ),
+    path("locations/<slug:slug>/", views.LocationsPageView.as_view(), name="locations"),
 ]

@@ -1,0 +1,35 @@
+{% extends "pages/_pages_base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Locations'%}{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Locations</h1>
+    <div class="row">
+        <div class="col-md-3">
+            
+            <ul class="nav flex-column nav-pills" id="divisionTabs" role="tablist">
+                {% for division in divisions %}
+                    <li class="nav-item">
+                        <a
+                            class="nav-link {% if current_division == division %}active{% endif %}"
+                            id="tab-{{ division.id }}"
+                            href="{% url 'locations' slug=division.slug %}"
+                        >
+                            {{ division.title }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-9">
+            
+            <div class="tab-content">
+                <h2>{{ current_division.title }}</h2>
+                <p>Content for {{ current_division.title }} will go here.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
