@@ -24,10 +24,13 @@
             {{ form|crispy }}
             <div class="d-flex align-items-center">
                 <p><input type="submit" value="Save Division" class="btn btn-outline-success me-2"></p>
-                <p><a href="{% url 'locations:division_list' slug=object.slug %}"
-                      class="btn btn-outline-secondary">Cancel</a>
-                </p>
-
+                {% if object and object.slug %}
+                    <p><a href="{% url 'locations:division_list' slug=object.slug %}"
+                          class="btn btn-outline-secondary">Cancel</a></p>
+                {% else %}
+                    <p><a href="{% url 'locations:division_create' %}"
+                          class="btn btn-outline-secondary">Cancel</a></p>
+                {% endif %}
             </div>
         </form>
     </div>
