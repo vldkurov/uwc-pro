@@ -18,13 +18,13 @@ class PersonAdmin(admin.ModelAdmin):
 
 @admin.register(Phone)
 class PhoneAdmin(admin.ModelAdmin):
-    list_display = ("number", "location")
+    list_display = ("number", "branch")
     search_fields = ("number",)
 
 
 @admin.register(Email)
 class EmailAdmin(admin.ModelAdmin):
-    list_display = ("email", "location")
+    list_display = ("email", "branch")
     search_fields = ("email",)
 
 
