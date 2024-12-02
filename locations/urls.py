@@ -12,6 +12,30 @@ urlpatterns = [
     path(
         "<slug:slug>/delete", views.DivisionDeleteView.as_view(), name="division_delete"
     ),
-    path("<slug:slug>/", views.BranchDetailView.as_view(), name="branch_detail"),
     path("division/order/", views.DivisionOrderView.as_view(), name="division_order"),
+    path(
+        "<slug:division_slug>/branch/create/",
+        views.BranchCreateUpdateView.as_view(),
+        name="division_branch_create",
+    ),
+    path(
+        "<slug:division_slug>/branch/<slug:branch_slug>/",
+        views.BranchCreateUpdateView.as_view(),
+        name="division_branch_update",
+    ),
+    path(
+        "<slug:division_slug>/branch/<slug:branch_slug>/delete/",
+        views.BranchDeleteView.as_view(),
+        name="division_branch_delete",
+    ),
+    path(
+        "<slug:division_slug>/branch/<slug:branch_slug>/display/",
+        views.BranchDisplayView.as_view(),
+        name="division_branch_display",
+    ),
+    path(
+        "<slug:division_slug>/branch/<slug:branch_slug>/hide/",
+        views.BranchHideView.as_view(),
+        name="division_branch_hide",
+    ),
 ]

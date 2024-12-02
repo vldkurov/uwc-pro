@@ -1,0 +1,109 @@
+{% extends 'hub/_hub_base.html' %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
+
+{% load i18n %}
+{% load static %}
+{% block locations_css %}
+    <link rel="stylesheet" href="{% static 'css/locations.css' %}">
+{% endblock locations_css %}
+
+{% block title %}
+    {% if is_edit %}
+        Edit Branch
+    {% else %}
+        New Branch
+    {% endif %}
+{% endblock title %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-1">
+        <h1>
+            {% if is_edit %}
+                Edit Branch "{{ branch.title }}"
+            {% else %}
+                Add Branch
+            {% endif %}
+        </h1>
+        {% if branch.slug %}
+            <a
+                    href="{% url 'locations:division_branch_delete' division_slug=division.slug branch_slug=branch.slug %}"
+                    class="btn btn-outline-danger">
+                Delete
+            </a>
+        {% endif %}
+    </div>
+
+    <p><a href="{% url 'locations:division_list' slug=division.slug %}">Back to the list</a></p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div>
+            <h4>Branch Details</h4>
+            {% crispy branch_form %}
+        </div>
+
+        <div>
+            {% if is_religious %}
+                <h4>Parish Priest</h4>
+                {% crispy parish_priest_form %}
+            {% else %}
+                <h4>Branch Chair</h4>
+                {% crispy branch_chair_form %}
+            {% endif %}
+        </div>
+
+        <div>
+            <h4>Phone Numbers</h4>
+            <div id="phone-formset">
+                {{ phone_formset.management_form }}
+                {% for form in phone_formset %}
+                    <div class="form-row d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            {% crispy form %}
+                            {{ form.id }}
+                            {{ form.DELETE }}
+                        </div>
+                        <button type="button" class="remove-phone btn btn-link text-danger ms-2" title="Remove">
+                            <i class="bi bi-x-circle"></i>
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+            {#            <button type="button" id="add-phone" class="btn btn-link text-primary p-0" title="Add Phone">#}
+            {#                <i class="bi bi-plus-circle fs-6"></i>#}
+            {#            </button>#}
+        </div>
+
+        <div>
+            <h4>Emails</h4>
+            <div id="email-formset">
+                {{ email_formset.management_form }}
+                {% for form in email_formset %}
+                    <div class="form-row d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            {% crispy form %}
+                            {{ form.id }}
+                            {{ form.DELETE }}
+                        </div>
+                        <button type="button" class="remove-email btn btn-link text-danger ms-2" title="Remove">
+                            <i class="bi bi-x-circle"></i>
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+            {#            <button type="button" id="add-email" class="btn btn-link text-primary p-0" title="Add Email">#}
+            {#                <i class="bi bi-plus-circle fs-6"></i>#}
+            {#            </button>#}
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">
+            {% if is_edit %}
+                Save Changes
+            {% else %}
+                Create Branch
+            {% endif %}
+        </button>
+    </form>
+
+{% endblock content %}

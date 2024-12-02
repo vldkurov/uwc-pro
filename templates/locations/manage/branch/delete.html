@@ -1,0 +1,15 @@
+{% extends 'hub/_hub_base.html' %}
+
+{% block title %}Delete Branch{% endblock title %}
+
+{% block content %}
+    <h1>Delete location {{ object.title }}</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        <p>Are you sure you want to delete {{ object }}?</p>
+        <input type="submit" value="Confirm" class="btn btn-danger">
+        <a href="{% url 'locations:division_list' slug=object.division.slug %}" class="btn btn-secondary">
+            Cancel
+        </a>
+    </form>
+{% endblock content %}

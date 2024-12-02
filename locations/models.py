@@ -1,10 +1,10 @@
 from uuid import uuid4
 
 from django.db import models
-from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from locations.fields import OrderField
+from locations.validators import validate_uk_phone_number, format_uk_phone_number
 
 
 class Division(models.Model):
@@ -59,21 +59,21 @@ class Branch(models.Model):
         on_delete=models.CASCADE,
         verbose_name=_("Division"),
     )
-    title = models.CharField(_("Branch Name"), max_length=255, blank=False, null=False)
+    title = models.CharField(_("Branch Name"), max_length=255, blank=True, null=True)
     slug = models.SlugField(max_length=255, unique=True)
-    address = models.TextField(_("Address"), blank=True, null=True)
+    address = models.CharField(_("Address"), max_length=255, blank=True, null=True)
     postcode = models.CharField(_("Postcode"), max_length=20, blank=True, null=True)
-    branch_chair = models.ForeignKey(
+    branch_chair = models.OneToOneField(
         "locations.Person",
-        related_name="branch_chairs",
+        related_name="branch_chair",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         verbose_name=_("Branch Chair"),
     )
-    parish_priest = models.ForeignKey(
+    parish_priest = models.OneToOneField(
         "locations.Person",
-        related_name="parish_priests",
+        related_name="parish_priest",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -88,6 +88,10 @@ class Branch(models.Model):
     class Meta:
         verbose_name = _("Branch")
         verbose_name_plural = _("Branches")
+        permissions = [
+            ("display", "Can display"),
+            ("hide", "Can hide"),
+        ]
 
     def display(self):
         self.status = Branch.Status.DISPLAY
@@ -100,14 +104,13 @@ class Branch(models.Model):
     def __str__(self):
         return self.title
 
-    def get_absolute_url(self):
-        return reverse("locations:branch_detail", kwargs={"slug": self.slug})
-
 
 class Person(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    first_name = models.CharField(_("First Name"), max_length=100)
-    last_name = models.CharField(_("Last Name"), max_length=100)
+    first_name = models.CharField(
+        _("First Name"), max_length=100, blank=True, null=True
+    )
+    last_name = models.CharField(_("Last Name"), max_length=100, blank=True, null=True)
 
     class Meta:
         verbose_name = _("Person")
@@ -119,17 +122,28 @@ class Person(models.Model):
 
 class Phone(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    location = models.ForeignKey(
+    branch = models.ForeignKey(
         "locations.Branch",
         related_name="phones",
         on_delete=models.CASCADE,
         verbose_name=_("Branch"),
     )
-    number = models.CharField(_("Phone Number"), max_length=20)
+    number = models.CharField(
+        _("Phone Number"),
+        max_length=20,
+        blank=True,
+        null=True,
+        validators=[validate_uk_phone_number],
+    )
 
     class Meta:
         verbose_name = _("Phone")
         verbose_name_plural = _("Phones")
+
+    def save(self, *args, **kwargs):
+        if self.number:
+            self.number = format_uk_phone_number(self.number)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.number
@@ -137,13 +151,13 @@ class Phone(models.Model):
 
 class Email(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    location = models.ForeignKey(
+    branch = models.ForeignKey(
         "locations.Branch",
         related_name="emails",
         on_delete=models.CASCADE,
         verbose_name=_("Branch"),
     )
-    email = models.EmailField(_("Email Address"))
+    email = models.EmailField(_("Email Address"), blank=True, null=True)
 
     class Meta:
         verbose_name = _("Email")
