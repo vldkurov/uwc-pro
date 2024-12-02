@@ -18,11 +18,17 @@
         {% endif %}
     </h1>
     <div>
-    <h2>Division Info</h2>
+        <h2>Division Info</h2>
         <form action="" method="post">
             {% csrf_token %}
             {{ form|crispy }}
-            <p><input type="submit" value="Save Division" class="btn btn-outline-success"></p>
+            <div class="d-flex align-items-center">
+                <p><input type="submit" value="Save Division" class="btn btn-outline-success me-2"></p>
+                <p><a href="{% url 'locations:division_list' slug=object.slug %}"
+                      class="btn btn-outline-secondary">Cancel</a>
+                </p>
+
+            </div>
         </form>
     </div>
 {% endblock content %}
