@@ -6,5 +6,5 @@ def divisions_context(request):
 
     return {
         "division": first_division,
-        "has_divisions": first_division is not None,  # Флаг наличия объектов Division
+        "has_divisions": first_division is not None,
     }
