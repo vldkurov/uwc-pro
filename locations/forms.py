@@ -5,7 +5,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout
 from django import forms
 from django.core.exceptions import ValidationError
-from django.forms import inlineformset_factory
+from django.forms import inlineformset_factory, Select
 
 from locations.models import Branch, Phone, Email, Person
 from locations.validators import format_uk_phone_number
@@ -14,7 +14,19 @@ from locations.validators import format_uk_phone_number
 class BranchForm(forms.ModelForm):
     class Meta:
         model = Branch
-        fields = ["title_en", "title_uk", "address", "postcode", "url"]
+        fields = [
+            "title_en",
+            "title_uk",
+            "address",
+            "postcode",
+            "url",
+            "branch_chair",
+            "parish_priest",
+        ]
+        widgets = {
+            "branch_chair": Select(attrs={"class": "form-select py-3"}),
+            "parish_priest": Select(attrs={"class": "form-select py-3"}),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -24,6 +36,11 @@ class BranchForm(forms.ModelForm):
         self.fields["address"].label = "Branch Address"
         self.fields["postcode"].label = "Postal Code"
         self.fields["url"].label = "Website URL"
+
+        self.fields["branch_chair"].label = "Branch Chair"
+        self.fields["branch_chair"].queryset = Person.objects.all()
+        self.fields["parish_priest"].label = "Parish Priest"
+        self.fields["parish_priest"].queryset = Person.objects.all()
 
         self.helper = FormHelper()
         self.helper.form_tag = False

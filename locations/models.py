@@ -63,7 +63,7 @@ class Branch(models.Model):
     slug = models.SlugField(max_length=255, unique=True)
     address = models.CharField(_("Address"), max_length=255, blank=True, null=True)
     postcode = models.CharField(_("Postcode"), max_length=20, blank=True, null=True)
-    branch_chair = models.OneToOneField(
+    branch_chair = models.ForeignKey(
         "locations.Person",
         related_name="branch_chair",
         on_delete=models.SET_NULL,
@@ -71,7 +71,7 @@ class Branch(models.Model):
         blank=True,
         verbose_name=_("Branch Chair"),
     )
-    parish_priest = models.OneToOneField(
+    parish_priest = models.ForeignKey(
         "locations.Person",
         related_name="parish_priest",
         on_delete=models.SET_NULL,

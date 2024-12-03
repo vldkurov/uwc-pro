@@ -1,4 +1,5 @@
 import logging
+from itertools import groupby
 
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -7,13 +8,13 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.utils import translation
-from django.views.generic import ListView
-from django.views.generic import View
+from django.utils.translation import get_language
+from django.views.generic import ListView, View
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, ModelFormMixin
 
 from .forms import BranchForm, PersonForm, PhoneFormSet, EmailFormSet
-from .models import Branch, Division
+from .models import Branch, Division, Person
 
 logger = logging.getLogger(__name__)
 
@@ -163,20 +164,12 @@ class BranchCreateUpdateView(DivisionMixin, TemplateResponseMixin, View):
 
     def get(self, request, *args, **kwargs):
         branch_form = BranchForm(instance=self.branch)
-        branch_chair_form = self.get_person_form(
-            person=self.branch.branch_chair, prefix="branch_chair"
-        )
-        parish_priest_form = self.get_person_form(
-            person=self.branch.parish_priest, prefix="parish_priest"
-        )
         phone_formset = PhoneFormSet(instance=self.branch)
         email_formset = EmailFormSet(instance=self.branch)
 
         return self.render_to_response(
             {
                 "branch_form": branch_form,
-                "branch_chair_form": branch_chair_form,
-                "parish_priest_form": parish_priest_form,
                 "phone_formset": phone_formset,
                 "email_formset": email_formset,
                 "division": self.division,
@@ -188,12 +181,6 @@ class BranchCreateUpdateView(DivisionMixin, TemplateResponseMixin, View):
 
     def post(self, request, *args, **kwargs):
         branch_form = BranchForm(request.POST, instance=self.branch)
-        branch_chair_form = self.get_person_form(
-            person=self.branch.branch_chair, prefix="branch_chair", data=request.POST
-        )
-        parish_priest_form = self.get_person_form(
-            person=self.branch.parish_priest, prefix="parish_priest", data=request.POST
-        )
         phone_formset = PhoneFormSet(request.POST, instance=self.branch)
         email_formset = EmailFormSet(request.POST, instance=self.branch)
 
@@ -203,16 +190,6 @@ class BranchCreateUpdateView(DivisionMixin, TemplateResponseMixin, View):
             is_valid = False
             print("Branch form validation failed:")
             print(branch_form.errors)
-
-        if not branch_chair_form.is_valid():
-            is_valid = False
-            print("Branch Chair form validation failed:")
-            print(branch_chair_form.errors)
-
-        if not parish_priest_form.is_valid():
-            is_valid = False
-            print("Parish Priest form validation failed:")
-            print(parish_priest_form.errors)
 
         if not phone_formset.is_valid():
             is_valid = False
@@ -228,25 +205,6 @@ class BranchCreateUpdateView(DivisionMixin, TemplateResponseMixin, View):
             branch = branch_form.save(commit=False)
             branch.division = self.division
 
-            if any(branch_chair_form.cleaned_data.values()):
-                branch_chair = branch_chair_form.save()
-                branch.branch_chair = branch_chair
-            else:
-                if self.branch.branch_chair:
-                    branch.branch_chair.delete()
-                branch.branch_chair = None
-
-            parish_priest = parish_priest_form.save()
-            branch.parish_priest = parish_priest
-
-            if any(parish_priest_form.cleaned_data.values()):
-                parish_priest = parish_priest_form.save()
-                branch.parish_priest = parish_priest
-            else:
-                if self.branch.parish_priest:
-                    branch.parish_priest.delete()
-                branch.parish_priest = None
-
             branch.save()
             phone_formset.save()
             email_formset.save()
@@ -256,8 +214,6 @@ class BranchCreateUpdateView(DivisionMixin, TemplateResponseMixin, View):
         return self.render_to_response(
             {
                 "branch_form": branch_form,
-                "branch_chair_form": branch_chair_form,
-                "parish_priest_form": parish_priest_form,
                 "phone_formset": phone_formset,
                 "email_formset": email_formset,
                 "division": self.division,
@@ -314,3 +270,55 @@ class BranchHideView(View):
         )
         branch.hide()
         return redirect("locations:division_list", slug=division_slug)
+
+
+class PersonListView(ListView):
+    model = Person
+    context_object_name = "persons"
+    template_name = "locations/manage/person/list.html"
+
+    def get_queryset(self):
+        language = get_language()
+        if language == "uk":
+            sort_field = "last_name_uk"
+        else:
+            sort_field = "last_name_en"
+
+        queryset = Person.objects.all().order_by(sort_field)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        queryset = self.get_queryset()
+
+        language = get_language()
+        sort_field = "last_name_uk" if language == "uk" else "last_name_en"
+
+        grouped = {}
+        for key, group in groupby(
+            queryset, key=lambda x: getattr(x, sort_field)[0].upper()
+        ):
+            grouped[key] = list(group)
+
+        context["grouped_persons"] = grouped
+        return context
+
+
+class PersonCreateView(CreateView):
+    model = Person
+    form_class = PersonForm
+    template_name = "locations/manage/person/form.html"
+    success_url = reverse_lazy("locations:division_redirect")
+
+
+class PersonUpdateView(UpdateView):
+    model = Person
+    form_class = PersonForm
+    template_name = "locations/manage/person/form.html"
+    success_url = reverse_lazy("locations:division_redirect")
+
+
+class PersonDeleteView(DeleteView):
+    model = Person
+    template_name = "locations/manage/person/delete.html"
+    success_url = reverse_lazy("locations:person_list")

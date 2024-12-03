@@ -34,7 +34,7 @@
         {% endif %}
     </div>
 
-    <p><a href="{% url 'locations:division_list' slug=division.slug %}">Back to the list</a></p>
+    <p><a href="{% url 'locations:division_list' slug=division.slug %}">{% trans 'Back to Division list' %}</a></p>
 
     <form method="post">
         {% csrf_token %}
@@ -44,14 +44,25 @@
             {% crispy branch_form %}
         </div>
 
+
         <div>
             {% if is_religious %}
-                <h4>Parish Priest</h4>
-                {% crispy parish_priest_form %}
+                <label for="id_parish_priest">Parish Priest</label>
+                {{ branch_form.parish_priest }}
             {% else %}
-                <h4>Branch Chair</h4>
-                {% crispy branch_chair_form %}
+                <label for="id_branch_chair">Branch Chair</label>
+                {{ branch_form.branch_chair }}
             {% endif %}
+            <p class="d-flex my-2">
+                <a href="{% url 'locations:person_list' %}"
+                   class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover me-2"
+                >{% trans 'List all' %}</a>
+                <a href="{% url 'locations:person_create' %}"
+                   class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                >
+                    {% trans 'Add New Person' %}
+                </a>
+            </p>
         </div>
 
         <div>

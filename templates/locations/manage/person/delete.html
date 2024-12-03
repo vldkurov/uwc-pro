@@ -1,0 +1,14 @@
+{% extends 'hub/_hub_base.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %}Delete Person{% endblock title %}
+
+{% block content %}
+    <h1>Delete person</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        <p>Are you sure you want to delete {{ person }}?</p>
+        <input type="submit" value="Confirm" class="btn btn-danger">
+        <a href="{% url 'locations:person_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+{% endblock content %}
