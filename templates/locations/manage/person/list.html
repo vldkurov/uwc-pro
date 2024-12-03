@@ -1,0 +1,40 @@
+{% extends 'hub/_hub_base.html' %}
+{% load i18n %}
+
+{% block title %}Alphabetical Index{% endblock title %}
+
+{% block content %}
+    <div>
+        <h2>{% trans "Alphabetical Index" %}</h2>
+
+        <p class="d-flex">
+            <a href="{% url 'locations:division_redirect' %}"
+               class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover me-2">{% trans 'Back to Division list' %}</a>
+            |
+            <a href="{% url 'locations:person_create' %}"
+               class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover ms-2"
+            >
+                {% trans 'Add New Person' %}
+            </a>
+        </p>
+
+        <ul class="list-unstyled">
+            {% for letter, persons in grouped_persons.items %}
+                <li>
+                    <h3>{{ letter }}</h3>
+                    <ul class="list-unstyled">
+                        {% for person in persons %}
+                            <li>
+                                <p>
+                                    <a href="{% url 'locations:person_edit' pk=person.id %}"
+                                       class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                                    >{{ person.last_name }}, {{ person.first_name }}</a>
+                                </p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock content %}

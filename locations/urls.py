@@ -5,6 +5,16 @@ from . import views
 app_name = "locations"
 
 urlpatterns = [
+    path("person/", views.PersonListView.as_view(), name="person_list"),
+    path("person/add/", views.PersonCreateView.as_view(), name="person_create"),
+    path(
+        "person/<uuid:pk>/edit/", views.PersonUpdateView.as_view(), name="person_edit"
+    ),
+    path(
+        "person/<uuid:pk>/delete/",
+        views.PersonDeleteView.as_view(),
+        name="person_delete",
+    ),
     path("", views.DivisionRedirectView.as_view(), name="division_redirect"),
     path("<slug:slug>/", views.DivisionListView.as_view(), name="division_list"),
     path("create", views.DivisionCreateView.as_view(), name="division_create"),
