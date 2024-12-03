@@ -74,3 +74,4 @@ cython_debug/
 .idea/
 .git
 .gitignore
+data/

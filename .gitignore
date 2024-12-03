@@ -79,3 +79,5 @@ cython_debug/
 .idea/
 .DS_Store
 docker-compose-prod.yml
+data/
+populate/

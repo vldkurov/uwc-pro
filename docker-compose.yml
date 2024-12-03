@@ -8,6 +8,8 @@ services:
       - "8022:8000"
     depends_on:
       - db
+    env_file:
+      - .env
     environment:
       - "DJANGO_SECRET_KEY=phb2h2$$ibh5nv--r4nea0+eygyrr@s$$z@%9!a9k9jg2+!=135_"
       - "DJANGO_DEBUG=True"
@@ -19,6 +21,16 @@ services:
       - "DJANGO_CSRF_COOKIE_SECURE=False"
       - "X_FRAME_OPTIONS=DENY"
       - "DATABASE_URL=postgres://postgres:postgres@db/postgres"
+      - "GOOGLE_PROJECT_ID=uwc-client"
+      - "GOOGLE_PRIVATE_KEY_ID=a21bb1b9ee10d36a0e1e862e5d70cb3c32780159"
+      - 'GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC4BqAXDQvUz6qnh25eucgrngSltSAIZUriXQt75ek3fITz+q124p/4Nf8X+BAfVeDJ9ZS0fw9NhnBK20CgUcYtr18QtdYoQTjwFrBYYQXEs19WUSRG169r6Py5PZVpaWuqELtpmlSsgiDUyzGJBbgF+WBsehljJsKklsPFZU81MspjLu4U8mLwaCZA8PEeJNWduh2KALH7ojBxZS3zzWcYf1QOrtA2/naOM4K+XB0/AwRSTnrHQFedIdB+ZmFR25NJ/szTJQPFPHV7ynMIC0icrz8g/1fQAMmLUrTC38nbqmDkUz8QJgqsZ58G+d1vk9+CKs82aP63era8oB9Ml/YlAgMBAAECggEAA92abfbc3Bg4p32VeJvtHoLFP43cdxCu+q5QWBvuQuIfZi31Mt1z1Xec54NTI2AJxsmdLrrJ4YEEyYMYNRtCpHcInNs/p7zRq17D+YygMw+UMxtP6G+4xErdSYQyUp009m+U4D+uWP6qyI2JeYK16OTiJ6Uw9Ko9xc388sqRWAwIiZMHzJp/w8cHolwSnIgviC3Vc2EBuFeZqBOqwkdqvoWq+UuOPR17YAYgYvDg9kxm877waNLPr9TCcP9NfT/9jgwJwfm9mdkvdCiaOKefTDhHYLf9yt898NffCsbaqgkxBK/zMpLsA9XEyyXsI2+feDBNcZTjUly04tVNfusJSQKBgQD6vBdHfRlsyeZ0W8Fbttt4YvIh3wGSZV2XNcUWOPfXugrxR241K8+E0iyd9vJquYgcljyvT76D3m3jOgd02mZQMjcr7hB/E0fRis3u1gvfdNQEt+eiMquxDfVnAwcanlxaaFskIokYO2U0WIh9kDTfRj1cXj5Rpf97lEaG/KQq0wKBgQC74+sjQIQ4jCOWHYXvSz6w15kw37kflYbMne+mjeyNZZF9IQho1a4MG7OCRYEFnGiyZk1Fn1KfjsRdQhAclqvoVtUtebDM7DMgp3YPrUEADsTdPy8LfWdKzlo5yyWmhRxdaRHJ4LKoCsYMyfSLYbV8++CAAcJfWp50ZNAMzc7QJwKBgEINpRBXO4h2U/jZZ0HzFTRM1L7pke9wNsysBKTLEzfIsjNH/xeQ2BWEjO58bPaCtAHb7la86lKxGT/gPLCjDIsZ/4DaMYxYlvXz3DaMOwp+K5CmpiYLtUFqjPi7SnbPu0Kx9Ti6xGUW2J2GqUZy5Arh5S5dQYue8IQs1rue+NyzAoGBAKKfvyGf8dFP2m1P2GEp63T85ubafUzNCwOHn6m1JY2s36RCNxkl+aMZRuH2bpoAqs3epfsgz06zL1rYl0FnWBudLJ5TuadkuUwGJbWj66K1JceprHpxbDnfKVDkeA4NIGPpUTA+f+Paj1j6Y+NQCtnG2KVy4F3P/V4Y88phSCP5AoGBAJTPAlTUIi+Ay9UKygT/IGSoS1/c/fH24vlo4Ozl2H5nE1vJ+z5Njw4matZlLM+YdrcUTmb/d/o8P5DhIlk9zTxcU50t0M8b8MmhLs+lUzkxp6n3IIhAeXcZ8hQVNIArjGg354zPGxsLWVfjR54nFDaeS3JBp+pmb3ra2K2Ozq3G-----END PRIVATE KEY-----"'
+      - "GOOGLE_CLIENT_EMAIL=uwc-957@uwc-client.iam.gserviceaccount.com"
+      - "GOOGLE_CLIENT_ID=101010247620649641484"
+      - "GOOGLE_AUTH_URI=https://accounts.google.com/o/oauth2/auth"
+      - "GOOGLE_TOKEN_URI=https://oauth2.googleapis.com/token"
+      - "GOOGLE_AUTH_PROVIDER_CERT_URL=https://www.googleapis.com/oauth2/v1/certs"
+      - "GOOGLE_CLIENT_CERT_URL=https://www.googleapis.com/robot/v1/metadata/x509/uwc-957%40uwc-client.iam.gserviceaccount.com"
+
   db:
     image: postgres:16
     volumes:
