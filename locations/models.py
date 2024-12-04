@@ -63,6 +63,14 @@ class Branch(models.Model):
     slug = models.SlugField(max_length=255, unique=True)
     address = models.CharField(_("Address"), max_length=255, blank=True, null=True)
     postcode = models.CharField(_("Postcode"), max_length=20, blank=True, null=True)
+    parish_priest = models.ForeignKey(
+        "locations.Person",
+        related_name="parish_priest",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name=_("Parish Priest"),
+    )
     branch_chair = models.ForeignKey(
         "locations.Person",
         related_name="branch_chair",
@@ -71,13 +79,16 @@ class Branch(models.Model):
         blank=True,
         verbose_name=_("Branch Chair"),
     )
-    parish_priest = models.ForeignKey(
+    branch_secretary = models.ForeignKey(
         "locations.Person",
-        related_name="parish_priest",
+        related_name="branch_secretary",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        verbose_name=_("Parish Priest"),
+        verbose_name=_("Branch Secretary"),
+    )
+    other_details = models.TextField(
+        _("Other Details"), max_length=500, blank=True, null=True
     )
     url = models.URLField(_("URL"), blank=True, null=True)
     status = models.CharField(max_length=2, choices=Status.choices, default=Status.HIDE)

@@ -10,7 +10,7 @@ class DivisionTranslationOptions(TranslationOptions):
 
 @register(Branch)
 class BranchTranslationOptions(TranslationOptions):
-    fields = ("title",)
+    fields = ("title", "address", "other_details")
 
 
 @register(Person)
