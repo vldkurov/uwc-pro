@@ -59,7 +59,8 @@ class DivisionListView(DivisionMixin, ListView):
         )
         context["current_division"] = current_division
 
-        religious_keywords = ["Church", "Церква", "Parish", "Парафія"]
+        religious_keywords = ["Church", "Церква", "Церкви", "Parish", "Парафія"]
+
         is_religious = any(
             keyword.lower() in current_division.title.lower()
             for keyword in religious_keywords
@@ -146,7 +147,8 @@ class BranchCreateUpdateView(DivisionMixin, TemplateResponseMixin, View):
         division_slug = kwargs.get("division_slug")
         self.division = get_object_or_404(Division, slug=division_slug)
 
-        religious_keywords = ["Church", "Церква", "Parish", "Парафія"]
+        religious_keywords = ["Church", "Церква", "Церкви", "Parish", "Парафія"]
+
         self.is_religious = any(
             keyword.lower() in self.division.title.lower()
             for keyword in religious_keywords

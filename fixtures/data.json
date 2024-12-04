@@ -1,0 +1,4252 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2024-12-03T11:19:48.736Z",
+    "user": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "content_type": 9,
+    "object_id": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "object_repr": "vokur",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Role\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2024-12-03T11:20:28.805Z",
+    "user": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "content_type": 9,
+    "object_id": "c613d119-c6a0-4f70-b6ff-22b28f1972e5",
+    "object_repr": "owner@mail.com",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2024-12-03T11:20:43.867Z",
+    "user": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "content_type": 9,
+    "object_id": "c613d119-c6a0-4f70-b6ff-22b28f1972e5",
+    "object_repr": "owner",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Username\", \"Email address\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2024-12-03T11:21:47.960Z",
+    "user": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "content_type": 9,
+    "object_id": "2b3b9d63-f1ff-44ed-9879-141254196c59",
+    "object_repr": "admin",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2024-12-03T11:22:05.547Z",
+    "user": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "content_type": 9,
+    "object_id": "2b3b9d63-f1ff-44ed-9879-141254196c59",
+    "object_repr": "admin",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Email address\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2024-12-03T11:22:26.562Z",
+    "user": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "content_type": 9,
+    "object_id": "5eda4322-3e71-4bf1-a6a1-bb91946a7fed",
+    "object_repr": "editor",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2024-12-03T11:22:36.338Z",
+    "user": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "content_type": 9,
+    "object_id": "5eda4322-3e71-4bf1-a6a1-bb91946a7fed",
+    "object_repr": "editor",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Email address\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2024-12-03T11:22:56.581Z",
+    "user": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "content_type": 9,
+    "object_id": "30d114b9-3acc-432d-80be-93e8deddcd0d",
+    "object_repr": "viewer",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2024-12-03T11:23:02.189Z",
+    "user": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "content_type": 9,
+    "object_id": "30d114b9-3acc-432d-80be-93e8deddcd0d",
+    "object_repr": "viewer",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Email address\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2024-12-03T11:23:23.277Z",
+    "user": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "content_type": 3,
+    "object_id": "1",
+    "object_repr": "Owner",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2024-12-03T11:23:28.712Z",
+    "user": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "content_type": 3,
+    "object_id": "2",
+    "object_repr": "Admin",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2024-12-03T11:23:33.075Z",
+    "user": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "content_type": 3,
+    "object_id": "3",
+    "object_repr": "Editor",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2024-12-03T11:23:38.159Z",
+    "user": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "content_type": 3,
+    "object_id": "4",
+    "object_repr": "Viewer",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2024-12-03T11:24:10.148Z",
+    "user": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "content_type": 9,
+    "object_id": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "object_repr": "vokur",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Groups\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 17,
+  "fields": {
+    "action_time": "2024-12-03T11:24:47.008Z",
+    "user": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "content_type": 9,
+    "object_id": "c613d119-c6a0-4f70-b6ff-22b28f1972e5",
+    "object_repr": "owner",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Groups\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2024-12-03T11:24:58.279Z",
+    "user": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "content_type": 9,
+    "object_id": "2b3b9d63-f1ff-44ed-9879-141254196c59",
+    "object_repr": "admin",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Groups\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2024-12-03T11:25:10.141Z",
+    "user": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "content_type": 9,
+    "object_id": "5eda4322-3e71-4bf1-a6a1-bb91946a7fed",
+    "object_repr": "editor",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Groups\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2024-12-03T11:25:17.390Z",
+    "user": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "content_type": 9,
+    "object_id": "30d114b9-3acc-432d-80be-93e8deddcd0d",
+    "object_repr": "viewer",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Groups\"]}}]"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 1,
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": 1,
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 2,
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": 1,
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 3,
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": 1,
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 4,
+  "fields": {
+    "name": "Can view log entry",
+    "content_type": 1,
+    "codename": "view_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 5,
+  "fields": {
+    "name": "Can add permission",
+    "content_type": 2,
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 6,
+  "fields": {
+    "name": "Can change permission",
+    "content_type": 2,
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 7,
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": 2,
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 8,
+  "fields": {
+    "name": "Can view permission",
+    "content_type": 2,
+    "codename": "view_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 9,
+  "fields": {
+    "name": "Can add group",
+    "content_type": 3,
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 10,
+  "fields": {
+    "name": "Can change group",
+    "content_type": 3,
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 11,
+  "fields": {
+    "name": "Can delete group",
+    "content_type": 3,
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 12,
+  "fields": {
+    "name": "Can view group",
+    "content_type": 3,
+    "codename": "view_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 13,
+  "fields": {
+    "name": "Can add content type",
+    "content_type": 4,
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 14,
+  "fields": {
+    "name": "Can change content type",
+    "content_type": 4,
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 15,
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": 4,
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 16,
+  "fields": {
+    "name": "Can view content type",
+    "content_type": 4,
+    "codename": "view_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 17,
+  "fields": {
+    "name": "Can add session",
+    "content_type": 5,
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 18,
+  "fields": {
+    "name": "Can change session",
+    "content_type": 5,
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 19,
+  "fields": {
+    "name": "Can delete session",
+    "content_type": 5,
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 20,
+  "fields": {
+    "name": "Can view session",
+    "content_type": 5,
+    "codename": "view_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 21,
+  "fields": {
+    "name": "Can add site",
+    "content_type": 6,
+    "codename": "add_site"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 22,
+  "fields": {
+    "name": "Can change site",
+    "content_type": 6,
+    "codename": "change_site"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 23,
+  "fields": {
+    "name": "Can delete site",
+    "content_type": 6,
+    "codename": "delete_site"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 24,
+  "fields": {
+    "name": "Can view site",
+    "content_type": 6,
+    "codename": "view_site"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 25,
+  "fields": {
+    "name": "Can add email address",
+    "content_type": 7,
+    "codename": "add_emailaddress"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 26,
+  "fields": {
+    "name": "Can change email address",
+    "content_type": 7,
+    "codename": "change_emailaddress"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 27,
+  "fields": {
+    "name": "Can delete email address",
+    "content_type": 7,
+    "codename": "delete_emailaddress"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 28,
+  "fields": {
+    "name": "Can view email address",
+    "content_type": 7,
+    "codename": "view_emailaddress"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 29,
+  "fields": {
+    "name": "Can add email confirmation",
+    "content_type": 8,
+    "codename": "add_emailconfirmation"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 30,
+  "fields": {
+    "name": "Can change email confirmation",
+    "content_type": 8,
+    "codename": "change_emailconfirmation"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 31,
+  "fields": {
+    "name": "Can delete email confirmation",
+    "content_type": 8,
+    "codename": "delete_emailconfirmation"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 32,
+  "fields": {
+    "name": "Can view email confirmation",
+    "content_type": 8,
+    "codename": "view_emailconfirmation"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 33,
+  "fields": {
+    "name": "Can add user",
+    "content_type": 9,
+    "codename": "add_customuser"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 34,
+  "fields": {
+    "name": "Can change user",
+    "content_type": 9,
+    "codename": "change_customuser"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 35,
+  "fields": {
+    "name": "Can delete user",
+    "content_type": 9,
+    "codename": "delete_customuser"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 36,
+  "fields": {
+    "name": "Can view user",
+    "content_type": 9,
+    "codename": "view_customuser"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 37,
+  "fields": {
+    "name": "Can add file",
+    "content_type": 10,
+    "codename": "add_file"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 38,
+  "fields": {
+    "name": "Can change file",
+    "content_type": 10,
+    "codename": "change_file"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 39,
+  "fields": {
+    "name": "Can delete file",
+    "content_type": 10,
+    "codename": "delete_file"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 40,
+  "fields": {
+    "name": "Can view file",
+    "content_type": 10,
+    "codename": "view_file"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 41,
+  "fields": {
+    "name": "Can add image",
+    "content_type": 11,
+    "codename": "add_image"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 42,
+  "fields": {
+    "name": "Can change image",
+    "content_type": 11,
+    "codename": "change_image"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 43,
+  "fields": {
+    "name": "Can delete image",
+    "content_type": 11,
+    "codename": "delete_image"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 44,
+  "fields": {
+    "name": "Can view image",
+    "content_type": 11,
+    "codename": "view_image"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 45,
+  "fields": {
+    "name": "Can add Page",
+    "content_type": 12,
+    "codename": "add_page"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 46,
+  "fields": {
+    "name": "Can change Page",
+    "content_type": 12,
+    "codename": "change_page"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 47,
+  "fields": {
+    "name": "Can delete Page",
+    "content_type": 12,
+    "codename": "delete_page"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 48,
+  "fields": {
+    "name": "Can view Page",
+    "content_type": 12,
+    "codename": "view_page"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 49,
+  "fields": {
+    "name": "Can add Section",
+    "content_type": 13,
+    "codename": "add_section"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 50,
+  "fields": {
+    "name": "Can change Section",
+    "content_type": 13,
+    "codename": "change_section"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 51,
+  "fields": {
+    "name": "Can delete Section",
+    "content_type": 13,
+    "codename": "delete_section"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 52,
+  "fields": {
+    "name": "Can view Section",
+    "content_type": 13,
+    "codename": "view_section"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 53,
+  "fields": {
+    "name": "Can request update (English)",
+    "content_type": 13,
+    "codename": "request_update_en"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 54,
+  "fields": {
+    "name": "Can request update (Ukrainian)",
+    "content_type": 13,
+    "codename": "request_update_uk"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 55,
+  "fields": {
+    "name": "Can confirm update (English)",
+    "content_type": 13,
+    "codename": "confirm_update_en"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 56,
+  "fields": {
+    "name": "Can confirm update (Ukrainian)",
+    "content_type": 13,
+    "codename": "confirm_update_uk"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 57,
+  "fields": {
+    "name": "Can reject update (English)",
+    "content_type": 13,
+    "codename": "reject_update_en"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 58,
+  "fields": {
+    "name": "Can reject update (Ukrainian)",
+    "content_type": 13,
+    "codename": "reject_update_uk"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 59,
+  "fields": {
+    "name": "Can publish",
+    "content_type": 13,
+    "codename": "publish_section"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 60,
+  "fields": {
+    "name": "Can unpublish",
+    "content_type": 13,
+    "codename": "unpublish_section"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 61,
+  "fields": {
+    "name": "Can change section order",
+    "content_type": 13,
+    "codename": "change_section_order"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 62,
+  "fields": {
+    "name": "Can add Content",
+    "content_type": 14,
+    "codename": "add_content"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 63,
+  "fields": {
+    "name": "Can change Content",
+    "content_type": 14,
+    "codename": "change_content"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 64,
+  "fields": {
+    "name": "Can delete Content",
+    "content_type": 14,
+    "codename": "delete_content"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 65,
+  "fields": {
+    "name": "Can view Content",
+    "content_type": 14,
+    "codename": "view_content"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 66,
+  "fields": {
+    "name": "Can request update (English)",
+    "content_type": 14,
+    "codename": "request_update_en"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 67,
+  "fields": {
+    "name": "Can request update (Ukrainian)",
+    "content_type": 14,
+    "codename": "request_update_uk"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 68,
+  "fields": {
+    "name": "Can confirm update (English)",
+    "content_type": 14,
+    "codename": "confirm_update_en"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 69,
+  "fields": {
+    "name": "Can confirm update (Ukrainian)",
+    "content_type": 14,
+    "codename": "confirm_update_uk"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 70,
+  "fields": {
+    "name": "Can reject update (English)",
+    "content_type": 14,
+    "codename": "reject_update_en"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 71,
+  "fields": {
+    "name": "Can reject update (Ukrainian)",
+    "content_type": 14,
+    "codename": "reject_update_uk"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 72,
+  "fields": {
+    "name": "Can request update",
+    "content_type": 14,
+    "codename": "request_update"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 73,
+  "fields": {
+    "name": "Can confirm update",
+    "content_type": 14,
+    "codename": "confirm_update"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 74,
+  "fields": {
+    "name": "Can reject update",
+    "content_type": 14,
+    "codename": "reject_update"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 75,
+  "fields": {
+    "name": "Can display",
+    "content_type": 14,
+    "codename": "display"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 76,
+  "fields": {
+    "name": "Can hide",
+    "content_type": 14,
+    "codename": "hide"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 77,
+  "fields": {
+    "name": "Can change content order",
+    "content_type": 14,
+    "codename": "change_content_order"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 78,
+  "fields": {
+    "name": "Can add text",
+    "content_type": 15,
+    "codename": "add_text"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 79,
+  "fields": {
+    "name": "Can change text",
+    "content_type": 15,
+    "codename": "change_text"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 80,
+  "fields": {
+    "name": "Can delete text",
+    "content_type": 15,
+    "codename": "delete_text"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 81,
+  "fields": {
+    "name": "Can view text",
+    "content_type": 15,
+    "codename": "view_text"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 82,
+  "fields": {
+    "name": "Can add url",
+    "content_type": 16,
+    "codename": "add_url"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 83,
+  "fields": {
+    "name": "Can change url",
+    "content_type": 16,
+    "codename": "change_url"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 84,
+  "fields": {
+    "name": "Can delete url",
+    "content_type": 16,
+    "codename": "delete_url"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 85,
+  "fields": {
+    "name": "Can view url",
+    "content_type": 16,
+    "codename": "view_url"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 86,
+  "fields": {
+    "name": "Can add video",
+    "content_type": 17,
+    "codename": "add_video"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 87,
+  "fields": {
+    "name": "Can change video",
+    "content_type": 17,
+    "codename": "change_video"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 88,
+  "fields": {
+    "name": "Can delete video",
+    "content_type": 17,
+    "codename": "delete_video"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 89,
+  "fields": {
+    "name": "Can view video",
+    "content_type": 17,
+    "codename": "view_video"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 90,
+  "fields": {
+    "name": "Can add Person",
+    "content_type": 18,
+    "codename": "add_person"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 91,
+  "fields": {
+    "name": "Can change Person",
+    "content_type": 18,
+    "codename": "change_person"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 92,
+  "fields": {
+    "name": "Can delete Person",
+    "content_type": 18,
+    "codename": "delete_person"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 93,
+  "fields": {
+    "name": "Can view Person",
+    "content_type": 18,
+    "codename": "view_person"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 94,
+  "fields": {
+    "name": "Can add Division",
+    "content_type": 19,
+    "codename": "add_division"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 95,
+  "fields": {
+    "name": "Can change Division",
+    "content_type": 19,
+    "codename": "change_division"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 96,
+  "fields": {
+    "name": "Can delete Division",
+    "content_type": 19,
+    "codename": "delete_division"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 97,
+  "fields": {
+    "name": "Can view Division",
+    "content_type": 19,
+    "codename": "view_division"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 98,
+  "fields": {
+    "name": "Can change division order",
+    "content_type": 19,
+    "codename": "change_division_order"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 99,
+  "fields": {
+    "name": "Can add Branch",
+    "content_type": 20,
+    "codename": "add_branch"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 100,
+  "fields": {
+    "name": "Can change Branch",
+    "content_type": 20,
+    "codename": "change_branch"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 101,
+  "fields": {
+    "name": "Can delete Branch",
+    "content_type": 20,
+    "codename": "delete_branch"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 102,
+  "fields": {
+    "name": "Can view Branch",
+    "content_type": 20,
+    "codename": "view_branch"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 103,
+  "fields": {
+    "name": "Can display",
+    "content_type": 20,
+    "codename": "display"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 104,
+  "fields": {
+    "name": "Can hide",
+    "content_type": 20,
+    "codename": "hide"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 105,
+  "fields": {
+    "name": "Can add Email",
+    "content_type": 21,
+    "codename": "add_email"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 106,
+  "fields": {
+    "name": "Can change Email",
+    "content_type": 21,
+    "codename": "change_email"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 107,
+  "fields": {
+    "name": "Can delete Email",
+    "content_type": 21,
+    "codename": "delete_email"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 108,
+  "fields": {
+    "name": "Can view Email",
+    "content_type": 21,
+    "codename": "view_email"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 109,
+  "fields": {
+    "name": "Can add Phone",
+    "content_type": 22,
+    "codename": "add_phone"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 110,
+  "fields": {
+    "name": "Can change Phone",
+    "content_type": 22,
+    "codename": "change_phone"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 111,
+  "fields": {
+    "name": "Can delete Phone",
+    "content_type": 22,
+    "codename": "delete_phone"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 112,
+  "fields": {
+    "name": "Can view Phone",
+    "content_type": 22,
+    "codename": "view_phone"
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 1,
+  "fields": {
+    "name": "Owner",
+    "permissions": []
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 2,
+  "fields": {
+    "name": "Admin",
+    "permissions": []
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 3,
+  "fields": {
+    "name": "Editor",
+    "permissions": []
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 4,
+  "fields": {
+    "name": "Viewer",
+    "permissions": []
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 1,
+  "fields": {
+    "app_label": "admin",
+    "model": "logentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 2,
+  "fields": {
+    "app_label": "auth",
+    "model": "permission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 3,
+  "fields": {
+    "app_label": "auth",
+    "model": "group"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 4,
+  "fields": {
+    "app_label": "contenttypes",
+    "model": "contenttype"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 5,
+  "fields": {
+    "app_label": "sessions",
+    "model": "session"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 6,
+  "fields": {
+    "app_label": "sites",
+    "model": "site"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 7,
+  "fields": {
+    "app_label": "account",
+    "model": "emailaddress"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 8,
+  "fields": {
+    "app_label": "account",
+    "model": "emailconfirmation"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 9,
+  "fields": {
+    "app_label": "accounts",
+    "model": "customuser"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 10,
+  "fields": {
+    "app_label": "admin_pages",
+    "model": "file"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 11,
+  "fields": {
+    "app_label": "admin_pages",
+    "model": "image"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 12,
+  "fields": {
+    "app_label": "admin_pages",
+    "model": "page"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 13,
+  "fields": {
+    "app_label": "admin_pages",
+    "model": "section"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 14,
+  "fields": {
+    "app_label": "admin_pages",
+    "model": "content"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 15,
+  "fields": {
+    "app_label": "admin_pages",
+    "model": "text"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 16,
+  "fields": {
+    "app_label": "admin_pages",
+    "model": "url"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 17,
+  "fields": {
+    "app_label": "admin_pages",
+    "model": "video"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 18,
+  "fields": {
+    "app_label": "locations",
+    "model": "person"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 19,
+  "fields": {
+    "app_label": "locations",
+    "model": "division"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 20,
+  "fields": {
+    "app_label": "locations",
+    "model": "branch"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 21,
+  "fields": {
+    "app_label": "locations",
+    "model": "email"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 22,
+  "fields": {
+    "app_label": "locations",
+    "model": "phone"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "555jioxqr7h0ozsvu9gtf0upufst3tmh",
+  "fields": {
+    "session_data": ".eJxVjdEOgjAMRf9lz0K20rHNN_0R0nVdIBI0DBKN8d9Fw4OmT_e25_SpOlqXvluLzN2Q1FGRJQ8QmoqAc4USoApNwipbx5gRgMSrwy8WiS8yfdlx_NQ1MV_Xaam_N_u61KctybQMTMtwnc479afqqfSbR9oQGdn6mANu4yKJSdZmY5BiclG3YGwCNB4abRgd-yY4n9ilyFF_pEVK2d50cr8N80MdDejQav16A7kjTgE:1tIPsA:U5SXZonCd3fqGivNyslj78JcN7FHHQs6EFRHQjfCEgw",
+    "expire_date": "2024-12-17T10:11:14.776Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "diocg1avb2qoc2oi10pvg5hltf3vpp9s",
+  "fields": {
+    "session_data": ".eJxVkMtuhDAMRf8la0B5koTVtL9RVchxgkADZERCHxrNvxcoG-SNZd97_HgSQIzrnFtYcx_mPCDkIc7tFHIffSLNx5P856QhD0jpOy6eFAQyaZgWgksjqamMYprXBQkTDOOm_Ir3dblNaa4wTuT1WZBjQLumsLTDzgIFhnMrSuDYlTJYXlrhZdkpjbKTnEMw5GJzgPcwH95x3MvVuXt1aM52qt4ul7yfrguqh9RvnFBbhxKVcZ2VW2gHgXmlOsYkOK8drTlTnktmuKAMpUYjrDYetXfo6A5NIaX9YeHnMSy_21M4tTWlrz8UanCq:1tIX5U:SVsroLqob2DRA8CqfcTYQt-G-zap55QpmtIB0FvV1Ro",
+    "expire_date": "2024-12-17T17:53:28.877Z"
+  }
+},
+{
+  "model": "sites.site",
+  "pk": 1,
+  "fields": {
+    "domain": "example.com",
+    "name": "example.com"
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": "2b3b9d63-f1ff-44ed-9879-141254196c59",
+  "fields": {
+    "password": "pbkdf2_sha256$870000$5n0ql2achPd78r33miYB8k$XsS4itvU7j0xQtBHar4quBTeUl5+cRLrPSWH/iMDwNo=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@mail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2024-12-03T11:21:47Z",
+    "role": "ADM",
+    "groups": [
+      2
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": "30d114b9-3acc-432d-80be-93e8deddcd0d",
+  "fields": {
+    "password": "pbkdf2_sha256$870000$952h8Xq47iaCzILGk3w1Ma$SyfUKGJzgxFRh8YPTPSHDu3ysBuOEFXiwlTbmVLJ7mE=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "viewer",
+    "first_name": "",
+    "last_name": "",
+    "email": "viewer@mail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2024-12-03T11:22:56Z",
+    "role": "VWR",
+    "groups": [
+      4
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": "5eda4322-3e71-4bf1-a6a1-bb91946a7fed",
+  "fields": {
+    "password": "pbkdf2_sha256$870000$W8DPt8uXXAvXHpyDA3Ndcg$Zrd2sb5X0O7CGqe4JNeY2Tlg7NZ+f9EyWSJt2HUZeas=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "editor",
+    "first_name": "",
+    "last_name": "",
+    "email": "editor@mail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2024-12-03T11:22:26Z",
+    "role": "EDT",
+    "groups": [
+      3
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+  "fields": {
+    "password": "pbkdf2_sha256$870000$Ehfbqmb2HLEBGH0pj1YVha$v4KlOUI0xJW+7YrNKhL352AAr/iLwwyo+BBi0ksCGgg=",
+    "last_login": "2024-12-03T17:53:28.859Z",
+    "is_superuser": true,
+    "username": "vokur",
+    "first_name": "",
+    "last_name": "",
+    "email": "vokur@msn.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2024-12-03T10:10:47Z",
+    "role": "OWR",
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": "c613d119-c6a0-4f70-b6ff-22b28f1972e5",
+  "fields": {
+    "password": "pbkdf2_sha256$870000$56ETgCTh8z08tsh9wq8KoS$FTjjRvzovqa4ClyextY51KjiqNDe4DxIAu14KZfyoVY=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "owner",
+    "first_name": "",
+    "last_name": "",
+    "email": "owner@mail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2024-12-03T11:20:28Z",
+    "role": "OWR",
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "locations.division",
+  "pk": "55d78761-d63e-4eb5-ac4e-3c5c05d2ad12",
+  "fields": {
+    "created_by": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "updated_by": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "title": "UKRAINIAN AUTOCEPHALOUS ORTHODOX CHURCH PARISHES",
+    "title_en": "UKRAINIAN AUTOCEPHALOUS ORTHODOX CHURCH PARISHES",
+    "title_uk": "ПАРАФІЇ УКРАЇНСЬКОЇ АВТОКЕФАЛЬНОЇ ПРАВОСЛАВНОЇ ЦЕРКВИ",
+    "slug": "ukrainian-autocephalous-orthodox-church-parishes",
+    "order": 2,
+    "created": "2024-12-03T20:09:00.272Z",
+    "updated": "2024-12-03T20:37:21.983Z"
+  }
+},
+{
+  "model": "locations.division",
+  "pk": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+  "fields": {
+    "created_by": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "updated_by": null,
+    "title": "The Association of Ukrainians in Great Britain",
+    "title_en": "The Association of Ukrainians in Great Britain",
+    "title_uk": "Об'єднання українців у Великій Британії",
+    "slug": "the-association-of-ukrainians-in-great-britain",
+    "order": 1,
+    "created": "2024-12-03T11:29:08.247Z",
+    "updated": "2024-12-03T11:29:08.247Z"
+  }
+},
+{
+  "model": "locations.division",
+  "pk": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+  "fields": {
+    "created_by": "a5a82293-a2cf-4e92-93d4-f57c4f422ae8",
+    "updated_by": null,
+    "title": "UKRAINIAN CATHOLIC CHURCH PARISHES & MISSION POINTS",
+    "title_en": "UKRAINIAN CATHOLIC CHURCH PARISHES & MISSION POINTS",
+    "title_uk": "ПАРАФІЇ УКРАЇНСЬКОЇ КАТОЛИЦЬКОЇ ​​ЦЕРКВИ ТА МІСІЙНІ ПУНКТИ",
+    "slug": "ukrainian-catholic-church-parishes-mission-points",
+    "order": 0,
+    "created": "2024-12-03T10:11:47.498Z",
+    "updated": "2024-12-03T10:11:47.498Z"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "0cd9a336-d7de-4710-a02e-491b7ff58fe9",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "Luton",
+    "title_en": "Luton",
+    "title_uk": "Лутон",
+    "slug": "luton-32y3",
+    "address": "16 Cromwell Hill, Luton, United Kingdom, LU2 7PY",
+    "address_en": "16 Cromwell Hill, Luton, United Kingdom, LU2 7PY",
+    "address_uk": "16 Cromwell Hill, Лутон, Велика Британія, LU2 7PY",
+    "postcode": "LU2 7PY",
+    "parish_priest": null,
+    "branch_chair": "e7391e78-0722-4c72-9922-08de8062be8f",
+    "branch_secretary": null,
+    "other_details": "Ukrainian Catholic Church (UCC) in Luton\n\n\nTelephone: 07852 180950 (Fr Mykola). Admin enquiries: 07791 475815",
+    "other_details_en": "Ukrainian Catholic Church (UCC) in Luton\n\n\nTelephone: 07852 180950 (Fr Mykola). Admin enquiries: 07791 475815",
+    "other_details_uk": "Українська Католицька Церква (УКЦ) у Лутоні Телефон: 07852 180950 (о. Микола). Запити адмінів: 07791 475815",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "0d2165c2-0cbe-430e-b74a-51b7ba8049e5",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "Derby",
+    "title_en": "Derby",
+    "title_uk": "Дербі",
+    "slug": "derby",
+    "address": "27 Charnwood Street, Derby, Derbyshire, United Kingdom, DE1 2GU",
+    "address_en": "27 Charnwood Street, Derby, Derbyshire, United Kingdom, DE1 2GU",
+    "address_uk": "27 Charnwood Street, Derby, Derbyshire, United Kingdom, DE1 2GU",
+    "postcode": "DE1 2GU",
+    "parish_priest": null,
+    "branch_chair": "536624d4-1716-43ef-96dc-571a29cf5495",
+    "branch_secretary": "de137481-28fe-43d6-a642-2fae85054347",
+    "other_details": "Ukrainian Catholic Church (UCC) in Derby - email: nottingham@ucc-gb.com\nChurch of St Michael the Archangel, Cambridge Street, Derby, England, DE23 8HP\n\nTelephone: 07870 578883 (Fr David)",
+    "other_details_en": "Ukrainian Catholic Church (UCC) in Derby - email: nottingham@ucc-gb.com\nChurch of St Michael the Archangel, Cambridge Street, Derby, England, DE23 8HP\n\nTelephone: 07870 578883 (Fr David)",
+    "other_details_uk": "Українська Католицька Церква (УКЦ) у Дербі - електронна пошта: nottingham@ucc-gb.com Церква Святого Архистратига Михаїла, Cambridge Street, Derby, England, DE23 8HP Телефон: 07870 578883 (о. Давид)",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "0fad55a6-b736-4c34-bfc6-02b97551a8c3",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "Halifax",
+    "title_en": "Halifax",
+    "title_uk": "Галіфакс",
+    "slug": "halifax",
+    "address": "Fairfield House, Queens Road, Halifax, HX1 4LN",
+    "address_en": "Fairfield House, Queens Road, Halifax, HX1 4LN",
+    "address_uk": "Fairfield House, Queens Road, Halifax, HX1 4LN",
+    "postcode": "HX1 4LN",
+    "parish_priest": null,
+    "branch_chair": "fbc1f323-e51a-4467-881c-1ec0e8184497",
+    "branch_secretary": null,
+    "other_details": "Ukrainian Catholic Church (UCC) in Halifax - email: bradford@ucc-gb.com\n\n\nTelephone: 07742 326304 (Fr Riy - visiting priest)",
+    "other_details_en": "Ukrainian Catholic Church (UCC) in Halifax - email: bradford@ucc-gb.com\n\n\nTelephone: 07742 326304 (Fr Riy - visiting priest)",
+    "other_details_uk": "Українська Католицька Церква (УКЦ) у Галіфаксі - електронна адреса: bradford@ucc-gb.com Телефон: 07742 326304 (о. Рій - візитний священик)",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "102a214f-5a30-452e-b7dd-2d27d8d14101",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "‍Luton",
+    "title_en": "‍Luton",
+    "title_uk": "Лутон",
+    "slug": "luton",
+    "address": "Chapel of the New Martyrs of Ukraine, 16 Cromwell Hill",
+    "address_en": "Chapel of the New Martyrs of Ukraine, 16 Cromwell Hill",
+    "address_uk": "Каплиця Новомучеників України, пагорб Кромвеля, 16",
+    "postcode": "LU2 7PY",
+    "parish_priest": "9f0a3276-8233-4748-b04b-1faf995b4193",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "1057501d-4047-4d07-bedd-b9c221d38e93",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "Manchester",
+    "title_en": "Manchester",
+    "title_uk": "Манчестер",
+    "slug": "manchester",
+    "address": "31 Smedley Lane, Cheetham Hill, Manchester, United Kingdom, M8 8XB",
+    "address_en": "31 Smedley Lane, Cheetham Hill, Manchester, United Kingdom, M8 8XB",
+    "address_uk": "31 Smedley Lane, Cheetham Hill, Манчестер, Велика Британія, M8 8XB",
+    "postcode": "M8 8XB",
+    "parish_priest": null,
+    "branch_chair": "489b8023-63c4-4a6e-a3a6-9a154979caad",
+    "branch_secretary": null,
+    "other_details": "Ukrainian Catholic Church (UCC) in Manchester - email: manchester@ucc-gb.com\nChurch of the Dormition of Our Lady, Bury Old Road, Salford, England, M7 4PX\n\nTelephone: 07784 634136 (Fr Taras) and 07879 592902 (Fr Evhen)\nUkrainian Autocephalous Orthodox Church (UAOC) in Manchester - email: protopresbyterbohdan.matwijczuk@uaocingb.org.uk\nChurch of the Dormition of the Mother of God, 9-11 Plymouth Grove, Longsight, Manchester, England, M13 0AQ\n\nTelephone: 07957 236755 (Very Rev. Bohdan Matwijczuk)",
+    "other_details_en": "Ukrainian Catholic Church (UCC) in Manchester - email: manchester@ucc-gb.com\nChurch of the Dormition of Our Lady, Bury Old Road, Salford, England, M7 4PX\n\nTelephone: 07784 634136 (Fr Taras) and 07879 592902 (Fr Evhen)\nUkrainian Autocephalous Orthodox Church (UAOC) in Manchester - email: protopresbyterbohdan.matwijczuk@uaocingb.org.uk\nChurch of the Dormition of the Mother of God, 9-11 Plymouth Grove, Longsight, Manchester, England, M13 0AQ\n\nTelephone: 07957 236755 (Very Rev. Bohdan Matwijczuk)",
+    "other_details_uk": "Українська Католицька Церква (УКЦ) у Манчестері - email: manchester@ucc-gb.com Церква Успіння Пресвятої Богородиці, Bury Old Road, Salford, England, M7 4PX Телефон: 07784 634136 (о. Тарас) та 07879 592902 (о. Євген ) Українська Автокефальна Православна Церква (УАПЦ) в Манчестері - ел. пошта: protopresbyterbohdan.matwijczuk@uaocingb.org.uk Церква Успіння Пресвятої Богородиці, 9-11 Plymouth Grove, Longsight, Manchester, England, M13 0AQ Телефон: 07957 236755 (прот. Богдан Матвійчук)",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "1091c70e-b897-47b5-8b93-3984e25eb1d4",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "‍Stockport",
+    "title_en": "‍Stockport",
+    "title_uk": "Стокпорт",
+    "slug": "stockport",
+    "address": "St Joseph’s RC, Tatton Street, St. Petersgate",
+    "address_en": "St Joseph’s RC, Tatton Street, St. Petersgate",
+    "address_uk": "RC St Joseph&#39;s, Tatton Street, St Petersgate",
+    "postcode": "SK1 1EJ",
+    "parish_priest": "fd2c5e10-0241-49b4-8edb-0ad0668baf41",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "116d5aff-78c7-458e-801b-1f067fff504a",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "‍Keighley",
+    "title_en": "‍Keighley",
+    "title_uk": "Кейлі",
+    "slug": "keighley",
+    "address": "Ukrainian Chapel, 9 Henry Street",
+    "address_en": "Ukrainian Chapel, 9 Henry Street",
+    "address_uk": "Українська капела, вул.Генріха, 9",
+    "postcode": "BD21 3DR",
+    "parish_priest": "7a83d819-f064-4bbb-ad01-9bec932e0edb",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "167f13fc-c12c-4bd2-a022-90946a3c0cf1",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "‍Leigh",
+    "title_en": "‍Leigh",
+    "title_uk": "Лі",
+    "slug": "leigh",
+    "address": "Sacred Heart RC, Walmesley Road",
+    "address_en": "Sacred Heart RC, Walmesley Road",
+    "address_uk": "RC Sacred Heart, Walmesley Road",
+    "postcode": "WN7 1YE",
+    "parish_priest": "fd2c5e10-0241-49b4-8edb-0ad0668baf41",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "1c1323d0-dce2-4afc-a087-5b3d3ec913f0",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "Gloucester",
+    "title_en": "Gloucester",
+    "title_uk": "Глостер",
+    "slug": "gloucester",
+    "address": "37-38 Midland Rd, Gloucester, GL1 4UL",
+    "address_en": "37-38 Midland Rd, Gloucester, GL1 4UL",
+    "address_uk": "37-38 Midland Rd, Gloucester, GL1 4UL",
+    "postcode": "GL1 4UL",
+    "parish_priest": null,
+    "branch_chair": "e304f7eb-00dc-4800-8e95-394c26c2dc4e",
+    "branch_secretary": null,
+    "other_details": "Ukrainian Catholic Church (UCC) in Gloucester - email: gloucester@ucc-gb.com\nChurch of the Good Shepherd, Derby Road, Gloucester, GL1 4AE\n\nTelephone: 07533 123310",
+    "other_details_en": "Ukrainian Catholic Church (UCC) in Gloucester - email: gloucester@ucc-gb.com\nChurch of the Good Shepherd, Derby Road, Gloucester, GL1 4AE\n\nTelephone: 07533 123310",
+    "other_details_uk": "Українська Католицька Церква (УКЦ) у Глостері - електронна адреса: gloucester@ucc-gb.com Церква Доброго Пастиря, Дербі Роуд, Глостер, GL1 4AE Телефон: 07533 123310",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "1ce2749e-8a47-4421-81c2-a412261d64b4",
+  "fields": {
+    "division": "55d78761-d63e-4eb5-ac4e-3c5c05d2ad12",
+    "title": "‍Oldham Parish",
+    "title_en": "‍Oldham Parish",
+    "title_uk": "Олдхемська парафія",
+    "slug": "oldham-parish-wf49",
+    "address": "Church of St. Volodymyr the Great, 25 Onchan Avenue, Oldham",
+    "address_en": "Church of St. Volodymyr the Great, 25 Onchan Avenue, Oldham",
+    "address_uk": "Церква Св. Володимира Великого, 25 Onchan Avenue, Oldham",
+    "postcode": "OL4 1BJ",
+    "parish_priest": "d5de7027-84b8-41ff-aca2-6a972b030881",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "1da25096-7a3b-4cb7-92ef-7b7c6ceaa6db",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "Feltham",
+    "title_en": "Feltham",
+    "title_uk": "Фелтхем",
+    "slug": "feltham",
+    "address": "",
+    "address_en": "",
+    "address_uk": "",
+    "postcode": "",
+    "parish_priest": null,
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "1eb4147c-db13-4a5d-b76a-3a851afcb4d7",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "‍Todmorden",
+    "title_en": "‍Todmorden",
+    "title_uk": "вбивство Тома",
+    "slug": "todmorden",
+    "address": "St Joseph’s Church, Wellington Road",
+    "address_en": "St Joseph’s Church, Wellington Road",
+    "address_uk": "Церква Святого Йосипа, Веллінгтон Роуд",
+    "postcode": "OL14 5HL",
+    "parish_priest": "e91187a0-9471-45ea-ba0f-3e6a1bcf3b72",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "1ec01c7c-23ac-4fa7-9ae9-8203b08f9ed4",
+  "fields": {
+    "division": "55d78761-d63e-4eb5-ac4e-3c5c05d2ad12",
+    "title": "‍Manchester Parish",
+    "title_en": "‍Manchester Parish",
+    "title_uk": "Манчестерська парафія",
+    "slug": "manchester-parish-vi6u",
+    "address": "Church of the Dormition of the Mother of God, 9-11 Plymouth Grove West",
+    "address_en": "Church of the Dormition of the Mother of God, 9-11 Plymouth Grove West",
+    "address_uk": "Церква Успіння Пресвятої Богородиці, 9-11 Plymouth Grove West",
+    "postcode": "M13 0AQ",
+    "parish_priest": "d5de7027-84b8-41ff-aca2-6a972b030881",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "20ce9fef-4ba6-4739-923c-ce558c3293e3",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "Stoke-On-Trent",
+    "title_en": "Stoke-On-Trent",
+    "title_uk": "Сток-он-Трент",
+    "slug": "stoke-on-trent",
+    "address": "Sacred Heart RC Church, Jasper Street, Hanley",
+    "address_en": "Sacred Heart RC Church, Jasper Street, Hanley",
+    "address_uk": "Церква Святого Серця RC, Джаспер Стріт, Хенлі",
+    "postcode": "ST1 3DB",
+    "parish_priest": "42bbb91c-b07c-47ea-8cab-4fc18b01b3c1",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "21e4720f-0703-4971-92aa-b182f56aef25",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "Edinburgh  Parish",
+    "title_en": "Edinburgh  Parish",
+    "title_uk": "Единбурзька парафія",
+    "slug": "edinburgh-parish",
+    "address": "Church of Our Lady of Pochayiv and Saint Andrew, Dalmeny Street",
+    "address_en": "Church of Our Lady of Pochayiv and Saint Andrew, Dalmeny Street",
+    "address_uk": "Церква Почаївської Богоматері та Святого Андрія Первозванного, вулиця Дальмени",
+    "postcode": "",
+    "parish_priest": null,
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "2826c730-756e-4808-9cf7-4d23ce7e66d8",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "Coventry",
+    "title_en": "Coventry",
+    "title_uk": "Ковентрі",
+    "slug": "coventry",
+    "address": "103 Leicester Causeway, Coventry, Warwickshire, United Kingdom, CV1 4HL",
+    "address_en": "103 Leicester Causeway, Coventry, Warwickshire, United Kingdom, CV1 4HL",
+    "address_uk": "103 Leicester Causeway, Ковентрі, Ворікшир, Великобританія, CV1 4HL",
+    "postcode": "CV1 4HL",
+    "parish_priest": null,
+    "branch_chair": "4bd28136-3c1e-4ff2-a349-fdf7d9cf6faf",
+    "branch_secretary": null,
+    "other_details": "Ukrainian Catholic Church (UCC) in Coventry - email: coventry@ucc-gb.com\nChurch of St Volodymyr the Great, 186 Station Street, Coventry, England, CV6 5FR\n\nTelephone: 07870 578883 (Fr David)",
+    "other_details_en": "Ukrainian Catholic Church (UCC) in Coventry - email: coventry@ucc-gb.com\nChurch of St Volodymyr the Great, 186 Station Street, Coventry, England, CV6 5FR\n\nTelephone: 07870 578883 (Fr David)",
+    "other_details_uk": "Українська Католицька Церква (УКЦ) у Ковентрі - електронна адреса: coventry@ucc-gb.com Церква Св. Володимира Великого, 186 Station Street, Ковентрі, Англія, CV6 5FR Телефон: 07870 578883 (о. Давид)",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "288a9c56-b892-48af-8a24-4d9b28826082",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "‍Liverpool Parish",
+    "title_en": "‍Liverpool Parish",
+    "title_uk": "Ліверпульська парафія",
+    "slug": "liverpool-parish",
+    "address": "St Sebastian RC Church, Lockerby Road",
+    "address_en": "St Sebastian RC Church, Lockerby Road",
+    "address_uk": "Церква Святого Себастьяна, Локербі-роуд",
+    "postcode": "L7 0HG",
+    "parish_priest": "42bbb91c-b07c-47ea-8cab-4fc18b01b3c1",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "28c0ccee-c7ca-4da0-bb8a-119ca59c9fc3",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "‍Blackburn",
+    "title_en": "‍Blackburn",
+    "title_uk": "Блекберн",
+    "slug": "blackburn",
+    "address": "St Alban’s RC, Lark Hill",
+    "address_en": "St Alban’s RC, Lark Hill",
+    "address_uk": "RC Сент-Олбанс, Ларк-Гілл",
+    "postcode": "BB1 6HN",
+    "parish_priest": "fd2c5e10-0241-49b4-8edb-0ad0668baf41",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "2ab5d5d7-e1c8-4e99-9329-01fbf4edd78c",
+  "fields": {
+    "division": "55d78761-d63e-4eb5-ac4e-3c5c05d2ad12",
+    "title": "‍Rochdale Parish",
+    "title_en": "‍Rochdale Parish",
+    "title_uk": "Парафія Рочдейл",
+    "slug": "rochdale-parish-vwia",
+    "address": "Church of St. Mary the Protectress “Pokrova”, 39 Water Street, Rochdale",
+    "address_en": "Church of St. Mary the Protectress “Pokrova”, 39 Water Street, Rochdale",
+    "address_uk": "Церква Пресвятої Богородиці Покровиці “Покрова”, 39 Water Street, Rochdale",
+    "postcode": "OL16 1TL",
+    "parish_priest": "d5de7027-84b8-41ff-aca2-6a972b030881",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "33a8f5ad-4d44-4d40-b069-67b083d47ce3",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "‍Crawley",
+    "title_en": "‍Crawley",
+    "title_uk": "Кроулі",
+    "slug": "crawley",
+    "address": "",
+    "address_en": "",
+    "address_uk": "",
+    "postcode": "",
+    "parish_priest": "9f0a3276-8233-4748-b04b-1faf995b4193",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "3774e700-64de-4f80-8fa3-925f41e4aca3",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "Leicester",
+    "title_en": "Leicester",
+    "title_uk": "Лестер",
+    "slug": "leicester",
+    "address": "2a Fosse Road South, Leicester, United Kingdom, LE3 0QD",
+    "address_en": "2a Fosse Road South, Leicester, United Kingdom, LE3 0QD",
+    "address_uk": "2a Fosse Road South, Leicester, United Kingdom, LE3 0QD",
+    "postcode": "LE3 0QD",
+    "parish_priest": null,
+    "branch_chair": "eeb0923a-3088-45bf-b19f-3e96efbba77a",
+    "branch_secretary": null,
+    "other_details": "Ukrainian Catholic Church (UCC) in Leicester - email: nottingham@ucc-gb.com\nChurch of The Ascension of Our Lord, 2 Fosse Road South, Leicester, England, LE3 0QD\n\nTelephone: 07870 578883 (Fr David)",
+    "other_details_en": "Ukrainian Catholic Church (UCC) in Leicester - email: nottingham@ucc-gb.com\nChurch of The Ascension of Our Lord, 2 Fosse Road South, Leicester, England, LE3 0QD\n\nTelephone: 07870 578883 (Fr David)",
+    "other_details_uk": "Українська Католицька Церква (УКЦ) у Лестері - електронна адреса: nottingham@ucc-gb.com Церква Вознесіння Господнього, 2 Fosse Road South, Лестер, Англія, LE3 0QD Телефон: 07870 578883 (о. Давид)",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "388a0f09-5571-484a-8c4b-0ff1eb825320",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "Bradford Parish",
+    "title_en": "Bradford Parish",
+    "title_uk": "Бредфордський округ",
+    "slug": "bradford-parish",
+    "address": "Church of The Holy Trinity and Our Lady of Pochayiv, 10 Park View Road",
+    "address_en": "Church of The Holy Trinity and Our Lady of Pochayiv, 10 Park View Road",
+    "address_uk": "Церква Святої Трійці та Почаївської Богоматері, 10 Парковий шлях",
+    "postcode": "BD9 4PA",
+    "parish_priest": "7a83d819-f064-4bbb-ad01-9bec932e0edb",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "46b3bc67-6bca-42c7-9c61-69eb1168caa3",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "Nottingham",
+    "title_en": "Nottingham",
+    "title_uk": "Ноттінгем",
+    "slug": "nottingham",
+    "address": "Clawson Lodge, 403 Mansfield Rd, Nottingham, United Kingdom, NG5 2DP",
+    "address_en": "Clawson Lodge, 403 Mansfield Rd, Nottingham, United Kingdom, NG5 2DP",
+    "address_uk": "Clawson Lodge, 403 Mansfield Rd, Ноттінгем, Велика Британія, NG5 2DP",
+    "postcode": "NG5 2DP",
+    "parish_priest": null,
+    "branch_chair": "4d7381b1-a03d-4ede-9a1f-aa9eabefae97",
+    "branch_secretary": null,
+    "other_details": "Ukrainian Catholic Church (UCC) in Nottingham - email: nottingham@ucc-gb.com\nChurch of Our Lady of the Holy Patronage and St Alban's, Bond Street, Sneinton, Nottingham, England, NG2 4QX\n\nTelephone: 07870 578883 (Fr David)",
+    "other_details_en": "Ukrainian Catholic Church (UCC) in Nottingham - email: nottingham@ucc-gb.com\nChurch of Our Lady of the Holy Patronage and St Alban's, Bond Street, Sneinton, Nottingham, England, NG2 4QX\n\nTelephone: 07870 578883 (Fr David)",
+    "other_details_uk": "Українська Католицька Церква (УКЦ) у Ноттінгемі - електронна пошта: nottingham@ucc-gb.com Церква Матері Божої Святої Покрови та Сент-Албанс, Бонд Стріт, Снейнтон, Ноттінгем, Англія, NG2 4QX Телефон: 07870 578883 (о. Давид)",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "46b57ac4-eb2e-4658-8931-e8f6240afc33",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "Bradford",
+    "title_en": "Bradford",
+    "title_uk": "Бредфорд",
+    "slug": "bradford",
+    "address": "Westfield, 169 Legrams Lane, Bradford, West Yorkshire, United Kingdom, BD7 2EA",
+    "address_en": "Westfield, 169 Legrams Lane, Bradford, West Yorkshire, United Kingdom, BD7 2EA",
+    "address_uk": "Westfield, 169 Legrams Lane, Bradford, West Yorkshire, United Kingdom, BD7 2EA",
+    "postcode": "BD7 2EA",
+    "parish_priest": null,
+    "branch_chair": "26d7334c-84a5-4d22-af49-95713863634b",
+    "branch_secretary": "9e507b2b-79fd-4d44-b7c6-49939a822bc9",
+    "other_details": "Ukrainian Autocephalous Orthodox Church (UAOC) in Bradford - email: protopresbyterbohdan.matwijczuk@uaocingb.org.uk\nChurch of St Mary the Protectress, Stony Lane, Eccleshill, Bradford, England, BD2 2HN\n\nTelephone: 07957 236755 (Very Rev. Bohdan Matwijczuk)\nUkrainian Catholic Church (UCC) in Bradford - email: bradford@ucc-gb.com\nChurch of The Holy Trinity and Our Lady of Pochayiv, 10 Park View Road, Bradford, England, BD9 4PA\n\nTelephone: 07742 326304 (Fr Riy)",
+    "other_details_en": "Ukrainian Autocephalous Orthodox Church (UAOC) in Bradford - email: protopresbyterbohdan.matwijczuk@uaocingb.org.uk\nChurch of St Mary the Protectress, Stony Lane, Eccleshill, Bradford, England, BD2 2HN\n\nTelephone: 07957 236755 (Very Rev. Bohdan Matwijczuk)\nUkrainian Catholic Church (UCC) in Bradford - email: bradford@ucc-gb.com\nChurch of The Holy Trinity and Our Lady of Pochayiv, 10 Park View Road, Bradford, England, BD9 4PA\n\nTelephone: 07742 326304 (Fr Riy)",
+    "other_details_uk": "Українська Автокефальна Православна Церква (УАПЦ) у Бредфорді - електронна пошта: protopresbyterbohdan.matwijczuk@uaocingb.org.uk Церква Св. Марії Покровительки, Stony Lane, Eccleshill, Bradford, England, BD2 2HN Телефон: 07957 236755 (Прот. Богдан Матвійчук) Українська Католицька Церква (UCC) у Бредфорді – електронна пошта: bradford@ucc-gb.com Церква Пресвятої Трійці та Почаївської Богоматері, 10 Park View Road, Бредфорд, Англія, BD9 4PA Телефон: 07742 326304 (Fr Riy)",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "491d7b4d-67f4-4821-b98d-8dc2387745d0",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "Rochdale Parish",
+    "title_en": "Rochdale Parish",
+    "title_uk": "Парафія Рочдейл",
+    "slug": "rochdale-parish",
+    "address": "Church of Saint Mary & Saint James, Yorkshire Street",
+    "address_en": "Church of Saint Mary & Saint James, Yorkshire Street",
+    "address_uk": "Церква Святої Марії та Святого Якова, Йоркшир-стріт",
+    "postcode": "OL16 1LA",
+    "parish_priest": "e91187a0-9471-45ea-ba0f-3e6a1bcf3b72",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "4af1a998-4ff9-4aef-a648-676519fc34b9",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "‍Peterborough Parish",
+    "title_en": "‍Peterborough Parish",
+    "title_uk": "Парафія Пітерборо",
+    "slug": "peterborough-parish",
+    "address": "Saint Olga’s Church, New Road",
+    "address_en": "Saint Olga’s Church, New Road",
+    "address_uk": "Церква Святої Ольги, Нова дорога",
+    "postcode": "PE2 9HA",
+    "parish_priest": "68d14a7b-1034-4026-ab19-007ca40b3875",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "5baa267c-0e54-4772-b1ef-76537f246396",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "‍Wolverhampton Parish",
+    "title_en": "‍Wolverhampton Parish",
+    "title_uk": "Вулвергемптонська парафія",
+    "slug": "wolverhampton-parish",
+    "address": "Church of Saints Volodymyr & Olha, Merridale Street West",
+    "address_en": "Church of Saints Volodymyr & Olha, Merridale Street West",
+    "address_uk": "Церква Святих Володимира і Ольги, Меррідейл Стріт Вест",
+    "postcode": "WV6 0HE",
+    "parish_priest": "92e2050e-489c-44c0-a874-59f9afa3c5cb",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "65400fda-14f1-4fa7-bee5-848993bcec66",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "‍Leeds",
+    "title_en": "‍Leeds",
+    "title_uk": "Лідс",
+    "slug": "leeds",
+    "address": "St Augustine’s, Harehills Road",
+    "address_en": "St Augustine’s, Harehills Road",
+    "address_uk": "Сент-Августин, Harehills Road",
+    "postcode": "L58 5HR",
+    "parish_priest": "7a83d819-f064-4bbb-ad01-9bec932e0edb",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "684dff6f-6064-4653-a191-b2203b22e552",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "‍Leicester Parish",
+    "title_en": "‍Leicester Parish",
+    "title_uk": "Лестерська парафія",
+    "slug": "leicester-parish",
+    "address": "Church of Ascension of Our Lord, Fosse Road South",
+    "address_en": "Church of Ascension of Our Lord, Fosse Road South",
+    "address_uk": "Церква Вознесіння Господнього, Fosse Road South",
+    "postcode": "LE3 0QD",
+    "parish_priest": "92e2050e-489c-44c0-a874-59f9afa3c5cb",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "6a0af77e-9a8c-4052-b7d7-b23826970928",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "‍Bolton Parish",
+    "title_en": "‍Bolton Parish",
+    "title_uk": "Парафія Болтон",
+    "slug": "bolton-parish",
+    "address": "St Alban’s RC Church, Lark Hill",
+    "address_en": "St Alban’s RC Church, Lark Hill",
+    "address_uk": "Церква Святого Албана, Ларк-Гілл",
+    "postcode": "BB1 6HN",
+    "parish_priest": "fd2c5e10-0241-49b4-8edb-0ad0668baf41",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "6db5af8b-1919-45e1-9628-2be60c01796b",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "Huddersfield",
+    "title_en": "Huddersfield",
+    "title_uk": "Хаддерсфілд",
+    "slug": "huddersfield-9iiw",
+    "address": "7 Edgerton Road, Edgerton, Huddersfield, HD1 5RA",
+    "address_en": "7 Edgerton Road, Edgerton, Huddersfield, HD1 5RA",
+    "address_uk": "7 Edgerton Road, Edgerton, Huddersfield, HD1 5RA",
+    "postcode": "HD1 5RA",
+    "parish_priest": null,
+    "branch_chair": "da78ee37-7b22-4d15-b795-40327edaaacb",
+    "branch_secretary": null,
+    "other_details": "Ukrainian Catholic Church (UCC) in Huddersfield - email: bradford@ucc-gb.com\nSt Patrick's RC Church, 34 New North Road, Huddersfield, England, HD1 5JY\n\nTelephone: 07742 326304 (Fr Riy - visiting priest)",
+    "other_details_en": "Ukrainian Catholic Church (UCC) in Huddersfield - email: bradford@ucc-gb.com\nSt Patrick's RC Church, 34 New North Road, Huddersfield, England, HD1 5JY\n\nTelephone: 07742 326304 (Fr Riy - visiting priest)",
+    "other_details_uk": "Українська Католицька Церква (УКЦ) у Гаддерсфілді – електронна пошта: bradford@ucc-gb.com Церква Св. Патрика, 34 New North Road, Гаддерсфілд, Англія, HD1 5JY Телефон: 07742 326304 (о. Рій – візитний священик)",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "71d1a8b8-8bcb-4dff-9add-d1287585fc34",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "Derby Parish",
+    "title_en": "Derby Parish",
+    "title_uk": "Парафія Дербі",
+    "slug": "derby-parish",
+    "address": "Church of St Michael the Archangel, Cambridge Street, off Dairyhouse Road",
+    "address_en": "Church of St Michael the Archangel, Cambridge Street, off Dairyhouse Road",
+    "address_uk": "Церква Святого Архангела Михаїла, Кембридж-стріт, поруч з Дейріхаус-роуд",
+    "postcode": "DE3 8HP",
+    "parish_priest": "92e2050e-489c-44c0-a874-59f9afa3c5cb",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "78dbea39-16e9-47f5-bb00-d0be63c164f6",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "Ashton",
+    "title_en": "Ashton",
+    "title_uk": "Ештон",
+    "slug": "ashton",
+    "address": "215 Stockport Road",
+    "address_en": "215 Stockport Road",
+    "address_uk": "215 Стокпорт-роуд",
+    "postcode": "OL7 0NP",
+    "parish_priest": "fd2c5e10-0241-49b4-8edb-0ad0668baf41",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "7bac29f4-7cb6-4718-9b77-06baa94085ca",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "Leeds",
+    "title_en": "Leeds",
+    "title_uk": "Лідс",
+    "slug": "leeds-sou5",
+    "address": "5 Newton Grove, Leeds, West Yorkshire, United Kingdom, LS7 4HW",
+    "address_en": "5 Newton Grove, Leeds, West Yorkshire, United Kingdom, LS7 4HW",
+    "address_uk": "5 Newton Grove, Leeds, West Yorkshire, United Kingdom, LS7 4HW",
+    "postcode": "LS7 4HW",
+    "parish_priest": null,
+    "branch_chair": "371a79b0-5855-4eec-94ba-bf132630ed87",
+    "branch_secretary": null,
+    "other_details": "Ukrainian Catholic Church (UCC) in Leeds - email: bradford@ucc-gb.com\nSt Augustine RC Church, Harehills Rd., LS8 5HR\n\nTelephone: 07742 326304 (Fr Riy - visiting priest)",
+    "other_details_en": "Ukrainian Catholic Church (UCC) in Leeds - email: bradford@ucc-gb.com\nSt Augustine RC Church, Harehills Rd., LS8 5HR\n\nTelephone: 07742 326304 (Fr Riy - visiting priest)",
+    "other_details_uk": "Українська Католицька Церква (УКЦ) у Лідсі - електронна адреса: bradford@ucc-gb.com Церква Св. Августина RC, Harehills Rd., LS8 5HR Телефон: 07742 326304 (о. Рій - візитний священик)",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "871f2afb-595b-4511-8f04-d306fd3b0c00",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "Coventry Parish",
+    "title_en": "Coventry Parish",
+    "title_uk": "Парафія Ковентрі",
+    "slug": "coventry-parish",
+    "address": "Church of Saint Volodymyr the Great, Broad Street",
+    "address_en": "Church of Saint Volodymyr the Great, Broad Street",
+    "address_uk": "Церква Святого Володимира Великого, Широка вул",
+    "postcode": "CV6 5TR",
+    "parish_priest": "92e2050e-489c-44c0-a874-59f9afa3c5cb",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "87af7921-5aef-4b29-b001-c2d3bf5778a1",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "‍Bury",
+    "title_en": "‍Bury",
+    "title_uk": "Поховати",
+    "slug": "bury",
+    "address": "St Marie’s RC, Manchester Road",
+    "address_en": "St Marie’s RC, Manchester Road",
+    "address_uk": "St Marie&#39;s RC, Манчестер Роуд",
+    "postcode": "BL9 0DR",
+    "parish_priest": "fd2c5e10-0241-49b4-8edb-0ad0668baf41",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "8af940d9-db23-4321-be16-3d4b28aa30f0",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "High Wycombe",
+    "title_en": "High Wycombe",
+    "title_uk": "Хай Вікомб",
+    "slug": "high-wycombe",
+    "address": "St Patrick’s RC Church, 34 New North Road",
+    "address_en": "St Patrick’s RC Church, 34 New North Road",
+    "address_uk": "Церква Святого Патріка RC, 34 New North Road",
+    "postcode": "",
+    "parish_priest": "292264ae-e4b1-40ad-82c8-62288ce82773",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "8f1e6008-d5b1-42a7-b2c1-ab2b737199ca",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "‍Manchester Parish",
+    "title_en": "‍Manchester Parish",
+    "title_uk": "Манчестерська парафія",
+    "slug": "manchester-parish",
+    "address": "Church of the Dormition of the Mother of God, Bury Old Road, Salford",
+    "address_en": "Church of the Dormition of the Mother of God, Bury Old Road, Salford",
+    "address_uk": "Церква Успіння Пресвятої Богородиці, Бері Олд Роуд, Солфорд",
+    "postcode": "M7 4PX",
+    "parish_priest": "1980570c-9b50-4d17-9410-4096a5275448",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "954aaa61-a170-45a0-9e8e-6250003c75aa",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "Doncaster",
+    "title_en": "Doncaster",
+    "title_uk": "Донкастер",
+    "slug": "doncaster",
+    "address": "48 Beckett Rd, Wheatley, Doncaster, South Yorkshire, United Kingdom, DN2 4AD",
+    "address_en": "48 Beckett Rd, Wheatley, Doncaster, South Yorkshire, United Kingdom, DN2 4AD",
+    "address_uk": "48 Beckett Rd, Wheatley, Донкастер, Південний Йоркшир, Велика Британія, DN2 4AD",
+    "postcode": "DN2 4AD",
+    "parish_priest": null,
+    "branch_chair": "530065cc-a634-4cf7-bd12-fe150b6d6589",
+    "branch_secretary": "c188a96b-0989-46ef-85ad-8a7db073efdf",
+    "other_details": "Ukrainian Catholic Church (UCC) in Doncaster - email: bradford@ucc-gb.com\nSacred Heart RC Church, Warmsworth Road, Doncaster, England, DN4 0RR\n\nTelephone: 07742 326304 (Fr Riy)",
+    "other_details_en": "Ukrainian Catholic Church (UCC) in Doncaster - email: bradford@ucc-gb.com\nSacred Heart RC Church, Warmsworth Road, Doncaster, England, DN4 0RR\n\nTelephone: 07742 326304 (Fr Riy)",
+    "other_details_uk": "Українська Католицька Церква (УКЦ) у Донкастері - електронна адреса: bradford@ucc-gb.com Церква Пресвятого Серця RC, Warmsworth Road, Doncaster, England, DN4 0RR Телефон: 07742 326304 (Fr Riy)",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "9861fa7b-1b86-48c9-bd93-7aba45a6168b",
+  "fields": {
+    "division": "55d78761-d63e-4eb5-ac4e-3c5c05d2ad12",
+    "title": "Bohdan Matwijczuk",
+    "title_en": "Bohdan Matwijczuk",
+    "title_uk": "Богдан Матвійчук",
+    "slug": "bohdan-matwijczuk",
+    "address": "St. Mary the Protectress “Pokrova”, Stony Lane",
+    "address_en": "St. Mary the Protectress “Pokrova”, Stony Lane",
+    "address_uk": "Пресвятої Богородиці Покрови «Покрова», пров",
+    "postcode": "BD2 3HN",
+    "parish_priest": "d5de7027-84b8-41ff-aca2-6a972b030881",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "9957db91-d528-437e-98c3-eb71bd65b7d7",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "Ashton",
+    "title_en": "Ashton",
+    "title_uk": "Ештон",
+    "slug": "ashton-4jne",
+    "address": "215 Stockport Road, Ashton-U-Lyne, Lancashire, United Kingdom, OL7 0NP",
+    "address_en": "215 Stockport Road, Ashton-U-Lyne, Lancashire, United Kingdom, OL7 0NP",
+    "address_uk": "215 Stockport Road, Ashton-U-Lyne, Ланкашир, Велика Британія, OL7 0NP",
+    "postcode": "OL7 0NP",
+    "parish_priest": null,
+    "branch_chair": "e7322b28-1f3a-48d7-a841-1e409a6b1004",
+    "branch_secretary": "d4667ad4-9647-42a9-a350-8e6f5ff75dc8",
+    "other_details": "Ukrainian Catholic Church (UCC) in Ashton - email: manchester@ucc-gb.com\nChurch of the Dormition of Our Lady, Bury Old Road, Salford, England, M7 4PX\n\nTelephone: 07784 634136 (Fr Taras) and 07879 592902 (Fr Evhen)\nUkrainian Autocephalous Orthodox Church (UAOC) in Ashton - email: protopresbyterbohdan.matwijczuk@uaocingb.org.uk\nChurch of the Dormition of the Mother of God, 9-11 Plymouth Grove, Longsight, Manchester, England, M13 0AQ\n\nTelephone: 07957 236755 (Very Rev. Bohdan Matwijczuk)",
+    "other_details_en": "Ukrainian Catholic Church (UCC) in Ashton - email: manchester@ucc-gb.com\nChurch of the Dormition of Our Lady, Bury Old Road, Salford, England, M7 4PX\n\nTelephone: 07784 634136 (Fr Taras) and 07879 592902 (Fr Evhen)\nUkrainian Autocephalous Orthodox Church (UAOC) in Ashton - email: protopresbyterbohdan.matwijczuk@uaocingb.org.uk\nChurch of the Dormition of the Mother of God, 9-11 Plymouth Grove, Longsight, Manchester, England, M13 0AQ\n\nTelephone: 07957 236755 (Very Rev. Bohdan Matwijczuk)",
+    "other_details_uk": "Українська Католицька Церква (УКЦ) в Ештоні - email: manchester@ucc-gb.com Церква Успіння Пресвятої Богородиці, Bury Old Road, Salford, England, M7 4PX Телефон: 07784 634136 (о. Тарас) та 07879 592902 (о. Євген ) Українська Автокефальна Православна Церква (УАПЦ) в Ештоні - ел. пошта: protopresbyterbohdan.matwijczuk@uaocingb.org.uk Церква Успіння Пресвятої Богородиці, 9-11 Plymouth Grove, Longsight, Manchester, England, M13 0AQ Телефон: 07957 236755 (прот. Богдан Матвійчук)",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "9f1313f7-c6de-4cdd-a8bf-2ea905a592e4",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "Bury",
+    "title_en": "Bury",
+    "title_uk": "Поховати",
+    "slug": "bury-lt0a",
+    "address": "14 Openshaw Street, Bury, Lancashire, United Kingdom, BL9 7EH",
+    "address_en": "14 Openshaw Street, Bury, Lancashire, United Kingdom, BL9 7EH",
+    "address_uk": "14 Openshaw Street, Бері, Ланкашир, Велика Британія, BL9 7EH",
+    "postcode": "BL9 7EH",
+    "parish_priest": null,
+    "branch_chair": "b7cbb7a7-4c3b-46c1-a697-460226b18291",
+    "branch_secretary": null,
+    "other_details": "Ukrainian Catholic Church (UCC) in Bury\nSt Maries RC Church, Manchester Road, Bury, England, BL9 0DR\n\nTelephone: 07879 592902 (Fr Evhen)",
+    "other_details_en": "Ukrainian Catholic Church (UCC) in Bury\nSt Maries RC Church, Manchester Road, Bury, England, BL9 0DR\n\nTelephone: 07879 592902 (Fr Evhen)",
+    "other_details_uk": "Українська Католицька Церква (УКЦ) у Bury St Maries RC Church, Manchester Road, Bury, England, BL9 0DR Телефон: 07879 592902 (о. Євген)",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "a0a7fad5-e97d-431e-a938-714f2caf225b",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "‍London Parish",
+    "title_en": "‍London Parish",
+    "title_uk": "Лондонська парафія",
+    "slug": "london-parish",
+    "address": "Ukrainian Catholic Cathedral of the Holy Family, Duke Street",
+    "address_en": "Ukrainian Catholic Cathedral of the Holy Family, Duke Street",
+    "address_uk": "Український Католицький Собор Пресвятої Родини на вулиці Дюк",
+    "postcode": "W1K 5BQ",
+    "parish_priest": "9f0a3276-8233-4748-b04b-1faf995b4193",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "a0efbfcc-5cad-4f79-a2d1-7ba1210c3ee0",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "Huddersfield",
+    "title_en": "Huddersfield",
+    "title_uk": "Хаддерсфілд",
+    "slug": "huddersfield",
+    "address": "St Patrick’s RC Church, 34 New North Road",
+    "address_en": "St Patrick’s RC Church, 34 New North Road",
+    "address_uk": "Церква Святого Патріка RC, 34 New North Road",
+    "postcode": "HD1 5JY",
+    "parish_priest": "7a83d819-f064-4bbb-ad01-9bec932e0edb",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "a244c39c-da57-43ec-86ea-fc72446de076",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "Glasgow",
+    "title_en": "Glasgow",
+    "title_uk": "Глазго",
+    "slug": "glasgow",
+    "address": "",
+    "address_en": "",
+    "address_uk": "",
+    "postcode": "",
+    "parish_priest": null,
+    "branch_chair": "95f09a72-b90c-4e98-8520-506ead6e653f",
+    "branch_secretary": null,
+    "other_details": "",
+    "other_details_en": "",
+    "other_details_uk": "",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "a6a76400-aced-4694-927a-bb204d5e0783",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "Reading",
+    "title_en": "Reading",
+    "title_uk": "Читання",
+    "slug": "reading",
+    "address": "21 Sidmouth Street, Reading, United Kingdom, RG1 4QZ",
+    "address_en": "21 Sidmouth Street, Reading, United Kingdom, RG1 4QZ",
+    "address_uk": "21 Sidmouth Street, Reading, United Kingdom, RG1 4QZ",
+    "postcode": "RG1 4QZ",
+    "parish_priest": null,
+    "branch_chair": "c6170e24-ec71-4c68-a46f-62934d47613b",
+    "branch_secretary": null,
+    "other_details": "Ukrainian Catholic Church (UCC) in Reading\n\n\nTelephone: 07704 912576 (Fr Bohdan - visiting priest)",
+    "other_details_en": "Ukrainian Catholic Church (UCC) in Reading\n\n\nTelephone: 07704 912576 (Fr Bohdan - visiting priest)",
+    "other_details_uk": "Українська Католицька Церква (УКЦ) у Редінгу Телефон: 07704 912576 (о. Богдан - візитний священик)",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "b07317ce-132c-4326-84e9-437a38582d86",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "Stockport",
+    "title_en": "Stockport",
+    "title_uk": "Стокпорт",
+    "slug": "stockport-zfna",
+    "address": "185 Buxton Road, Stockport, United Kingdom, SK2 7AA",
+    "address_en": "185 Buxton Road, Stockport, United Kingdom, SK2 7AA",
+    "address_uk": "185 Buxton Road, Стокпорт, Велика Британія, SK2 7AA",
+    "postcode": "SK2 7AA",
+    "parish_priest": null,
+    "branch_chair": "20f9a3a1-fdd7-459a-92e6-26bc277802b0",
+    "branch_secretary": null,
+    "other_details": "Ukrainian Catholic Church (UCC) in Stockport - email: manchester@ucc-gb.com\nSt Joseph's RC Church, St Petersgate, England, SK1 1EJ\n\nTelephone: 07784 634136 (Fr Taras) and 07879 592902 (Fr Evhen)",
+    "other_details_en": "Ukrainian Catholic Church (UCC) in Stockport - email: manchester@ucc-gb.com\nSt Joseph's RC Church, St Petersgate, England, SK1 1EJ\n\nTelephone: 07784 634136 (Fr Taras) and 07879 592902 (Fr Evhen)",
+    "other_details_uk": "Українська Католицька Церква (УКЦ) у Стокпорті - електронна пошта: manchester@ucc-gb.com Церква Св. Йосифа, Сент-Пітерсґейт, Англія, SK1 1EJ Телефон: 07784 634136 (о. Тарас) та 07879 592902 (о. Євген)",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "b6a984fd-9440-424b-aa60-5e7fd351ffc5",
+  "fields": {
+    "division": "55d78761-d63e-4eb5-ac4e-3c5c05d2ad12",
+    "title": "‍London Parish",
+    "title_en": "‍London Parish",
+    "title_uk": "Лондонська парафія",
+    "slug": "london-parish-rek9",
+    "address": "Cathedral Church of the Holy Transfiguration of Our Lord, 1a Newton Avenue",
+    "address_en": "Cathedral Church of the Holy Transfiguration of Our Lord, 1a Newton Avenue",
+    "address_uk": "Собор Святого Преображення Господнього, Ньютон-авеню, 1а",
+    "postcode": "W3 8AJ",
+    "parish_priest": "a603977e-0d4d-4f0c-8365-2dd3a8ea2d8e",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "b7f19d30-1753-4c89-9fa8-e12b2d36f63d",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "Nottingham Parish",
+    "title_en": "Nottingham Parish",
+    "title_uk": "Ноттінгемська парафія",
+    "slug": "nottingham-parish",
+    "address": "Church of Our Lady of Perpetual Succour & St Albans, Bond Street, Sneinton, Nottingham",
+    "address_en": "Church of Our Lady of Perpetual Succour & St Albans, Bond Street, Sneinton, Nottingham",
+    "address_uk": "Церква Богоматері Вічної Помочі та Сент-Олбанс, Бонд-стріт, Снейнтон, Ноттінгем",
+    "postcode": "NG2 4QX",
+    "parish_priest": "92e2050e-489c-44c0-a874-59f9afa3c5cb",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "bac9a49d-87d1-4ab9-82e2-54887851663e",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "Rochdale",
+    "title_en": "Rochdale",
+    "title_uk": "Рочдейл",
+    "slug": "rochdale",
+    "address": "Elmfield, 15 Mere Street, Rochdale, United Kingdom, OL11 1HJ",
+    "address_en": "Elmfield, 15 Mere Street, Rochdale, United Kingdom, OL11 1HJ",
+    "address_uk": "Elmfield, 15 Mere Street, Rochdale, United Kingdom, OL11 1HJ",
+    "postcode": "L11 1HJ",
+    "parish_priest": null,
+    "branch_chair": "c677b5c9-3aa1-4ed4-91bc-a3aa142d0494",
+    "branch_secretary": null,
+    "other_details": "Ukrainian Catholic Church (UCC) in Rochdale\nChurch of St Mary and St James, Yorkshire St, Rochdale, England, OL16 1LA\n\nTelephone: 0161 627 0250\nUkrainian Autocephalous Orthodox Church (UAOC) in Rochdale - email: protopresbyterbohdan.matwijczuk@uaocingb.org.uk\nChurch of St Mary the Protectress, 39 Water Street, Rochdale, Lancs, OL16 1TL\n\nTelephone: 07957 236755 (Very Rev. Bohdan Matwijczuk)",
+    "other_details_en": "Ukrainian Catholic Church (UCC) in Rochdale\nChurch of St Mary and St James, Yorkshire St, Rochdale, England, OL16 1LA\n\nTelephone: 0161 627 0250\nUkrainian Autocephalous Orthodox Church (UAOC) in Rochdale - email: protopresbyterbohdan.matwijczuk@uaocingb.org.uk\nChurch of St Mary the Protectress, 39 Water Street, Rochdale, Lancs, OL16 1TL\n\nTelephone: 07957 236755 (Very Rev. Bohdan Matwijczuk)",
+    "other_details_uk": "Українська Католицька Церква (УКЦ) у Рочдейлі Церква Св. Марії та Св. Якова, Yorkshire St, Rochdale, England, OL16 1LA Тел.: 0161 627 0250 Українська Автокефальна Православна Церква (УАПЦ) у Рочдейлі - електронна адреса: protopresbyterbohdan.matwijczuk@uaocingb.org. uk Церква Святої Марії Покровительки, 39 Водяна Street, Rochdale, Lancs, OL16 1TL Телефон: 07957 236755 (прот. Богдан Матвійчук)",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "bdacd703-b3e7-4793-9d2e-13f58e396ac3",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "Waltham Cross",
+    "title_en": "Waltham Cross",
+    "title_uk": "Waltham Cross",
+    "slug": "waltham-cross",
+    "address": "28 Flamstead Road, Cheshunt, United Kingdom, EN8 0HT",
+    "address_en": "28 Flamstead Road, Cheshunt, United Kingdom, EN8 0HT",
+    "address_uk": "28 Flamstead Road, Cheshunt, United Kingdom, EN8 0HT",
+    "postcode": "EN8 0HT",
+    "parish_priest": null,
+    "branch_chair": "e3533a55-5bea-42b3-bd8e-56fa11213238",
+    "branch_secretary": null,
+    "other_details": "Ukrainian Catholic Church (UCC) in Waltham Cross\nChurch of Our Lady of the Immaculate Conception and St Joseph, 204 High St, Waltham Cross, Herts, England, EN8 7DP\n\nTelephone: 07704 912576 (Fr Bohdan - visiting priest)",
+    "other_details_en": "Ukrainian Catholic Church (UCC) in Waltham Cross\nChurch of Our Lady of the Immaculate Conception and St Joseph, 204 High St, Waltham Cross, Herts, England, EN8 7DP\n\nTelephone: 07704 912576 (Fr Bohdan - visiting priest)",
+    "other_details_uk": "Українська Католицька Церква (УКЦ) у Waltham Cross Церква Матері Божої Непорочного Зачаття і Святого Йосифа, 204 High St, Waltham Cross, Herts, England, EN8 7DP Телефон: 07704 912576 (о. Богдан - візитний священик)",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "c344cd14-d2bb-49ef-ad0e-efd88d1e6636",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "Bolton",
+    "title_en": "Bolton",
+    "title_uk": "Болтон",
+    "slug": "bolton",
+    "address": "99 Castle Street, Bolton, Lancashire, United Kingdom, BL2 1JP",
+    "address_en": "99 Castle Street, Bolton, Lancashire, United Kingdom, BL2 1JP",
+    "address_uk": "99 Castle Street, Болтон, Ланкашир, Велика Британія, BL2 1JP",
+    "postcode": "BL2 1JP",
+    "parish_priest": null,
+    "branch_chair": "9cf13992-0ec6-4fd3-bab3-0dbd1a425d66",
+    "branch_secretary": null,
+    "other_details": "Ukrainian Catholic Church (UCC) in Bolton\nChurch of All Saints, All Saints Street, Bolton, Lancs, England, BL1 2ER\n\nTelephone: 07879 592902 (Fr Evhen)",
+    "other_details_en": "Ukrainian Catholic Church (UCC) in Bolton\nChurch of All Saints, All Saints Street, Bolton, Lancs, England, BL1 2ER\n\nTelephone: 07879 592902 (Fr Evhen)",
+    "other_details_uk": "Українська Католицька Церква (УКЦ) у Болтоні Церква Всіх Святих, All Saints Street, Bolton, Lancs, England, BL1 2ER Телефон: 07879 592902 (о. Євген)",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "c9f2903e-26cd-46a7-b615-8ea6c56e4b9c",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "Keighley",
+    "title_en": "Keighley",
+    "title_uk": "Кейлі",
+    "slug": "keighley-qi7y",
+    "address": "9 Henry Street, Keighley, United Kingdom, BD21 3DR",
+    "address_en": "9 Henry Street, Keighley, United Kingdom, BD21 3DR",
+    "address_uk": "9 Henry Street, Keighley, United Kingdom, BD21 3DR",
+    "postcode": "D21 3DR",
+    "parish_priest": null,
+    "branch_chair": "1632f19f-1e29-46c7-9a4f-283f909d615c",
+    "branch_secretary": "d0659178-327d-422d-9469-414d7d50d00d",
+    "other_details": "",
+    "other_details_en": "",
+    "other_details_uk": "",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "d6d1a1df-cb72-4562-a40d-6dae7f103fed",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "London",
+    "title_en": "London",
+    "title_uk": "Лондон",
+    "slug": "london",
+    "address": "154 Holland Park Avenue, London, United Kingdom, W11 4UH",
+    "address_en": "154 Holland Park Avenue, London, United Kingdom, W11 4UH",
+    "address_uk": "154 Holland Park Avenue, London, United Kingdom, W11 4UH",
+    "postcode": "W11 4UH",
+    "parish_priest": null,
+    "branch_chair": "b28a0f0d-e454-4b62-9e7c-f277250da0a4",
+    "branch_secretary": "2c5d395d-fc3d-413d-8ff3-e08cb4ba8bfb",
+    "other_details": "Ukrainian Catholic Church (UCC) in London\nUkrainian Catholic Cathedral of The Holy Family in Exile, Duke St, Mayfair, London, England, W1K 5BQ\n\nTelephone: 020 7629 1534\nUkrainian Autocephalous Orthodox Church (UAOC) in London - email: cathedral@uaocingb.org.uk\nCathedral Church of the Holy Transfiguration, 1a Newton Avenue, Acton, London, England, W3 8AJ\n\nTelephone: 020 8992 4689, Mob. 07729 251283 (Fr Evhen Malaspina)",
+    "other_details_en": "Ukrainian Catholic Church (UCC) in London\nUkrainian Catholic Cathedral of The Holy Family in Exile, Duke St, Mayfair, London, England, W1K 5BQ\n\nTelephone: 020 7629 1534\nUkrainian Autocephalous Orthodox Church (UAOC) in London - email: cathedral@uaocingb.org.uk\nCathedral Church of the Holy Transfiguration, 1a Newton Avenue, Acton, London, England, W3 8AJ\n\nTelephone: 020 8992 4689, Mob. 07729 251283 (Fr Evhen Malaspina)",
+    "other_details_uk": "Українська Католицька Церква (УКЦ) у Лондоні Український Католицький Собор Пресвятої Родини в Еміграції, Duke St, Mayfair, London, England, W1K 5BQ Телефон: 020 7629 1534 Українська Автокефальна Православна Церква (УАПЦ) у Лондоні - email: cathedral@uaocingb. org.uk Преображенська кафедральна церква, Ньютон-авеню, 1а, Актон, Лондон, Англія, W3 8AJ Телефон: 020 8992 4689, моб. 07729 251283 (о. Євген Маласпіна)",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "e9dbbf5c-7c90-4965-b4df-269474780f1a",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "‍Oldham Parish",
+    "title_en": "‍Oldham Parish",
+    "title_uk": "Олдхемська парафія",
+    "slug": "oldham-parish",
+    "address": "Church of Saints Peter & Paul and All Saints, Chadderton Way, Northmoor, Oldham",
+    "address_en": "Church of Saints Peter & Paul and All Saints, Chadderton Way, Northmoor, Oldham",
+    "address_uk": "Церква Святих Петра і Павла та Всіх Святих, Chadderton Way, Northmoor, Oldham",
+    "postcode": "OL9 6DH",
+    "parish_priest": "e91187a0-9471-45ea-ba0f-3e6a1bcf3b72",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "ed803838-8c1d-4611-8f14-f2152cef6073",
+  "fields": {
+    "division": "e95cb681-d9de-4a60-ac40-4ef2281bb34f",
+    "title": "Gloucester Parish",
+    "title_en": "Gloucester Parish",
+    "title_uk": "Глостерська парафія",
+    "slug": "gloucester-parish",
+    "address": "Church of the Good Shepherd, Derby Road",
+    "address_en": "Church of the Good Shepherd, Derby Road",
+    "address_uk": "Церква Доброго Пастиря, Дербі Роуд",
+    "postcode": "GL1 4AE",
+    "parish_priest": "db89c55c-385b-4197-b8c3-6146480a1ec7",
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": null,
+    "other_details_en": null,
+    "other_details_uk": null,
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "eff02e2d-cb95-4795-9d03-5f8c5a76e3df",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "Wolverhampton",
+    "title_en": "Wolverhampton",
+    "title_uk": "Вулвергемптон",
+    "slug": "wolverhampton",
+    "address": "35 Merridale Street West, Wolverhampton, United Kingdom, WV3 0RJ",
+    "address_en": "35 Merridale Street West, Wolverhampton, United Kingdom, WV3 0RJ",
+    "address_uk": "35 Merridale Street West, Wolverhampton, United Kingdom, WV3 0RJ",
+    "postcode": "WV3 0RJ",
+    "parish_priest": null,
+    "branch_chair": "f730910e-b0e3-43e4-8a71-4bcde84ab4c6",
+    "branch_secretary": null,
+    "other_details": "Ukrainian Catholic Church (UCC) in Wolverhampton - email: coventry@ucc-gb.com\nChurch of Saints Volodymyr and Olha, Merridale St West, Wolverhampton, England, WV3 0RJ\n\nTelephone: 07870 578883 (Fr David). Admin enquiries: 07748 044739",
+    "other_details_en": "Ukrainian Catholic Church (UCC) in Wolverhampton - email: coventry@ucc-gb.com\nChurch of Saints Volodymyr and Olha, Merridale St West, Wolverhampton, England, WV3 0RJ\n\nTelephone: 07870 578883 (Fr David). Admin enquiries: 07748 044739",
+    "other_details_uk": "Українська Католицька Церква (УКЦ) у Вулвергемптоні - email: coventry@ucc-gb.com Церква Святих Володимира та Ольги, Merridale St West, Wolverhampton, England, WV3 0RJ Телефон: 07870 578883 (о. Давид). Запити адмінів: 07748 044739",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.branch",
+  "pk": "fed0c764-4673-4965-94f1-11e32a7921d2",
+  "fields": {
+    "division": "9b83e8d3-b46b-4820-809b-f5ed45a08c87",
+    "title": "Edinburgh",
+    "title_en": "Edinburgh",
+    "title_uk": "Единбург",
+    "slug": "edinburgh",
+    "address": "14 Royal Terrace, Edinburgh, EH7 5AB",
+    "address_en": "14 Royal Terrace, Edinburgh, EH7 5AB",
+    "address_uk": "14 Royal Terrace, Единбург, EH7 5AB",
+    "postcode": "EH7 5AB",
+    "parish_priest": null,
+    "branch_chair": null,
+    "branch_secretary": null,
+    "other_details": "Ukrainian Catholic Church (UCC) in Edinburgh\nChurch of Our Lady of Pochayiv and St Andrew, 24 Dalmeny Street, Leith, Edinburgh, EH6 8RG\n\nTelephone: Parish priest - Father Vasylj Krenj - 07432 418056",
+    "other_details_en": "Ukrainian Catholic Church (UCC) in Edinburgh\nChurch of Our Lady of Pochayiv and St Andrew, 24 Dalmeny Street, Leith, Edinburgh, EH6 8RG\n\nTelephone: Parish priest - Father Vasylj Krenj - 07432 418056",
+    "other_details_uk": "Українська Католицька Церква (УКЦ) в Единбурзі Церква Матері Божої Почаївської та Св. Андрія, 24 Dalmeny Street, Leith, Edinburgh, EH6 8RG Телефон: Парох - отець Василь Крень - 07432 418056",
+    "url": null,
+    "status": "HD"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "1632f19f-1e29-46c7-9a4f-283f909d615c",
+  "fields": {
+    "first_name": "Stefan",
+    "first_name_en": "Stefan",
+    "first_name_uk": "Стефан",
+    "last_name": "Pryimuk",
+    "last_name_en": "Pryimuk",
+    "last_name_uk": "Pryimuk"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "1980570c-9b50-4d17-9410-4096a5275448",
+  "fields": {
+    "first_name": "Bury",
+    "first_name_en": "Bury",
+    "first_name_uk": "Поховати",
+    "last_name": "Old Road",
+    "last_name_en": "Old Road",
+    "last_name_uk": "Стара дорога"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "20f9a3a1-fdd7-459a-92e6-26bc277802b0",
+  "fields": {
+    "first_name": "Alexandra",
+    "first_name_en": "Alexandra",
+    "first_name_uk": "Олександра",
+    "last_name": "Polyuzyn",
+    "last_name_en": "Polyuzyn",
+    "last_name_uk": "Polyuzyn"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "26d7334c-84a5-4d22-af49-95713863634b",
+  "fields": {
+    "first_name": "Orysia",
+    "first_name_en": "Orysia",
+    "first_name_uk": "Orysia",
+    "last_name": "Chymera",
+    "last_name_en": "Chymera",
+    "last_name_uk": "Візьміть"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "292264ae-e4b1-40ad-82c8-62288ce82773",
+  "fields": {
+    "first_name": "Andrii",
+    "first_name_en": "Andrii",
+    "first_name_uk": "Андрій",
+    "last_name": "Malysh",
+    "last_name_en": "Malysh",
+    "last_name_uk": "дитина"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "2c5d395d-fc3d-413d-8ff3-e08cb4ba8bfb",
+  "fields": {
+    "first_name": "Lessia",
+    "first_name_en": "Lessia",
+    "first_name_uk": "Леся",
+    "last_name": "Djakowska",
+    "last_name_en": "Djakowska",
+    "last_name_uk": "Дяковська"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "371a79b0-5855-4eec-94ba-bf132630ed87",
+  "fields": {
+    "first_name": "Olga",
+    "first_name_en": "Olga",
+    "first_name_uk": "Ольга",
+    "last_name": "Callaghan",
+    "last_name_en": "Callaghan",
+    "last_name_uk": "Каллаган"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "42bbb91c-b07c-47ea-8cab-4fc18b01b3c1",
+  "fields": {
+    "first_name": "Taras",
+    "first_name_en": "Taras",
+    "first_name_uk": "Тераса",
+    "last_name": "Khomych",
+    "last_name_en": "Khomych",
+    "last_name_uk": "Khomych"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "489b8023-63c4-4a6e-a3a6-9a154979caad",
+  "fields": {
+    "first_name": "Bob",
+    "first_name_en": "Bob",
+    "first_name_uk": "Боб",
+    "last_name": "Sopel",
+    "last_name_en": "Sopel",
+    "last_name_uk": "Sopel"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "4bd28136-3c1e-4ff2-a349-fdf7d9cf6faf",
+  "fields": {
+    "first_name": "Marian",
+    "first_name_en": "Marian",
+    "first_name_uk": "Мар&#39;ян",
+    "last_name": "Kosmirak",
+    "last_name_en": "Kosmirak",
+    "last_name_uk": "Космірак"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "4d7381b1-a03d-4ede-9a1f-aa9eabefae97",
+  "fields": {
+    "first_name": "Michael",
+    "first_name_en": "Michael",
+    "first_name_uk": "Майкл",
+    "last_name": "Holod",
+    "last_name_en": "Holod",
+    "last_name_uk": "Holod"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "530065cc-a634-4cf7-bd12-fe150b6d6589",
+  "fields": {
+    "first_name": "Paul",
+    "first_name_en": "Paul",
+    "first_name_uk": "Павло",
+    "last_name": "Iwanyckyj",
+    "last_name_en": "Iwanyckyj",
+    "last_name_uk": "Іваницький"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "536624d4-1716-43ef-96dc-571a29cf5495",
+  "fields": {
+    "first_name": "Iryna",
+    "first_name_en": "Iryna",
+    "first_name_uk": "Iryna",
+    "last_name": "Dobrowolskyj",
+    "last_name_en": "Dobrowolskyj",
+    "last_name_uk": "Добровольський"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "68d14a7b-1034-4026-ab19-007ca40b3875",
+  "fields": {
+    "first_name": "Bohdan",
+    "first_name_en": "Bohdan",
+    "first_name_uk": "Богдан",
+    "last_name": "Bilunyk",
+    "last_name_en": "Bilunyk",
+    "last_name_uk": "Білуник"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "7a83d819-f064-4bbb-ad01-9bec932e0edb",
+  "fields": {
+    "first_name": "Yaroslav",
+    "first_name_en": "Yaroslav",
+    "first_name_uk": "Ярослав",
+    "last_name": "Riy",
+    "last_name_en": "Riy",
+    "last_name_uk": "Рій"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "92e2050e-489c-44c0-a874-59f9afa3c5cb",
+  "fields": {
+    "first_name": "Davyd",
+    "first_name_en": "Davyd",
+    "first_name_uk": "Davyd",
+    "last_name": "Senyk",
+    "last_name_en": "Senyk",
+    "last_name_uk": "Сеник"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "95f09a72-b90c-4e98-8520-506ead6e653f",
+  "fields": {
+    "first_name": "Yevhen",
+    "first_name_en": "Yevhen",
+    "first_name_uk": "Yevhen",
+    "last_name": "Gorash",
+    "last_name_en": "Gorash",
+    "last_name_uk": "Gorash"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "9cf13992-0ec6-4fd3-bab3-0dbd1a425d66",
+  "fields": {
+    "first_name": "Yaroslaw",
+    "first_name_en": "Yaroslaw",
+    "first_name_uk": "Yaroslaw",
+    "last_name": "Tymchyshyn",
+    "last_name_en": "Tymchyshyn",
+    "last_name_uk": "Тимчишин"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "9e507b2b-79fd-4d44-b7c6-49939a822bc9",
+  "fields": {
+    "first_name": "Orysia",
+    "first_name_en": "Orysia",
+    "first_name_uk": "Orysia",
+    "last_name": "Fletcher and Volodymyr Szlachetko",
+    "last_name_en": "Fletcher and Volodymyr Szlachetko",
+    "last_name_uk": "Fletcher and Volodymyr Szlachetko"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "9f0a3276-8233-4748-b04b-1faf995b4193",
+  "fields": {
+    "first_name": "Mykola",
+    "first_name_en": "Mykola",
+    "first_name_uk": "Mykola",
+    "last_name": "Matwijiwskyj",
+    "last_name_en": "Matwijiwskyj",
+    "last_name_uk": "Матвіївський"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "a603977e-0d4d-4f0c-8365-2dd3a8ea2d8e",
+  "fields": {
+    "first_name": "Evhen",
+    "first_name_en": "Evhen",
+    "first_name_uk": "Євген",
+    "last_name": "Malaspina",
+    "last_name_en": "Malaspina",
+    "last_name_uk": "Маласпіна"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "b28a0f0d-e454-4b62-9e7c-f277250da0a4",
+  "fields": {
+    "first_name": "Wolodymyr",
+    "first_name_en": "Wolodymyr",
+    "first_name_uk": "Володимир",
+    "last_name": "Pawluk",
+    "last_name_en": "Pawluk",
+    "last_name_uk": "Павлюк"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "b7cbb7a7-4c3b-46c1-a697-460226b18291",
+  "fields": {
+    "first_name": "Stefan",
+    "first_name_en": "Stefan",
+    "first_name_uk": "Стефан",
+    "last_name": "Harhaj",
+    "last_name_en": "Harhaj",
+    "last_name_uk": "Хархадж"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "c188a96b-0989-46ef-85ad-8a7db073efdf",
+  "fields": {
+    "first_name": "Ewhen",
+    "first_name_en": "Ewhen",
+    "first_name_uk": "Ewhen",
+    "last_name": "Bilous",
+    "last_name_en": "Bilous",
+    "last_name_uk": "Білоус"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "c6170e24-ec71-4c68-a46f-62934d47613b",
+  "fields": {
+    "first_name": "Antonio",
+    "first_name_en": "Antonio",
+    "first_name_uk": "Антоніо",
+    "last_name": "Gresko",
+    "last_name_en": "Gresko",
+    "last_name_uk": "помилка"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "c677b5c9-3aa1-4ed4-91bc-a3aa142d0494",
+  "fields": {
+    "first_name": "Olya",
+    "first_name_en": "Olya",
+    "first_name_uk": "Olya",
+    "last_name": "Kurtianyk",
+    "last_name_en": "Kurtianyk",
+    "last_name_uk": "Kurtianyk"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "d0659178-327d-422d-9469-414d7d50d00d",
+  "fields": {
+    "first_name": "Stepan",
+    "first_name_en": "Stepan",
+    "first_name_uk": "Степан",
+    "last_name": "Cyhanko",
+    "last_name_en": "Cyhanko",
+    "last_name_uk": "Циганко"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "d4667ad4-9647-42a9-a350-8e6f5ff75dc8",
+  "fields": {
+    "first_name": "Petro",
+    "first_name_en": "Petro",
+    "first_name_uk": "Петро",
+    "last_name": "Rewko",
+    "last_name_en": "Rewko",
+    "last_name_uk": "Rewko"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "d5de7027-84b8-41ff-aca2-6a972b030881",
+  "fields": {
+    "first_name": "Bohdan",
+    "first_name_en": "Bohdan",
+    "first_name_uk": "Богдан",
+    "last_name": "Matwijczuk",
+    "last_name_en": "Matwijczuk",
+    "last_name_uk": "Матвійчук"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "da78ee37-7b22-4d15-b795-40327edaaacb",
+  "fields": {
+    "first_name": "John",
+    "first_name_en": "John",
+    "first_name_uk": "Джон",
+    "last_name": "Kybaluk",
+    "last_name_en": "Kybaluk",
+    "last_name_uk": "Кибалюк"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "db89c55c-385b-4197-b8c3-6146480a1ec7",
+  "fields": {
+    "first_name": "Liubomyr",
+    "first_name_en": "Liubomyr",
+    "first_name_uk": "Liubomyr",
+    "last_name": "Pidulskyj",
+    "last_name_en": "Pidulskyj",
+    "last_name_uk": "Підульський"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "de137481-28fe-43d6-a642-2fae85054347",
+  "fields": {
+    "first_name": "Taras",
+    "first_name_en": "Taras",
+    "first_name_uk": "Тераса",
+    "last_name": "Perehinec",
+    "last_name_en": "Perehinec",
+    "last_name_uk": "Prehenc"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "e304f7eb-00dc-4800-8e95-394c26c2dc4e",
+  "fields": {
+    "first_name": "Andriy",
+    "first_name_en": "Andriy",
+    "first_name_uk": "Andriy",
+    "last_name": "Bulata",
+    "last_name_en": "Bulata",
+    "last_name_uk": "Булаата"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "e3533a55-5bea-42b3-bd8e-56fa11213238",
+  "fields": {
+    "first_name": "Roman",
+    "first_name_en": "Roman",
+    "first_name_uk": "Роман",
+    "last_name": "Pasika",
+    "last_name_en": "Pasika",
+    "last_name_uk": "Великдень"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "e7322b28-1f3a-48d7-a841-1e409a6b1004",
+  "fields": {
+    "first_name": "Stefan",
+    "first_name_en": "Stefan",
+    "first_name_uk": "Стефан",
+    "last_name": "Wolosiansky",
+    "last_name_en": "Wolosiansky",
+    "last_name_uk": "Волосянський"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "e7391e78-0722-4c72-9922-08de8062be8f",
+  "fields": {
+    "first_name": "Mychaylo",
+    "first_name_en": "Mychaylo",
+    "first_name_uk": "Mychaylo",
+    "last_name": "Ohal",
+    "last_name_en": "Ohal",
+    "last_name_uk": "Охал"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "e91187a0-9471-45ea-ba0f-3e6a1bcf3b72",
+  "fields": {
+    "first_name": "Benjamin",
+    "first_name_en": "Benjamin",
+    "first_name_uk": "Бенджамін",
+    "last_name": "Lysykanych",
+    "last_name_en": "Lysykanych",
+    "last_name_uk": "Лисиканич"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "eeb0923a-3088-45bf-b19f-3e96efbba77a",
+  "fields": {
+    "first_name": "Bohdan",
+    "first_name_en": "Bohdan",
+    "first_name_uk": "Богдан",
+    "last_name": "Prychidnyj",
+    "last_name_en": "Prychidnyj",
+    "last_name_uk": "Прихідний"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "f730910e-b0e3-43e4-8a71-4bcde84ab4c6",
+  "fields": {
+    "first_name": "Andrew",
+    "first_name_en": "Andrew",
+    "first_name_uk": "Андрій",
+    "last_name": "Duda",
+    "last_name_en": "Duda",
+    "last_name_uk": "Сумнів"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "fbc1f323-e51a-4467-881c-1ec0e8184497",
+  "fields": {
+    "first_name": "Loretta",
+    "first_name_en": "Loretta",
+    "first_name_uk": "Лоретта",
+    "last_name": "Cooper",
+    "last_name_en": "Cooper",
+    "last_name_uk": "Купер"
+  }
+},
+{
+  "model": "locations.person",
+  "pk": "fd2c5e10-0241-49b4-8edb-0ad0668baf41",
+  "fields": {
+    "first_name": "Evhen",
+    "first_name_en": "Evhen",
+    "first_name_uk": "Євген",
+    "last_name": "Nebesniak",
+    "last_name_en": "Nebesniak",
+    "last_name_uk": "Дівчата"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "03bd2e17-e88b-42eb-9af5-c658bf9e1a6b",
+  "fields": {
+    "branch": "116d5aff-78c7-458e-801b-1f067fff504a",
+    "number": "+44 7742 326304"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "071a4d39-6519-424b-938d-edcc90c34cc1",
+  "fields": {
+    "branch": "1ce2749e-8a47-4421-81c2-a412261d64b4",
+    "number": "+44 7957 236755"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "1147e356-76ab-4229-b282-199502d07bdb",
+  "fields": {
+    "branch": "491d7b4d-67f4-4821-b98d-8dc2387745d0",
+    "number": "+44 161 633 5636"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "17605186-2d9c-4910-9a68-dd6840bd04c5",
+  "fields": {
+    "branch": "b6a984fd-9440-424b-aa60-5e7fd351ffc5",
+    "number": "+44 7729 251283"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "17ff6636-9319-493a-bb2a-9014c8f3d455",
+  "fields": {
+    "branch": "0d2165c2-0cbe-430e-b74a-51b7ba8049e5",
+    "number": "+44 7726 925350"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "256b7921-581c-43af-a61a-3a08b7dfaa68",
+  "fields": {
+    "branch": "9f1313f7-c6de-4cdd-a8bf-2ea905a592e4",
+    "number": "+44 161 764 6713"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "25f33a72-7735-4349-8106-d19f75620c5c",
+  "fields": {
+    "branch": "6a0af77e-9a8c-4052-b7d7-b23826970928",
+    "number": "+44 7879 592902"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "27b6b7fb-9a40-47d6-811e-20cf6b4e0d28",
+  "fields": {
+    "branch": "a0a7fad5-e97d-431e-a938-714f2caf225b",
+    "number": "+44 7952 180950"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "28cf01ca-9d67-4055-8dc3-14382804bd4e",
+  "fields": {
+    "branch": "46b57ac4-eb2e-4658-8931-e8f6240afc33",
+    "number": "+44 1274 573577"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "2fd5a8c8-f878-49f1-bef7-a10535639732",
+  "fields": {
+    "branch": "1091c70e-b897-47b5-8b93-3984e25eb1d4",
+    "number": "+44 161 633 5636"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "369f088d-508c-41d9-93cf-db9ef26c00af",
+  "fields": {
+    "branch": "1ec01c7c-23ac-4fa7-9ae9-8203b08f9ed4",
+    "number": "+44 7957 236755"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "36e5b6eb-7294-4356-8aef-c2b268b782bf",
+  "fields": {
+    "branch": "102a214f-5a30-452e-b7dd-2d27d8d14101",
+    "number": "+44 7952 180950"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "458885b1-2a0a-4e9f-af45-dd65ae2dcf42",
+  "fields": {
+    "branch": "6db5af8b-1919-45e1-9628-2be60c01796b",
+    "number": "+44 1484 423278"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "48d9dae8-c727-4c5b-b294-b965910126da",
+  "fields": {
+    "branch": "388a0f09-5571-484a-8c4b-0ff1eb825320",
+    "number": "+44 7742 326304"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "498ecb71-0ce4-41f8-91e1-bca36f637ca6",
+  "fields": {
+    "branch": "a6a76400-aced-4694-927a-bb204d5e0783",
+    "number": "+44 118 327 1549"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "49920df0-f490-45ee-b4d6-554bb8ecb250",
+  "fields": {
+    "branch": "8f1e6008-d5b1-42a7-b2c1-ab2b737199ca",
+    "number": "+44 7784 634136"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "4a2722a8-2dba-4c60-bd1e-5d795dbb3405",
+  "fields": {
+    "branch": "2826c730-756e-4808-9cf7-4d23ce7e66d8",
+    "number": "+44 7847 576273"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "5343c628-c9c1-4a44-b792-87c74601b18c",
+  "fields": {
+    "branch": "e9dbbf5c-7c90-4965-b4df-269474780f1a",
+    "number": "+44 161 633 5636"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "65b81016-c52c-433b-a556-2b4bb2ef8efe",
+  "fields": {
+    "branch": "684dff6f-6064-4653-a191-b2203b22e552",
+    "number": "+44 7870 578883"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "69566f6c-d5a3-428a-83e2-7fc8a2f945a1",
+  "fields": {
+    "branch": "65400fda-14f1-4fa7-bee5-848993bcec66",
+    "number": "+44 7742 326304"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "6a8a2ec4-163f-461a-b090-31aba093fbcf",
+  "fields": {
+    "branch": "87af7921-5aef-4b29-b001-c2d3bf5778a1",
+    "number": "+44 7879 592902"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "83746643-df06-40f3-9406-d632ab9485fe",
+  "fields": {
+    "branch": "a0efbfcc-5cad-4f79-a2d1-7ba1210c3ee0",
+    "number": "+44 7742 326304"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "8913dd56-fd44-45a2-8c74-85846fe56597",
+  "fields": {
+    "branch": "71d1a8b8-8bcb-4dff-9add-d1287585fc34",
+    "number": "+44 7870 578883"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "891e0f13-1a82-456a-8c9e-f6b77570fa7e",
+  "fields": {
+    "branch": "288a9c56-b892-48af-8a24-4d9b28826082",
+    "number": "+44 7784 634136"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "8d6648f2-91d5-41e4-9e64-b88a226e550a",
+  "fields": {
+    "branch": "4af1a998-4ff9-4aef-a648-676519fc34b9",
+    "number": "+44 7704 912576"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "8dd0ddb4-c779-433c-a892-43b7ed4daf32",
+  "fields": {
+    "branch": "b07317ce-132c-4326-84e9-437a38582d86",
+    "number": "+44 161 483 7826"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "90c3a7ca-8193-4151-bc36-ac05bb6d8043",
+  "fields": {
+    "branch": "21e4720f-0703-4971-92aa-b182f56aef25",
+    "number": "+44 7432 418056"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "9542f001-deea-44b7-aa7e-e2ecf4ab6560",
+  "fields": {
+    "branch": "7bac29f4-7cb6-4718-9b77-06baa94085ca",
+    "number": "+44 113 262 7063"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "95d0c423-20c0-44b1-ac63-acbf8729ac5f",
+  "fields": {
+    "branch": "9957db91-d528-437e-98c3-eb71bd65b7d7",
+    "number": "+44 161 330 7245"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "976bdbf0-590a-4a81-9e31-304b8dc357d1",
+  "fields": {
+    "branch": "0cd9a336-d7de-4710-a02e-491b7ff58fe9",
+    "number": "+44 1582 611049"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "a464023a-a384-4fb1-a8f3-1f501bb7e2f3",
+  "fields": {
+    "branch": "b7f19d30-1753-4c89-9fa8-e12b2d36f63d",
+    "number": "+44 7870 578883"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "acd0f7cd-dd5b-4ea0-a714-1dee3fc08015",
+  "fields": {
+    "branch": "954aaa61-a170-45a0-9e8e-6250003c75aa",
+    "number": "+44 1302 537057"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "b58be7a8-8af6-45a9-ae8d-1bf4dd512f8a",
+  "fields": {
+    "branch": "167f13fc-c12c-4bd2-a022-90946a3c0cf1",
+    "number": "+44 7879 592902"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "bd367787-986c-45c0-86d8-670941b82f5d",
+  "fields": {
+    "branch": "ed803838-8c1d-4611-8f14-f2152cef6073",
+    "number": "+44 7533 123310"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "bdd7a842-98e6-458b-854f-4be9ff258150",
+  "fields": {
+    "branch": "78dbea39-16e9-47f5-bb00-d0be63c164f6",
+    "number": "+44 7879 592902"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "c40a6bc9-5107-4f87-9552-d511a73cfc58",
+  "fields": {
+    "branch": "1da25096-7a3b-4cb7-92ef-7b7c6ceaa6db",
+    "number": "+44 7952 180950"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "c92c20ea-d971-453c-b0cc-4c7f34adfdb1",
+  "fields": {
+    "branch": "28c0ccee-c7ca-4da0-bb8a-119ca59c9fc3",
+    "number": "+44 7879 592902"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "c930ebf4-4d55-42e1-afbe-956892ad5ec4",
+  "fields": {
+    "branch": "20ce9fef-4ba6-4739-923c-ce558c3293e3",
+    "number": "+44 7784 634136"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "cb56684a-50a1-4d70-b148-406e844180a1",
+  "fields": {
+    "branch": "2ab5d5d7-e1c8-4e99-9329-01fbf4edd78c",
+    "number": "+44 7957 236755"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "d81daf89-e357-48b5-807e-03f50a6d64d1",
+  "fields": {
+    "branch": "1eb4147c-db13-4a5d-b76a-3a851afcb4d7",
+    "number": "+44 161 633 5636"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "dbc12339-ec96-4b76-ad22-9080e64bc8a2",
+  "fields": {
+    "branch": "5baa267c-0e54-4772-b1ef-76537f246396",
+    "number": "+44 7870 578883"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "dcbbe1cc-5736-40ef-b423-ab70013eef69",
+  "fields": {
+    "branch": "c344cd14-d2bb-49ef-ad0e-efd88d1e6636",
+    "number": "+44 7914 021511"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "e13ec29f-eec6-42ba-b354-e028e1f3da73",
+  "fields": {
+    "branch": "bac9a49d-87d1-4ab9-82e2-54887851663e",
+    "number": "+44 1706 646134"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "e550301c-37c4-4cdd-9a35-a1d8c37fcab1",
+  "fields": {
+    "branch": "1057501d-4047-4d07-bedd-b9c221d38e93",
+    "number": "+44 161 205 6692"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "eaf65f1d-bbd6-4ea3-a02d-23eaf7791be2",
+  "fields": {
+    "branch": "bdacd703-b3e7-4793-9d2e-13f58e396ac3",
+    "number": "+44 1992 621288"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "ee676a95-1aa0-4785-a656-ae43cbca7731",
+  "fields": {
+    "branch": "33a8f5ad-4d44-4d40-b069-67b083d47ce3",
+    "number": "+44 7952 180950"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "ef4b62b1-d53f-4770-ac3c-34925b08f758",
+  "fields": {
+    "branch": "8af940d9-db23-4321-be16-3d4b28aa30f0",
+    "number": "+44 7952 180950"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "f8d50e97-0e4d-452a-843d-c443baa653a9",
+  "fields": {
+    "branch": "9861fa7b-1b86-48c9-bd93-7aba45a6168b",
+    "number": "+44 7957 236755"
+  }
+},
+{
+  "model": "locations.phone",
+  "pk": "fae98671-8430-43e3-98b1-61535d203c30",
+  "fields": {
+    "branch": "46b3bc67-6bca-42c7-9c61-69eb1168caa3",
+    "number": "+44 115 962 0300"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "044dddfe-3ff8-4d10-bfcd-c9a825b5ec21",
+  "fields": {
+    "branch": "5baa267c-0e54-4772-b1ef-76537f246396",
+    "email": "nottingham@ucc-gb.com"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "145893dd-d352-4712-875f-4dd82a0e6999",
+  "fields": {
+    "branch": "20ce9fef-4ba6-4739-923c-ce558c3293e3",
+    "email": "manchester@ucc-gb.com"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "1ca27f45-cf0d-4679-ba89-e7406827a7be",
+  "fields": {
+    "branch": "1c1323d0-dce2-4afc-a087-5b3d3ec913f0",
+    "email": "gloucester@augb.co.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "23967c95-071b-44c5-8b02-3ee268598ee6",
+  "fields": {
+    "branch": "3774e700-64de-4f80-8fa3-925f41e4aca3",
+    "email": "leicester@augb.co.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "27848270-c11a-4f29-9a55-a94a6c47c8ab",
+  "fields": {
+    "branch": "0d2165c2-0cbe-430e-b74a-51b7ba8049e5",
+    "email": "derby@augb.co.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "39d374d7-30fa-469c-b286-8dc45023c6ae",
+  "fields": {
+    "branch": "eff02e2d-cb95-4795-9d03-5f8c5a76e3df",
+    "email": "wolverhampton@augb.co.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "3b97b13c-d7d3-43fa-9ae2-9b38f0a884ed",
+  "fields": {
+    "branch": "a6a76400-aced-4694-927a-bb204d5e0783",
+    "email": "http://www.rucc.org.uk/"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "40174fc6-fa05-4b86-a844-10a1c2bc286e",
+  "fields": {
+    "branch": "2ab5d5d7-e1c8-4e99-9329-01fbf4edd78c",
+    "email": "protopresbyterbohdan.matwijczuk@uaocingb.org.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "42437d14-6afe-445e-9f01-9d13b558294a",
+  "fields": {
+    "branch": "684dff6f-6064-4653-a191-b2203b22e552",
+    "email": "nottingham@ucc-gb.com"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "4546089f-4160-4507-8e3a-82d1dc022bb5",
+  "fields": {
+    "branch": "0fad55a6-b736-4c34-bfc6-02b97551a8c3",
+    "email": "halifax@augb.co.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "47ce3cbb-a170-4fa9-a4eb-e75a1c9fe801",
+  "fields": {
+    "branch": "78dbea39-16e9-47f5-bb00-d0be63c164f6",
+    "email": "bolton@ucc-gb.com"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "4955e1e0-27bd-4df5-a676-f6aa52f16cec",
+  "fields": {
+    "branch": "871f2afb-595b-4511-8f04-d306fd3b0c00",
+    "email": "coventry@ucc-gb.com"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "49a48328-4a63-4722-a40b-282cac62ba7d",
+  "fields": {
+    "branch": "a6a76400-aced-4694-927a-bb204d5e0783",
+    "email": "reading@augb.co.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "4cab8111-f996-48db-a5b3-4b267b0da44b",
+  "fields": {
+    "branch": "b6a984fd-9440-424b-aa60-5e7fd351ffc5",
+    "email": "cathedral@uaocingb.org.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "4e9366bd-4456-4647-9d45-2215f51acaf3",
+  "fields": {
+    "branch": "bac9a49d-87d1-4ab9-82e2-54887851663e",
+    "email": "rochdale@augb.co.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "538f6936-d02b-4a0e-8a8d-afad4b9586eb",
+  "fields": {
+    "branch": "1ec01c7c-23ac-4fa7-9ae9-8203b08f9ed4",
+    "email": "protopresbyterbohdan.matwijczuk@uaocingb.org.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "57aefe22-799b-46ea-a8aa-c7674bf0da01",
+  "fields": {
+    "branch": "46b3bc67-6bca-42c7-9c61-69eb1168caa3",
+    "email": "nottingham@augb.co.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "5e25562d-3f38-47a3-9369-bc0588a30fcf",
+  "fields": {
+    "branch": "a244c39c-da57-43ec-86ea-fc72446de076",
+    "email": "glasgow@augb.co.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "608d42bd-ab95-4fc3-99e2-69b2e70e21b1",
+  "fields": {
+    "branch": "bdacd703-b3e7-4793-9d2e-13f58e396ac3",
+    "email": "http://www.augb-walthamcross.org/"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "676c2c46-f2f0-4af9-84dd-0e7b6d00435e",
+  "fields": {
+    "branch": "288a9c56-b892-48af-8a24-4d9b28826082",
+    "email": "liverpool@ucc-gb.com"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "6cdb6d7a-2514-462b-9f06-0bc5306cdba5",
+  "fields": {
+    "branch": "46b57ac4-eb2e-4658-8931-e8f6240afc33",
+    "email": "bradford@augb.co.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "6cdd33f3-b6e5-400e-8be3-8d81acf80ac8",
+  "fields": {
+    "branch": "116d5aff-78c7-458e-801b-1f067fff504a",
+    "email": "bradford@ucc-gb.com"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "772c9fd6-cda1-4430-94b1-ec9df63c0e41",
+  "fields": {
+    "branch": "28c0ccee-c7ca-4da0-bb8a-119ca59c9fc3",
+    "email": "bolton@ucc-gb.com"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "7b9ff09d-4bca-45ae-8996-fd18032efa4c",
+  "fields": {
+    "branch": "388a0f09-5571-484a-8c4b-0ff1eb825320",
+    "email": "bradford@ucc-gb.com"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "7d54ac2f-2497-4507-bca3-e2b0156cede7",
+  "fields": {
+    "branch": "c344cd14-d2bb-49ef-ad0e-efd88d1e6636",
+    "email": "bolton@augb.co.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "8b10d7b7-622f-454c-840f-30e00d1496ac",
+  "fields": {
+    "branch": "0cd9a336-d7de-4710-a02e-491b7ff58fe9",
+    "email": "luton@augb.co.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "8fb70e79-e242-4c97-8943-a9106fcae48d",
+  "fields": {
+    "branch": "8f1e6008-d5b1-42a7-b2c1-ab2b737199ca",
+    "email": "manchester@ucc-gb.com"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "939ec169-df65-4d8d-b1a3-9d3ea8f8bd45",
+  "fields": {
+    "branch": "c9f2903e-26cd-46a7-b615-8ea6c56e4b9c",
+    "email": "keighley@augb.co.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "9a8fedea-05e8-4340-8b90-9a701da60ccc",
+  "fields": {
+    "branch": "a0a7fad5-e97d-431e-a938-714f2caf225b",
+    "email": "cathedral@ucc-gb.com   vicargeneral@ucc-gb.com   a.malysh@ucc-gb.com"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "9b66acfb-0825-4f42-96fd-88ba55389512",
+  "fields": {
+    "branch": "2826c730-756e-4808-9cf7-4d23ce7e66d8",
+    "email": "coventry@augb.co.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "a3bb127d-9b18-4f28-b9cf-da76618d9f1a",
+  "fields": {
+    "branch": "65400fda-14f1-4fa7-bee5-848993bcec66",
+    "email": "bradford@ucc-gb.com"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "a62832cc-7200-4244-9e0a-377c2d76abb5",
+  "fields": {
+    "branch": "6db5af8b-1919-45e1-9628-2be60c01796b",
+    "email": "huddersfield@augb.co.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "a98e90cf-e06e-4e3e-bbfd-2f9fc0d2a8fe",
+  "fields": {
+    "branch": "b07317ce-132c-4326-84e9-437a38582d86",
+    "email": "stockport@augb.co.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "b0a2f0a8-862b-430d-b50f-62df7a067564",
+  "fields": {
+    "branch": "1ce2749e-8a47-4421-81c2-a412261d64b4",
+    "email": "protopresbyterbohdan.matwijczuk@uaocingb.org.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "b691f0c2-95f6-498b-8409-dfaac81623ff",
+  "fields": {
+    "branch": "a0efbfcc-5cad-4f79-a2d1-7ba1210c3ee0",
+    "email": "bradford@ucc-gb.com"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "b9a39c0c-a2b7-4aed-812c-3b0600d3105b",
+  "fields": {
+    "branch": "d6d1a1df-cb72-4562-a40d-6dae7f103fed",
+    "email": "london@augb.co.uk / http://augb-london.co.uk/"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "bd46342c-3719-4cd3-a172-c84d43c115ed",
+  "fields": {
+    "branch": "6a0af77e-9a8c-4052-b7d7-b23826970928",
+    "email": "bolton@ucc-gb.com"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "c69e8e42-0bfb-434f-bbe0-4457180be7b0",
+  "fields": {
+    "branch": "1057501d-4047-4d07-bedd-b9c221d38e93",
+    "email": "manchester@augb.co.uk / http://www.augb-manchester.org.uk/"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "cc773449-5701-4fbe-a970-eaa73fa879ab",
+  "fields": {
+    "branch": "b7f19d30-1753-4c89-9fa8-e12b2d36f63d",
+    "email": "nottingham@ucc-gb.com"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "cf8de4c9-5cd5-42a7-b085-b6bde21247fd",
+  "fields": {
+    "branch": "9861fa7b-1b86-48c9-bd93-7aba45a6168b",
+    "email": "protopresbyterbohdan.matwijczuk@uaocingb.org.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "d29c7a6b-b2cc-4e7d-9aa8-5190c36a2828",
+  "fields": {
+    "branch": "fed0c764-4673-4965-94f1-11e32a7921d2",
+    "email": "edinburgh@augb.co.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "d4fef10a-f301-4e7c-aa8e-7df16608f9f6",
+  "fields": {
+    "branch": "21e4720f-0703-4971-92aa-b182f56aef25",
+    "email": "edinburgh@ucc-gb.com"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "d768e012-60e3-4672-8204-d6ce173ca857",
+  "fields": {
+    "branch": "bdacd703-b3e7-4793-9d2e-13f58e396ac3",
+    "email": "walthamcross@augb.co.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "d77092c5-7d8b-4269-84e7-f364926f4d3d",
+  "fields": {
+    "branch": "9957db91-d528-437e-98c3-eb71bd65b7d7",
+    "email": "ashton@augb.co.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "de27d097-e82f-40ed-9749-935275757c08",
+  "fields": {
+    "branch": "9f1313f7-c6de-4cdd-a8bf-2ea905a592e4",
+    "email": "bury@augb.co.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "dff2ebd7-8e9e-4e15-b20d-2334806649fa",
+  "fields": {
+    "branch": "7bac29f4-7cb6-4718-9b77-06baa94085ca",
+    "email": "leeds@augb.co.uk"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "eb838569-d405-4cfe-83dd-3318c0519b1a",
+  "fields": {
+    "branch": "71d1a8b8-8bcb-4dff-9add-d1287585fc34",
+    "email": "nottingham@ucc-gb.com"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "ec6b2f4a-12aa-45af-8209-28215c3d16ef",
+  "fields": {
+    "branch": "167f13fc-c12c-4bd2-a022-90946a3c0cf1",
+    "email": "bolton@ucc-gb.com"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "f005dfa7-e5d1-4f79-b4ac-ff31a45ab71b",
+  "fields": {
+    "branch": "87af7921-5aef-4b29-b001-c2d3bf5778a1",
+    "email": "bolton@ucc-gb.com"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "f75780e8-4279-49e9-b496-2a85d0d28475",
+  "fields": {
+    "branch": "1091c70e-b897-47b5-8b93-3984e25eb1d4",
+    "email": "bolton@ucc-gb.com"
+  }
+},
+{
+  "model": "locations.email",
+  "pk": "ff548f5d-1bdc-4e58-a7de-bbdfcb2dc943",
+  "fields": {
+    "branch": "954aaa61-a170-45a0-9e8e-6250003c75aa",
+    "email": "doncaster@augb.co.uk"
+  }
+}
+]

@@ -52,6 +52,9 @@
             {% else %}
                 <label for="id_branch_chair">Branch Chair</label>
                 {{ branch_form.branch_chair }}
+                <br>
+                <label for="id_branch_secretary">Branch Secretary</label>
+                {{ branch_form.branch_secretary }}
             {% endif %}
             <p class="d-flex my-2">
                 <a href="{% url 'locations:person_list' %}"
