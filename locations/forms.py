@@ -13,6 +13,21 @@ from locations.validators import format_uk_phone_number
 
 
 class BranchForm(forms.ModelForm):
+    """
+    BranchForm is a Django ModelForm for managing the creation and validation of branch
+    data in a web application. It specializes in organizing form fields and ensuring data
+    integrity according to specific validation rules and UI enhancements, particularly for
+    branch titles, addresses, and postcodes.
+
+    This class configures the form layout and widgets using crispy-forms and customizes the
+    field labels to improve user experience. It contains methods to clean and validate
+    individual form fields like postcodes and applies transformations to ensure data is
+    formatted correctly before processing.
+
+    :ivar helper: A FormHelper instance used to customize the layout and appearance of the form.
+    :type helper: FormHelper
+    """
+
     class Meta:
         model = Branch
         fields = [
