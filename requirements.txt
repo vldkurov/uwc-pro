@@ -30,6 +30,7 @@ google-auth==2.36.0
 google-cloud-core==2.4.1
 google-cloud-translate==3.18.0
 googleapis-common-protos==1.66.0
+googlemaps==4.10.0
 grpc-google-iam-v1==0.13.1
 grpcio==1.68.1
 grpcio-status==1.68.1
@@ -53,6 +54,7 @@ psycopg==3.2.3
 psycopg-binary==3.2.3
 pyasn1==0.6.1
 pyasn1_modules==0.4.1
+pymorphy2-dicts-ru==2.4.417127.4579844
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 python-monkey-business==1.1.0
@@ -61,6 +63,7 @@ redis==5.2.0
 requests==2.32.3
 rsa==4.9
 s3transfer==0.10.3
+setuptools==75.6.0
 six==1.16.0
 soupsieve==2.6
 sqlparse==0.5.1
