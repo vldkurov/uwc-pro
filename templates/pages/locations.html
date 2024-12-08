@@ -29,14 +29,14 @@
                         ${location.branch_secretary ? `<b><p>Branch Secretary:</b> ${location.branch_secretary}</p>` : ''}
                         <p><b>Address:</b> ${location.formatted_address}</p>
                         <p><b>Details:</b> ${location.other_details || ''}</p>
-                        <p><b>Website:</b> <a href="${location.url}">${location.url}</a></p>
+                        <p><b>Website:</b> <a href="${location.url}" target="_blank" rel="noopener noreferrer">${location.url}</a></p>
                         <p><b>Phones:</b></p>
                         <ul>
-                            ${location.phones.map(phone => `<li>${phone}</li>`).join('')}
+                            ${location.phones.map(phone => `<li><a href="tel:${phone}">${phone}</a></li>`).join('')}
                         </ul>
                         <p><b>Emails:</b></p>
                         <ul>
-                            ${location.emails.map(email => `<li>${email}</li>`).join('')}
+                            ${location.emails.map(email => `<li><a href="mailto:${email}">${email}</a></li>`).join('')}
                         </ul>
                     </div>
                 `;
