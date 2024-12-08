@@ -41,7 +41,7 @@ class AboutPageTests(TestCase):
 
     def test_aboutpage_template(self):
         response = self.client.get(self.url)
-        self.assertTemplateUsed(response, "pages/about.html")
+        self.assertTemplateUsed(response, "pages/about-us.html")
 
     def test_aboutpage_contains_correct_html(self):
         response = self.client.get(self.url)
