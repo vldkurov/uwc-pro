@@ -1,10 +1,16 @@
 from uuid import uuid4
 
+import googlemaps
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from environs import Env
 
 from locations.fields import OrderField
 from locations.validators import validate_uk_phone_number, format_uk_phone_number
+
+
+env = Env()
+env.read_env()
 
 
 class Division(models.Model):
@@ -62,16 +68,11 @@ class Branch(models.Model):
     title = models.CharField(_("Branch Name"), max_length=255, blank=True, null=True)
     slug = models.SlugField(max_length=255, unique=True)
     address = models.CharField(_("Address"), max_length=255, blank=True, null=True)
-    postcode = models.CharField(_("Postcode"), max_length=20, blank=True, null=True)
-    branch_chair = models.OneToOneField(
-        "locations.Person",
-        related_name="branch_chair",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        verbose_name=_("Branch Chair"),
+    formatted_address = models.CharField(
+        _("Formatted Address"), max_length=255, blank=True, null=True
     )
-    parish_priest = models.OneToOneField(
+    postcode = models.CharField(_("Postcode"), max_length=20, blank=True, null=True)
+    parish_priest = models.ForeignKey(
         "locations.Person",
         related_name="parish_priest",
         on_delete=models.SET_NULL,
@@ -79,8 +80,31 @@ class Branch(models.Model):
         blank=True,
         verbose_name=_("Parish Priest"),
     )
+    branch_chair = models.ForeignKey(
+        "locations.Person",
+        related_name="branch_chair",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name=_("Branch Chair"),
+    )
+    branch_secretary = models.ForeignKey(
+        "locations.Person",
+        related_name="branch_secretary",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name=_("Branch Secretary"),
+    )
+    other_details = models.TextField(
+        _("Other Details"), max_length=500, blank=True, null=True
+    )
     url = models.URLField(_("URL"), blank=True, null=True)
     status = models.CharField(max_length=2, choices=Status.choices, default=Status.HIDE)
+
+    lat = models.FloatField(_("Latitude"), blank=True, null=True)
+    lng = models.FloatField(_("Longitude"), blank=True, null=True)
+    place_id = models.CharField(max_length=255, blank=True, null=True)
 
     objects = models.Manager()
     displayed = DisplayManager()
@@ -92,6 +116,16 @@ class Branch(models.Model):
             ("display", "Can display"),
             ("hide", "Can hide"),
         ]
+
+    def save(self, *args, **kwargs):
+        if self.address:
+            self.address = self.format_address(self.address)
+        super().save(*args, **kwargs)
+
+    @staticmethod
+    def format_address(address):
+        words = address.split()
+        return " ".join(word.capitalize() for word in words)
 
     def display(self):
         self.status = Branch.Status.DISPLAY

@@ -8,6 +8,8 @@ services:
       - "8022:8000"
     depends_on:
       - db
+    env_file:
+      - .env
     environment:
       - "DJANGO_SECRET_KEY=phb2h2$$ibh5nv--r4nea0+eygyrr@s$$z@%9!a9k9jg2+!=135_"
       - "DJANGO_DEBUG=True"
@@ -19,6 +21,9 @@ services:
       - "DJANGO_CSRF_COOKIE_SECURE=False"
       - "X_FRAME_OPTIONS=DENY"
       - "DATABASE_URL=postgres://postgres:postgres@db/postgres"
+      - "GOOGLE_APPLICATION_CREDENTIALS=/uwc/populate/uwc-client-a21bb1b9ee10.json"
+      - "GOOGLE_MAPS_API_KEY=AIzaSyCBwEf-rKDBOOm82Jhm6F-Vyo96MTHLV3Y"
+
   db:
     image: postgres:16
     volumes:

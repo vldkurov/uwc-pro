@@ -14,7 +14,7 @@ def unique_slug_generator(instance, new_slug=None, suffix_length=4):
     else:
         if not instance.title:
             raise ValueError("Instance must have a 'title' before generating a slug.")
-        slug = slugify(instance.title)
+        slug = slugify(instance.title_en)
     Klass = instance.__class__
     max_length = Klass._meta.get_field("slug").max_length
     slug = slug[:max_length]
