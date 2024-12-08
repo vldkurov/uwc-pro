@@ -1,7 +1,8 @@
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect
-from django.views.generic import TemplateView
+from django.template.loader import select_template, TemplateDoesNotExist
 from django.views import View
-
+from django.views.generic import TemplateView
 from environs import Env
 
 from hub.models import Section, Page, Content
@@ -15,15 +16,29 @@ class HomePageView(TemplateView):
     template_name = "pages/home.html"
 
 
-class AboutPageView(TemplateView):
-    template_name = "pages/about.html"
+class GenericPageView(TemplateView):
+
+    def get_template_names(self):
+        slug = self.kwargs.get("slug")
+        specific_template = f"pages/{slug}.html"
+        default_template = "pages/page.html"
+
+        try:
+            select_template([specific_template])
+            return [specific_template]
+        except TemplateDoesNotExist:
+            return [default_template]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         slug = kwargs.get("slug")
 
-        page = get_object_or_404(Page, slug=slug)
+        try:
+            page = Page.objects.get(slug=slug)
+        except Page.DoesNotExist:
+            raise Http404("The requested page does not exist.")
+
         context["page"] = page
 
         sections = page.sections.filter(

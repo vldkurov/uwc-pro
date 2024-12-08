@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title|default:"Page" }}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- Header Section -->
+        <header class="text-center mb-4">
+            <h1 class="display-4">{{ page.title|default:"Default Page" }}</h1>
+            <p class="lead text-muted">{{ page.subtitle|default:"Welcome to our website!" }}</p>
+        </header>
+
+        <!-- Page Sections -->
+        {% if sections %}
+            <div class="content">
+                {% for section in sections %}
+                    <section class="mb-5">
+                        <h2 class="h4">{{ section.section.title }}</h2>
+                        <div>
+                            {% for content in section.contents %}
+                                {% if content.type == "text" %}
+                                    <p>{{ content.content.body|safe }}</p>
+                                {% elif content.type == "image" %}
+                                    <img src="{{ content.content.url }}" alt="{{ content.content.alt_text }}" class="img-fluid">
+                                {% elif content.type == "video" %}
+                                    <div class="video-wrapper">
+                                        <iframe src="{{ content.content.url }}" frameborder="0" allowfullscreen></iframe>
+                                    </div>
+                                {% elif content.type == "file" %}
+                                    <a href="{{ content.content.file.url }}" download>{{ content.content.file.name }}</a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </section>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No content available for this page.</p>
+        {% endif %}
+
+        <!-- Footer Section -->
+        <footer class="text-center mt-5">
+            <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
+        </footer>
+    </div>
+</body>
+</html>

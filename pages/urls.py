@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     path("", views.HomePageView.as_view(), name="home"),
-    path("about/<slug:slug>/", views.AboutPageView.as_view(), name="about"),
+    path("<slug:slug>/", views.GenericPageView.as_view(), name="page"),
     path(
         "locations/",
         views.RedirectToFirstDivisionView.as_view(),
