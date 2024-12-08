@@ -2,8 +2,13 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 from django.views import View
 
+from environs import Env
+
 from hub.models import Section, Page, Content
-from locations.models import Division
+from locations.models import Division, Branch
+
+env = Env()
+env.read_env()
 
 
 class HomePageView(TemplateView):
@@ -65,4 +70,37 @@ class LocationsPageView(TemplateView):
 
         context["divisions"] = divisions
         context["current_division"] = current_division
+
+        googlemaps_api_key = env.str("GOOGLE_MAPS_API_KEY")
+        locations = Branch.objects.filter(
+            division=current_division,
+            status=Branch.Status.DISPLAY,
+        )
+
+        locations = [
+            {
+                "title": location.title,
+                "parish_priest": (
+                    str(location.parish_priest) if location.parish_priest else ""
+                ),
+                "branch_chair": (
+                    str(location.branch_chair) if location.branch_chair else ""
+                ),
+                "branch_secretary": (
+                    str(location.branch_secretary) if location.branch_secretary else ""
+                ),
+                "formatted_address": location.formatted_address or "",
+                "other_details": location.other_details or "",
+                "url": location.url or "",
+                "phones": [phone.number for phone in location.phones.all()],
+                "emails": [email.email for email in location.emails.all()],
+                "lat": location.lat,
+                "lng": location.lng,
+            }
+            for location in locations
+        ]
+
+        context["googlemaps_api_key"] = googlemaps_api_key
+        context["locations"] = locations
+
         return context

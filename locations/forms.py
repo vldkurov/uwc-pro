@@ -90,8 +90,10 @@ class BranchForm(forms.ModelForm):
             postcode = f"{postcode[:-3]} {postcode[-3:]}"
         return postcode
 
-    @staticmethod
-    def clean_address(address_value):
+    def clean_address(self):
+        address_value = self.cleaned_data.get("address", "")
+        if not address_value:
+            return address_value
         words = address_value.split()
         return " ".join(
             word.capitalize() if not word.startswith("'") else word for word in words
@@ -103,12 +105,6 @@ class BranchForm(forms.ModelForm):
             value = cleaned_data.get(field, "")
             if value:
                 cleaned_data[field] = value.strip().title()
-
-        for field in ["address"]:
-            value = cleaned_data.get(field, "")
-            if value:
-                cleaned_data[field] = self.clean_address(value.strip())
-
         return cleaned_data
 
 
