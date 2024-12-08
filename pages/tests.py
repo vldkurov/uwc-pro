@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse, resolve
 
 from hub.models import Page
-from .views import AboutPageView, HomePageView
+from .views import GenericPageView, HomePageView
 
 
 class HomePageTests(TestCase):
@@ -27,13 +27,13 @@ class HomePageTests(TestCase):
         self.assertEqual(view.func.__name__, HomePageView.as_view().__name__)
 
 
-class AboutPageTests(TestCase):
+class GenericPageTests(TestCase):
     def setUp(self):
         self.page = Page.objects.create(
             title="About Us",
             slug="about-us",
         )
-        self.url = reverse("about", kwargs={"slug": "about-us"})
+        self.url = reverse("page", kwargs={"slug": "about-us"})
 
     def test_aboutpage_status_code(self):
         response = self.client.get(self.url)
@@ -52,5 +52,5 @@ class AboutPageTests(TestCase):
         self.assertNotContains(response, "Hi there! I should not be on the page.")
 
     def test_aboutpage_url_resolves_aboutpageview(self):
-        view = resolve("/en/about/")
-        self.assertEqual(view.func.__name__, AboutPageView.as_view().__name__)
+        view = resolve("/en/about-us/")
+        self.assertEqual(view.func.__name__, GenericPageView.as_view().__name__)
