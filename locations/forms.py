@@ -5,16 +5,48 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout
 from django import forms
 from django.core.exceptions import ValidationError
-from django.forms import inlineformset_factory
+from django.forms import inlineformset_factory, Select
+from django.forms.widgets import Textarea
 
 from locations.models import Branch, Phone, Email, Person
 from locations.validators import format_uk_phone_number
 
 
 class BranchForm(forms.ModelForm):
+    """
+    BranchForm is a Django ModelForm for managing the creation and validation of branch
+    data in a web application. It specializes in organizing form fields and ensuring data
+    integrity according to specific validation rules and UI enhancements, particularly for
+    branch titles, addresses, and postcodes.
+
+    This class configures the form layout and widgets using crispy-forms and customizes the
+    field labels to improve user experience. It contains methods to clean and validate
+    individual form fields like postcodes and applies transformations to ensure data is
+    formatted correctly before processing.
+
+    :ivar helper: A FormHelper instance used to customize the layout and appearance of the form.
+    :type helper: FormHelper
+    """
+
     class Meta:
         model = Branch
-        fields = ["title_en", "title_uk", "address", "postcode", "url"]
+        fields = [
+            "title_en",
+            "title_uk",
+            "address",
+            "postcode",
+            "url",
+            "parish_priest",
+            "branch_chair",
+            "branch_secretary",
+            "other_details",
+        ]
+        widgets = {
+            "parish_priest": Select(attrs={"class": "form-select py-3"}),
+            "branch_chair": Select(attrs={"class": "form-select py-3"}),
+            "branch_secretary": Select(attrs={"class": "form-select py-3"}),
+            "other_details": Textarea(attrs={"class": "form-control", "rows": 4}),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -24,6 +56,14 @@ class BranchForm(forms.ModelForm):
         self.fields["address"].label = "Branch Address"
         self.fields["postcode"].label = "Postal Code"
         self.fields["url"].label = "Website URL"
+        self.fields["other_details"].label = "Other Details"
+
+        self.fields["parish_priest"].label = "Parish Priest"
+        self.fields["parish_priest"].queryset = Person.objects.all()
+        self.fields["branch_chair"].label = "Branch Chair"
+        self.fields["branch_chair"].queryset = Person.objects.all()
+        self.fields["branch_secretary"].label = "Branch Secretary"
+        self.fields["branch_secretary"].queryset = Person.objects.all()
 
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -33,6 +73,7 @@ class BranchForm(forms.ModelForm):
             FloatingField("address"),
             FloatingField("postcode"),
             FloatingField("url"),
+            FloatingField("other_details"),
         )
 
     def clean_postcode(self):
@@ -49,14 +90,21 @@ class BranchForm(forms.ModelForm):
             postcode = f"{postcode[:-3]} {postcode[-3:]}"
         return postcode
 
+    def clean_address(self):
+        address_value = self.cleaned_data.get("address", "")
+        if not address_value:
+            return address_value
+        words = address_value.split()
+        return " ".join(
+            word.capitalize() if not word.startswith("'") else word for word in words
+        )
+
     def clean(self):
         cleaned_data = super().clean()
-        for field in ["title_en", "title_uk", "address"]:
+        for field in ["title_en", "title_uk"]:
             value = cleaned_data.get(field, "")
             if value:
-                cleaned_data[field] = " ".join(
-                    word.capitalize() for word in value.strip().split()
-                )
+                cleaned_data[field] = value.strip().title()
         return cleaned_data
 
 
