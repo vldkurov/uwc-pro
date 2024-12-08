@@ -1,35 +1,94 @@
 {% extends "pages/_pages_base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans 'Locations'%}{% endblock title %}
+{% block title %}{% trans 'Locations' %}{% endblock title %}
 
 {% block content %}
-<div class="container mt-4">
-    <h1>Locations</h1>
-    <div class="row">
-        <div class="col-md-3">
-            
-            <ul class="nav flex-column nav-pills" id="divisionTabs" role="tablist">
-                {% for division in divisions %}
-                    <li class="nav-item">
-                        <a
-                            class="nav-link {% if current_division == division %}active{% endif %}"
-                            id="tab-{{ division.id }}"
-                            href="{% url 'locations' slug=division.slug %}"
-                        >
-                            {{ division.title }}
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div class="col-md-9">
-            
-            <div class="tab-content">
-                <h2>{{ current_division.title }}</h2>
-                <p>Content for {{ current_division.title }} will go here.</p>
+
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key={{ googlemaps_api_key }}&v=beta&callback=initMap">
+    </script>
+
+    <script>
+
+        function initMap() {
+            const locations = {{ locations|safe }}
+
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 6,
+                center: {lat: 51.5074, lng: -0.1278},
+            });
+
+            locations.forEach(location => {
+
+                const content = `
+                    <div>
+                        <h4>${location.title}</h4>
+                        ${location.parish_priest ? `<p><b>Parish Priest:</b> ${location.parish_priest}</p>` : ''}
+                        ${location.branch_chair ? `<p><b>Branch Chair:</b> ${location.branch_chair}</p>` : ''}
+                        ${location.branch_secretary ? `<b><p>Branch Secretary:</b> ${location.branch_secretary}</p>` : ''}
+                        <p><b>Address:</b> ${location.formatted_address}</p>
+                        <p><b>Details:</b> ${location.other_details || ''}</p>
+                        <p><b>Website:</b> <a href="${location.url}">${location.url}</a></p>
+                        <p><b>Phones:</b></p>
+                        <ul>
+                            ${location.phones.map(phone => `<li>${phone}</li>`).join('')}
+                        </ul>
+                        <p><b>Emails:</b></p>
+                        <ul>
+                            ${location.emails.map(email => `<li>${email}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+
+                const infowindow = new google.maps.InfoWindow({
+                    content: content,
+                    ariaLabel: location.title,
+                });
+
+                const marker = new google.maps.Marker({
+                    position: {lat: location.lat, lng: location.lng},
+                    map,
+                    title: location.title,
+                });
+
+                marker.addListener("click", () => {
+                    infowindow.open({
+                        anchor: marker,
+                        map,
+                    });
+                });
+            })
+        }
+
+        window.initMap = initMap;
+    </script>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="nav flex-column nav-pills" id="divisionTabs" role="tablist">
+                    {% for division in divisions %}
+                        <li class="nav-item">
+                            <a
+                                    class="nav-link {% if current_division == division %}active{% endif %}"
+                                    id="tab-{{ division.id }}"
+                                    href="{% url 'locations' slug=division.slug %}"
+                            >
+                                {{ division.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <div class="tab-content">
+                    <div style="height: 500px; width: 100%; overflow: hidden;" class="border rounded-2" >
+                        <div id="map" style="height: 100%;"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-{% endblock %}
+
+{% endblock content %}
