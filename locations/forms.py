@@ -33,19 +33,22 @@ class BranchForm(forms.ModelForm):
         fields = [
             "title_en",
             "title_uk",
-            "address",
+            "address_en",
+            "address_uk",
             "postcode",
             "url",
             "parish_priest",
             "branch_chair",
             "branch_secretary",
-            "other_details",
+            "other_details_en",
+            "other_details_uk",
         ]
         widgets = {
             "parish_priest": Select(attrs={"class": "form-select py-3"}),
             "branch_chair": Select(attrs={"class": "form-select py-3"}),
             "branch_secretary": Select(attrs={"class": "form-select py-3"}),
-            "other_details": Textarea(attrs={"class": "form-control", "rows": 4}),
+            "other_details_en": Textarea(attrs={"class": "form-control", "rows": 4}),
+            "other_details_uk": Textarea(attrs={"class": "form-control", "rows": 4}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -53,10 +56,12 @@ class BranchForm(forms.ModelForm):
 
         self.fields["title_en"].label = "Branch Name (English)"
         self.fields["title_uk"].label = "Branch Name (Ukrainian)"
-        self.fields["address"].label = "Branch Address"
+        self.fields["address_en"].label = "Branch Address (English)"
+        self.fields["address_uk"].label = "Branch Address (Ukrainian)"
         self.fields["postcode"].label = "Postal Code"
         self.fields["url"].label = "Website URL"
-        self.fields["other_details"].label = "Other Details"
+        self.fields["other_details_en"].label = "Other Details (English)"
+        self.fields["other_details_uk"].label = "Other Details (Ukrainian)"
 
         self.fields["parish_priest"].label = "Parish Priest"
         self.fields["parish_priest"].queryset = Person.objects.all()
@@ -70,10 +75,12 @@ class BranchForm(forms.ModelForm):
         self.helper.layout = Layout(
             FloatingField("title_en"),
             FloatingField("title_uk"),
-            FloatingField("address"),
+            FloatingField("address_en"),
+            FloatingField("address_uk"),
             FloatingField("postcode"),
             FloatingField("url"),
-            FloatingField("other_details"),
+            FloatingField("other_details_en"),
+            FloatingField("other_details_uk"),
         )
 
     def clean_postcode(self):
@@ -90,21 +97,23 @@ class BranchForm(forms.ModelForm):
             postcode = f"{postcode[:-3]} {postcode[-3:]}"
         return postcode
 
-    def clean_address(self):
-        address_value = self.cleaned_data.get("address", "")
-        if not address_value:
-            return address_value
-        words = address_value.split()
-        return " ".join(
-            word.capitalize() if not word.startswith("'") else word for word in words
-        )
-
     def clean(self):
         cleaned_data = super().clean()
+
+        for field in ["address_en", "address_uk"]:
+            value = cleaned_data.get(field, "")
+            if value:
+                words = value.split()
+                cleaned_data[field] = " ".join(
+                    word.capitalize() if not word.startswith("'") else word
+                    for word in words
+                )
+
         for field in ["title_en", "title_uk"]:
             value = cleaned_data.get(field, "")
             if value:
                 cleaned_data[field] = value.strip().title()
+
         return cleaned_data
 
 
