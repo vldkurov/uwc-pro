@@ -36,6 +36,7 @@ urlpatterns = i18n_patterns(
     path("accounts/", include("allauth.urls")),
     # Public routes
     path("", include("pages.urls")),
+    path("payments/", include("payments.urls")),
     # Admin routes
     path("dashboard/hub/", include("hub.urls")),
     path("dashboard/locations/", include("locations.urls")),
