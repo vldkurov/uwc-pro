@@ -23,3 +23,9 @@ RUN pip install -r requirements.txt
 
 # Copy project
 COPY . .
+
+# Collect static files
+RUN python manage.py collectstatic --noinput
+
+# Set the command to start Gunicorn
+CMD ["gunicorn", "django_project.wsgi:application", "--bind", "0.0.0.0:8000"]
