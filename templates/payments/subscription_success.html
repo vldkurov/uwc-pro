@@ -1,0 +1,48 @@
+{% extends 'pages/_pages_base.html' %}
+
+{% load i18n %} 
+
+{% block title %}{% trans "Subscription Successful" %}{% endblock title %}
+
+{% block content %}
+    <h1>{% trans "Welcome to Our Community!" %}</h1>
+    <p>
+        {% trans "Dear" %} {{ subscription.donor.first_name }} {{ subscription.donor.last_name }},
+    </p>
+    <p>
+        {% trans "Thank you for subscribing to" %} <strong>{{ subscription.plan.name }}</strong>! 
+        {% trans "Your support means the world to us and helps us continue making a positive impact." %}
+    </p>
+    <p>
+        <strong>{% trans "Here are the details of your subscription:" %}</strong>
+    </p>
+    <ul>
+        <li>
+            <strong>{% trans "Subscription ID:" %}</strong> {{ subscription.subscription_id }}
+        </li>
+        <li>
+            <strong>{% trans "Plan:" %}</strong> {{ subscription.plan.name }}
+        </li>
+        <li>
+            <strong>{% trans "Amount:" %}</strong> £{{ subscription.plan.amount }} {{ subscription.plan.currency }}
+        </li>
+        <li>
+            <strong>{% trans "Billing Frequency:" %}</strong> 
+            {% trans "Every" %} {{ subscription.plan.interval_count }} 
+            {{ subscription.plan.interval_unit|lower }}
+        </li>
+        <li>
+            <strong>{% trans "Status:" %}</strong> {{ subscription.status }}
+        </li>
+    </ul>
+    <p>
+        {% trans "If you have any questions or need assistance, feel free to contact us at any time." %}
+    </p>
+    <p>
+        {% trans "Thank you for being a valued supporter. Together, we can achieve amazing things!" %}
+    </p>
+    <p>
+        {% trans "Warm regards," %}<br>
+        {% trans "The Team" %}
+    </p>
+{% endblock content %}
