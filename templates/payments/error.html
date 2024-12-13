@@ -1,0 +1,10 @@
+{% extends 'pages/_pages_base.html' %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Error" %}{% endblock title %}
+
+{% block content %}
+    <h1>{% trans "Error Processing Payment" %}</h1>
+    <p>{{ error }}</p>
+{% endblock content %}

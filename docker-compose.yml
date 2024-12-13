@@ -22,7 +22,6 @@ services:
       - "X_FRAME_OPTIONS=DENY"
       - "DATABASE_URL=postgres://postgres:postgres@db/postgres"
       - "GOOGLE_APPLICATION_CREDENTIALS=/uwc/populate/uwc-client-a21bb1b9ee10.json"
-      - "GOOGLE_MAPS_API_KEY=AIzaSyCBwEf-rKDBOOm82Jhm6F-Vyo96MTHLV3Y"
 
   db:
     image: postgres:16

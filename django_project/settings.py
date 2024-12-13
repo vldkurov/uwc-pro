@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     "accounts",
     "hub",
     "locations",
+    "payments",
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -246,8 +247,8 @@ STORAGES = {
 # }
 
 # Email backend settings
-# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-EMAIL_BACKEND = "django_ses.SESBackend"
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_BACKEND = "django_ses.SESBackend"
 
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
 EMAIL_SUBJECT_PREFIX = "UWC "
@@ -271,8 +272,6 @@ CSRF_COOKIE_SECURE = env.bool("DJANGO_CSRF_COOKIE_SECURE", default=True)
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
-
-# Разрешаем отображение в iframe
 # X_FRAME_OPTIONS = "ALLOWALL"
 # X_FRAME_OPTIONS = "DENY"
 X_FRAME_OPTIONS = env.str("X_FRAME_OPTIONS", default="DENY")
@@ -316,3 +315,8 @@ LOGGING = {
         },
     },
 }
+
+#  PayPal
+PAYPAL_CLIENT_ID = env("PAYPAL_CLIENT_ID")
+PAYPAL_CLIENT_SECRET = env("PAYPAL_CLIENT_SECRET")
+PAYPAL_MODE = env("PAYPAL_MODE", default="sandbox")
