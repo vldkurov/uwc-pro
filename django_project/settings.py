@@ -247,8 +247,8 @@ STORAGES = {
 # }
 
 # Email backend settings
-# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-EMAIL_BACKEND = "django_ses.SESBackend"
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_BACKEND = "django_ses.SESBackend"
 
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
 EMAIL_SUBJECT_PREFIX = "UWC "
