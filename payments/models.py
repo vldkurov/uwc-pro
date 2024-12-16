@@ -1,6 +1,7 @@
 from uuid import uuid4
 
 from django.db import models
+from django.urls import reverse
 
 
 class Donor(models.Model):
@@ -13,6 +14,14 @@ class Donor(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.email}"
 
+    def get_absolute_url(self):
+        return reverse(
+            "donor_details",
+            args=[
+                self.id,
+            ],
+        )
+
 
 class Donation(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
@@ -23,6 +32,14 @@ class Donation(models.Model):
 
     def __str__(self):
         return f"Donation by {self.donor.first_name} {self.donor.last_name} - £{self.amount}"
+
+    def get_absolute_url(self):
+        return reverse(
+            "donor_details",
+            args=[
+                self.donor.id,
+            ],
+        )
 
 
 class Product(models.Model):

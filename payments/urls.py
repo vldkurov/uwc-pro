@@ -3,6 +3,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path(
+        "dashboard/donor/<uuid:pk>", views.DonorPageView.as_view(), name="donor_details"
+    ),
     # Single payment
     path("donate/", views.create_donation, name="create_donation"),
     # Endpoint for setting up subscription donations

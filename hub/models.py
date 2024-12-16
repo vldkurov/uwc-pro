@@ -2,7 +2,9 @@ import uuid
 
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
@@ -57,6 +59,14 @@ class Page(models.Model):
             self.slug = slugify(self.title)
         super(Page, self).save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse(
+            "page_edit",
+            args=[
+                self.slug,
+            ],
+        )
+
 
 class Section(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -102,6 +112,14 @@ class Section(models.Model):
 
     def __str__(self):
         return f"{self.order}. {self.title}"
+
+    def get_absolute_url(self):
+        return reverse(
+            "page_section_update",
+            args=[
+                self.page.slug,
+            ],
+        )
 
 
 class DisplayManager(models.Manager):
@@ -171,6 +189,23 @@ class ItemBase(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        try:
+            content_link = Content.objects.get(
+                object_id=self.id,
+                content_type=ContentType.objects.get_for_model(self),
+            )
+            return reverse(
+                "section_content_update",
+                kwargs={
+                    "section_id": content_link.section.id,
+                    "model_name": self.__class__.__name__.lower(),
+                    "id": self.id,
+                },
+            )
+        except ObjectDoesNotExist:
+            return "#"
+
 
 class Updatable(models.Model):
     is_update_pending = models.BooleanField(default=False)
@@ -209,14 +244,3 @@ class URL(ItemBase, Updatable):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     content = models.URLField(blank=True, null=True)
     content_draft = models.URLField(blank=True, null=True)
-
-
-# @receiver(pre_delete, sender=Section)
-# def delete_related_content(sender, instance, **kwargs):
-#     Content.objects.filter(section=instance).delete()
-#
-#
-# @receiver(pre_delete, sender=Content)
-# def delete_related_item(sender, instance, **kwargs):
-#     if instance.item:
-#         instance.item.delete()

@@ -1,0 +1,110 @@
+{% extends 'hub/_hub_base.html' %}
+{% load highlight_query %}
+{% load class_name %}
+{% load i18n %}
+{% load markdownify %}
+
+{% block title %}{% trans 'Global Search' %}{% endblock title %}
+
+{% block content %}
+    <h2>{% trans 'Search Results' %}</h2>
+
+    {% if query %}
+        {% if results %}
+            <h5>
+                {% with results|length as total_result %}
+                    Found {{ total_result }} result{{ total_result|pluralize }} for "{{ query }}".
+                {% endwith %}
+            </h5>
+
+            <ul class="list-group">
+                {% for result in results %}
+                    <li class="list-group-item">
+                        {% if result %}
+                            {% if result|class_name == 'Page' %}
+                                <strong>{% trans 'Page:' %}</strong>
+                                <a href="{{ result.get_absolute_url }}">
+                                    {{ result.title|markdownify|highlight_query:query|safe }}
+                                </a>
+                            {% elif result|class_name == 'Section' %}
+                                <strong>{% trans 'Section:' %}</strong>
+                                <a href="{{ result.get_absolute_url }}">
+                                    {{ result.title|markdownify|highlight_query:query|safe }}
+                                </a>
+                            {% elif result|class_name == 'Text' %}
+                                <strong>{% trans 'Text:' %}</strong>
+                                <a href="{{ result.get_absolute_url }}">
+                                    {{ result.title|markdownify|highlight_query:query|safe }}
+                                </a>
+                                <p>{{ result.content|markdownify|highlight_query:query|safe }}</p>
+                            {% elif result|class_name == 'File' %}
+                                <strong>{% trans 'File:' %}</strong>
+                                <a href="{{ result.get_absolute_url }}">
+                                    {{ result.title|markdownify|highlight_query:query|safe }}
+                                </a>
+                            {% elif result|class_name == 'Image' %}
+                                <strong>{% trans 'Image:' %}</strong>
+                                <a href="{{ result.get_absolute_url }}">
+                                    {{ result.title|markdownify|highlight_query:query|safe }}
+                                </a>
+                            {% elif result|class_name == 'Video' %}
+                                <strong>{% trans 'Video:' %}</strong>
+                                <a href="{{ result.get_absolute_url }}">
+                                    {{ result.title|markdownify|highlight_query:query|safe }}
+                                </a>
+                            {% elif result|class_name == 'URL' %}
+                                <strong>{% trans 'URL:' %}</strong>
+                                <a href="{{ result.get_absolute_url }}">
+                                    {{ result.title|markdownify|highlight_query:query|safe }}
+                                </a>
+                            {% elif result|class_name == 'Division' %}
+                                <strong>{% trans 'Division:' %}</strong>
+                                <a href="{{ result.get_absolute_url }}">
+                                    {{ result.title|markdownify|highlight_query:query|safe }}
+                                </a>
+                            {% elif result|class_name == 'Branch' %}
+                                <strong>{% trans 'Branch:' %}</strong>
+                                <a href="{{ result.get_absolute_url }}">
+                                    {{ result.title|markdownify|highlight_query:query|safe }}
+                                </a>
+                                <strong>{% trans 'Address:' %}</strong>
+                                <a href="{{ result.get_absolute_url }}">
+                                    {{ result.address|highlight_query:query|safe }}
+                                </a>
+                            {% elif result|class_name == 'Person' %}
+                                <strong>{% trans 'Person:' %}</strong>
+                                <a href="{{ result.get_absolute_url }}">
+                                    {{ result.first_name|markdownify|highlight_query:query|safe }}
+                                </a>
+                                <a href="{{ result.get_absolute_url }}">
+                                    {{ result.last_name|markdownify|highlight_query:query|safe }}
+                                </a>
+                            {% elif result|class_name == 'Donor' %}
+                                <strong>{% trans 'Donor:' %}</strong>
+                                <a href="{{ result.get_absolute_url }}">
+                                    {{ result.first_name|markdownify|highlight_query:query|safe }}
+                                </a>
+                                <a href="{{ result.get_absolute_url }}">
+                                    {{ result.last_name|markdownify|highlight_query:query|safe }}
+                                </a>
+                            {% elif result|class_name == 'Donation' %}
+                                <strong>{% trans 'Donation:' %}</strong>
+                                <span><b>Date:</b> {{ result.donated_at }}</span>
+                                <span>
+                                                       <b>Transaction ID:</b>
+                                <a href="{{ result.get_absolute_url }}">
+                                    {{ result.transaction_id|markdownify|highlight_query:query|safe }}
+                                </a>
+                                </span>
+                                <span><b>Amount: </b>£{{ result.amount }}</span>
+                            {% endif %}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+
+        {% else %}
+            <p class="alert alert-warning">{% trans 'No results found.' %}</p>
+        {% endif %}
+    {% endif %}
+{% endblock content %}

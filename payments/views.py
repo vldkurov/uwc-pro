@@ -4,10 +4,12 @@ from decimal import Decimal, InvalidOperation
 
 import requests
 from django.conf import settings
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.mail import send_mail
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic.detail import DetailView
 
 from .forms import CustomDonationForm
 from .models import Donor, Donation, Subscription, Plan
@@ -86,7 +88,7 @@ def create_subscription(request):
             interval_unit = request.POST.get("interval", "MONTH")
 
             donor, _ = Donor.objects.get_or_create(
-                email="sb-43hker34651253@personal.example.com",
+                email="sb-g2rzi34120957@personal.example.com",
                 defaults={"first_name": "John", "last_name": "Doe"},
             )
 
@@ -154,6 +156,8 @@ def payment_success(request):
                     "last_name": payer_info.last_name,
                 },
             )
+
+            print("donor:", donor)
 
             donation = Donation.objects.create(
                 donor=donor,
@@ -320,3 +324,16 @@ def subscription_success(request):
 def subscription_cancel(request):
     """Handle a canceled subscription"""
     return render(request, "payments/subscription_cancel.html")
+
+
+class DonorPageView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+    model = Donor
+    template_name = "payments/donor.html"
+    login_url = "account_login"
+    redirect_field_name = "next"
+    permission_required = "payments.view_donor"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["donations"] = Donation.objects.filter(donor=self.object)
+        return context
