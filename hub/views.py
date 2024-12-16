@@ -4,6 +4,7 @@ import os
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from django.apps import apps
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.postgres.search import SearchVector
 from django.core.exceptions import PermissionDenied
@@ -19,6 +20,7 @@ from django.views.generic.base import TemplateResponseMixin, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 
+from accounts.models import CustomUser
 from locations.models import Division, Branch, Person
 from payments.models import Donor, Donation
 from .forms import SectionFormSet, SectionForm, PageForm, SearchForm
@@ -778,10 +780,13 @@ class ContentOrderView(
         return self.render_json_response({"saved": "OK"})
 
 
+@login_required
 def global_search(request):
     form = SearchForm()
     query = None
     results = []
+
+    user_role = request.user.role
 
     if "query" in request.GET:
         form = SearchForm(request.GET)
@@ -838,13 +843,17 @@ def global_search(request):
                 )
             ).filter(search=query)
 
-            donors = Donor.objects.annotate(
-                search=SearchVector("first_name", "last_name", "email")
-            ).filter(search=query)
+            if user_role == CustomUser.Role.OWNER:
+                donors = Donor.objects.annotate(
+                    search=SearchVector("first_name", "last_name", "email")
+                ).filter(search=query)
 
-            donations = Donation.objects.annotate(
-                search=SearchVector("transaction_id")
-            ).filter(search=query)
+                donations = Donation.objects.annotate(
+                    search=SearchVector("transaction_id")
+                ).filter(search=query)
+            else:
+                donors = []
+                donations = []
 
             results = (
                 list(pages)
