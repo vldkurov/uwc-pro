@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
+    "django.contrib.postgres",
     "django.contrib.sites",
     # Third-party
     "crispy_forms",
@@ -65,6 +66,7 @@ INSTALLED_APPS = [
     "rosetta",
     "widget_tweaks",
     "storages",
+    "markdownify",
     #     Local
     "accounts",
     "hub",

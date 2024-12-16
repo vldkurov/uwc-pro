@@ -5,6 +5,7 @@ from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from django.apps import apps
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.postgres.search import SearchVector
 from django.core.exceptions import PermissionDenied
 from django.db import models
 from django.db.models.fields.files import FieldFile
@@ -18,8 +19,10 @@ from django.views.generic.base import TemplateResponseMixin, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 
-from .forms import SectionFormSet, SectionForm, PageForm
-from .models import Page, Section, Content, Text
+from locations.models import Division, Branch, Person
+from payments.models import Donor, Donation
+from .forms import SectionFormSet, SectionForm, PageForm, SearchForm
+from .models import Page, Section, Content, Text, File, Image, Video, URL
 
 logger = logging.getLogger(__name__)
 
@@ -773,3 +776,97 @@ class ContentOrderView(
         for content_id, order in self.request_json.items():
             Content.objects.filter(id=content_id).update(order=order)
         return self.render_json_response({"saved": "OK"})
+
+
+def global_search(request):
+    form = SearchForm()
+    query = None
+    results = []
+
+    if "query" in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data["query"]
+
+            pages = Page.objects.annotate(
+                search=SearchVector("title_en", "title_uk")
+            ).filter(search=query)
+
+            sections = Section.published.annotate(
+                search=SearchVector("title_en", "title_uk")
+            ).filter(search=query)
+
+            text_content = Text.objects.annotate(
+                search=SearchVector(
+                    "title",
+                    "content_en",
+                    "content_uk",
+                    "content_draft_en",
+                    "content_draft_uk",
+                )
+            ).filter(search=query)
+
+            file_content = File.objects.annotate(search=SearchVector("title")).filter(
+                search=query
+            )
+
+            image_content = Image.objects.annotate(
+                search=SearchVector(
+                    "title",
+                )
+            ).filter(search=query)
+
+            video_content = Video.objects.annotate(
+                search=SearchVector("title", "content", "content_draft")
+            ).filter(search=query)
+
+            url_content = URL.objects.annotate(
+                search=SearchVector("title", "content", "content_draft")
+            ).filter(search=query)
+
+            divisions = Division.objects.annotate(
+                search=SearchVector("title_en", "title_uk")
+            ).filter(search=query)
+
+            branches = Branch.objects.annotate(
+                search=SearchVector("title_en", "title_uk", "address_en", "address_uk")
+            ).filter(search=query)
+
+            persons = Person.objects.annotate(
+                search=SearchVector(
+                    "first_name_en", "last_name_en", "first_name_uk", "last_name_uk"
+                )
+            ).filter(search=query)
+
+            donors = Donor.objects.annotate(
+                search=SearchVector("first_name", "last_name", "email")
+            ).filter(search=query)
+
+            donations = Donation.objects.annotate(
+                search=SearchVector("transaction_id")
+            ).filter(search=query)
+
+            results = (
+                list(pages)
+                + list(sections)
+                + list(text_content)
+                + list(file_content)
+                + list(image_content)
+                + list(video_content)
+                + list(url_content)
+                + list(divisions)
+                + list(branches)
+                + list(persons)
+                + list(donors)
+                + list(donations)
+            )
+
+    return render(
+        request,
+        "hub/global_search.html",
+        {
+            "form": form,
+            "query": query,
+            "results": results,
+        },
+    )

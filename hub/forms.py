@@ -52,3 +52,7 @@ SectionFormSet = inlineformset_factory(
     extra=0,
     can_delete=True,
 )
+
+
+class SearchForm(forms.Form):
+    query = forms.CharField(label=_("Search"), required=False)
