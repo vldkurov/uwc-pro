@@ -1,6 +1,6 @@
 {% extends 'pages/_pages_base.html' %}
 
-{% block title %}About{% endblock title %}
+{% block title %}{{ page.title|default:"Default Page" }}{% endblock title %}
 
 {% block content %}
 
@@ -11,18 +11,28 @@
             {% if item.section.title|lower == 'about us' or item.section.title|lower == 'про нас' %}
                 {% for content in item.contents %}
                     {% if content.type == 'text' %}
-                        <p>{{ content.content.content }}</p><br>
+                        <div id="content-{{ content.content.id }}">
+                            <p>{{ content.content.content }}</p>
+                        </div><br>
                     {% elif content.type == 'image' %}
-                        <img src="{{ content.content.content.url }}" alt="{{ content.content.title }}">
+                        <div id="content-{{ content.content.id }}">
+                            <img src="{{ content.content.content.url }}" alt="{{ content.content.title }}">
+                        </div>
                     {% elif content.type == 'file' %}
-                        <a href="{{ content.content.content.url }}" download>{{ content.content.title }}</a>
+                        <div id="content-{{ content.content.id }}">
+                            <a href="{{ content.content.content.url }}" download>{{ content.content.title }}</a>
+                        </div>
                     {% elif content.type == 'video' %}
-                        <video controls>
-                            <source src="{{ content.content.content }}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
+                        <div id="content-{{ content.content.id }}">
+                            <video controls>
+                                <source src="{{ content.content.content }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
                     {% elif content.type == 'url' %}
-                        <a href="{{ content.content.content }}" target="_blank">{{ content.content.title }}</a>
+                        <div id="content-{{ content.content.id }}">
+                            <a href="{{ content.content.content }}" target="_blank">{{ content.content.title }}</a>
+                        </div>
                     {% endif %}
                 {% endfor %}
 
@@ -31,18 +41,30 @@
                     {% for content in item.contents %}
                         <li>
                             {% if content.type == 'text' %}
-                                {{ content.content.content }}
+                                <div id="content-{{ content.content.id }}">
+                                    {{ content.content.content }}
+                                </div>
                             {% elif content.type == 'image' %}
-                                <img src="{{ content.content.content.url }}" alt="{{ content.content.title }}">
+                                <div id="content-{{ content.content.id }}">
+                                    <img src="{{ content.content.content.url }}" alt="{{ content.content.title }}">
+                                </div>
                             {% elif content.type == 'file' %}
-                                <a href="{{ content.content.content.url }}" download>{{ content.content.title }}</a>
+                                <div id="content-{{ content.content.id }}">
+                                    <a href="{{ content.content.content.url }}" download>{{ content.content.title }}</a>
+                                </div>
                             {% elif content.type == 'video' %}
-                                <video controls>
-                                    <source src="{{ content.content.content }}" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
+                                <div id="content-{{ content.content.id }}">
+                                    <video controls>
+                                        <source src="{{ content.content.content }}" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </div>
+
                             {% elif content.type == 'url' %}
-                                <a href="{{ content.content.content }}" target="_blank">{{ content.content.title }}</a>
+                                <div id="content-{{ content.content.id }}">
+                                    <a href="{{ content.content.content }}"
+                                       target="_blank">{{ content.content.title }}</a>
+                                </div>
                             {% endif %}
                         </li>
                     {% endfor %}
@@ -51,23 +73,32 @@
                 {% for content in item.contents %}
                     <div>
                         {% if content.type == 'text' %}
-                            {{ content.content.content }}
+                            <div id="content-{{ content.content.id }}">
+                                {{ content.content.content }}
+                            </div>
                         {% elif content.type == 'image' %}
-                            <div class="text-center">
+                            <div id="content-{{ content.content.id }}" class="text-center">
                                 <img src="{{ content.content.content.url }}"
                                      alt="{{ content.content.title }}"
                                      class="img-fluid"
                                 >
                             </div>
+
                         {% elif content.type == 'file' %}
-                            <a href="{{ content.content.content.url }}" download>{{ content.content.title }}</a>
+                            <div id="content-{{ content.content.id }}">
+                                <a href="{{ content.content.content.url }}" download>{{ content.content.title }}</a>
+                            </div>
                         {% elif content.type == 'video' %}
-                            <video controls>
-                                <source src="{{ content.content.content }}" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
+                            <div id="content-{{ content.content.id }}">
+                                <video controls>
+                                    <source src="{{ content.content.content }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
                         {% elif content.type == 'url' %}
-                            <a href="{{ content.content.content }}" target="_blank">{{ content.content.title }}</a>
+                            <div id="content-{{ content.content.id }}">
+                                <a href="{{ content.content.content }}" target="_blank">{{ content.content.title }}</a>
+                            </div>
                         {% endif %}
                     </div>
                 {% endfor %}
@@ -77,4 +108,32 @@
         <p>No sections available.</p>
     {% endfor %}
 
+    <p>
+        <a href="{% url 'home' %}">Back to Home</a>
+    </p>
+
 {% endblock content %}
+
+{% block extra_js %}
+    <script defer>
+        $(document).ready(function () {
+            const anchor = window.location.hash;
+
+            if (anchor) {
+                const target = $(anchor);
+
+                if (target.length) {
+                    target.addClass("bg-warning-subtle");
+
+                    $('html, body').animate({
+                        scrollTop: target.offset().top - ($(window).height() / 2) + target.height() / 2
+                    }, 800);
+
+                    setTimeout(function () {
+                        target.removeClass("bg-warning-subtle");
+                    }, 3000);
+                }
+            }
+        });
+    </script>
+{% endblock %}

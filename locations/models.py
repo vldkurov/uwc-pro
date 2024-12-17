@@ -53,6 +53,9 @@ class Division(models.Model):
             ],
         )
 
+    def get_public_url(self):
+        return reverse("locations", args=[self.slug])
+
 
 class DisplayManager(models.Manager):
     def get_queryset(self):
@@ -151,6 +154,12 @@ class Branch(models.Model):
             kwargs={"division_slug": self.division.slug, "branch_slug": self.slug},
         )
 
+    def get_public_url(self):
+        return (
+            reverse("locations", kwargs={"slug": self.division.slug})
+            + f"#branch-{self.id}"
+        )
+
 
 class Person(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
@@ -170,6 +179,13 @@ class Person(models.Model):
         return reverse(
             "locations:person_edit",
             kwargs={"pk": self.id},
+        )
+
+    def get_associated_branches(self):
+        return Branch.displayed.filter(
+            models.Q(parish_priest=self)
+            | models.Q(branch_chair=self)
+            | models.Q(branch_secretary=self)
         )
 
 

@@ -67,6 +67,9 @@ class Page(models.Model):
             ],
         )
 
+    def get_public_url(self):
+        return reverse("page", args=[self.slug])
+
 
 class Section(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -120,6 +123,9 @@ class Section(models.Model):
                 self.page.slug,
             ],
         )
+
+    def get_public_url(self):
+        return reverse("page", args=[self.page.slug])
 
 
 class DisplayManager(models.Manager):
@@ -203,6 +209,21 @@ class ItemBase(models.Model):
                     "id": self.id,
                 },
             )
+        except ObjectDoesNotExist:
+            return "#"
+
+    def get_public_url(self):
+        """
+        Forms the public URL for content with an anchor to scroll to it.
+        """
+        try:
+            content_link = Content.objects.get(
+                object_id=self.id,
+                content_type=ContentType.objects.get_for_model(self),
+            )
+            page_slug = content_link.section.page.slug
+            anchor = f"#content-{self.id}"
+            return reverse("page", kwargs={"slug": page_slug}) + anchor
         except ObjectDoesNotExist:
             return "#"
 
