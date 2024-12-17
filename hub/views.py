@@ -797,7 +797,7 @@ def global_search(request):
                 search=SearchVector("title_en", "title_uk")
             ).filter(search=query)
 
-            sections = Section.published.annotate(
+            sections = Section.objects.annotate(
                 search=SearchVector("title_en", "title_uk")
             ).filter(search=query)
 

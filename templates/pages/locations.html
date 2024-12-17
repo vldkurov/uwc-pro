@@ -10,36 +10,36 @@
     </script>
 
     <script>
-
         function initMap() {
-            const locations = {{ locations|safe }}
+            const locations = {{ locations|safe }};
 
             const map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 6,
+                zoom: 7,
                 center: {lat: 51.5074, lng: -0.1278},
             });
 
-            locations.forEach(location => {
+            const markers = {};
 
+            locations.forEach(location => {
                 const content = `
-                    <div>
-                        <h4>${location.title}</h4>
-                        ${location.parish_priest ? `<p><b>Parish Priest:</b> ${location.parish_priest}</p>` : ''}
-                        ${location.branch_chair ? `<p><b>Branch Chair:</b> ${location.branch_chair}</p>` : ''}
-                        ${location.branch_secretary ? `<b><p>Branch Secretary:</b> ${location.branch_secretary}</p>` : ''}
-                        <p><b>Address:</b> ${location.formatted_address}</p>
-                        <p><b>Details:</b> ${location.other_details || ''}</p>
-                        <p><b>Website:</b> <a href="${location.url}" target="_blank" rel="noopener noreferrer">${location.url}</a></p>
-                        <p><b>Phones:</b></p>
-                        <ul>
-                            ${location.phones.map(phone => `<li><a href="tel:${phone}">${phone}</a></li>`).join('')}
-                        </ul>
-                        <p><b>Emails:</b></p>
-                        <ul>
-                            ${location.emails.map(email => `<li><a href="mailto:${email}">${email}</a></li>`).join('')}
-                        </ul>
-                    </div>
-                `;
+            <div>
+                <h4>${location.title}</h4>
+                ${location.parish_priest ? `<p><b>Parish Priest:</b> ${location.parish_priest}</p>` : ''}
+                ${location.branch_chair ? `<p><b>Branch Chair:</b> ${location.branch_chair}</p>` : ''}
+                ${location.branch_secretary ? `<b><p>Branch Secretary:</b> ${location.branch_secretary}</p>` : ''}
+                <p><b>Address:</b> ${location.formatted_address}</p>
+                <p><b>Details:</b> ${location.other_details || ''}</p>
+                <p><b>Website:</b> <a href="${location.url}" target="_blank" rel="noopener noreferrer">${location.url}</a></p>
+                <p><b>Phones:</b></p>
+                <ul>
+                    ${location.phones.map(phone => `<li><a href="tel:${phone}">${phone}</a></li>`).join('')}
+                </ul>
+                <p><b>Emails:</b></p>
+                <ul>
+                    ${location.emails.map(email => `<li><a href="mailto:${email}">${email}</a></li>`).join('')}
+                </ul>
+            </div>
+        `;
 
                 const infowindow = new google.maps.InfoWindow({
                     content: content,
@@ -52,13 +52,25 @@
                     title: location.title,
                 });
 
+                markers[`branch-${location.id}`] = {marker, infowindow};
+
                 marker.addListener("click", () => {
                     infowindow.open({
                         anchor: marker,
                         map,
                     });
                 });
-            })
+            });
+
+            const anchor = window.location.hash.substring(1);
+            if (anchor && markers[anchor]) {
+                const {marker, infowindow} = markers[anchor];
+                infowindow.open({
+                    anchor: marker,
+                    map,
+                });
+                map.panTo(marker.getPosition());
+            }
         }
 
         window.initMap = initMap;
@@ -83,7 +95,7 @@
             </div>
             <div class="col-md-9">
                 <div class="tab-content">
-                    <div style="height: 500px; width: 100%; overflow: hidden;" class="border rounded-2" >
+                    <div style="height: 500px; width: 100%; overflow: hidden;" class="border rounded-2">
                         <div id="map" style="height: 100%;"></div>
                     </div>
                 </div>

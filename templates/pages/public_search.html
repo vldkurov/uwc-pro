@@ -1,0 +1,103 @@
+{% extends 'pages/_pages_base.html' %}
+{% load highlight_query %}
+{% load class_name %}
+{% load i18n %}
+{% load markdownify %}
+
+{% block title %}{% trans 'Public Search' %}{% endblock title %}
+
+{% block content %}
+    <h2>{% trans 'Search Results' %}</h2>
+
+    {% if query %}
+        {% if results %}
+            <h5>
+                {% with results|length as total_result %}
+                    Found {{ total_result }} result{{ total_result|pluralize }} for "{{ query }}".
+                {% endwith %}
+            </h5>
+
+            <ul class="list-group">
+                {% for result in results %}
+                    <li class="list-group-item">
+                        {% if result %}
+                            {% if result|class_name == 'Page' %}
+                                <strong>{% trans 'Page:' %}</strong>
+                                <a href="{{ result.get_public_url }}">
+                                    {{ result.title|markdownify|highlight_query:query|safe }}
+                                </a>
+                            {% elif result|class_name == 'Section' %}
+                                <strong>{% trans 'Section:' %}</strong>
+                                <a href="{{ result.get_public_url }}">
+                                    {{ result.title|markdownify|highlight_query:query|safe }}
+                                </a>
+                            {% elif result|class_name == 'Text' %}
+                                <strong>{% trans 'Text:' %}</strong>
+                                <a href="{{ result.get_public_url }}">
+                                    {{ result.content|markdownify|highlight_query:query|safe }}
+                                </a>
+                            {% elif result|class_name == 'File' %}
+                                <strong>{% trans 'File:' %}</strong>
+                                <a href="{{ result.get_public_url }}">
+                                    {{ result.content|markdownify|highlight_query:query|safe }}
+                                </a>
+                            {% elif result|class_name == 'Image' %}
+                                <strong>{% trans 'Image:' %}</strong>
+                                <a href="{{ result.get_public_url }}">
+                                    {{ result.content|markdownify|highlight_query:query|safe }}
+                                </a>
+                            {% elif result|class_name == 'Video' %}
+                                <strong>{% trans 'Video:' %}</strong>
+                                <a href="{{ result.get_public_url }}">
+                                    {{ result.content|markdownify|highlight_query:query|safe }}
+                                </a>
+                            {% elif result|class_name == 'URL' %}
+                                <strong>{% trans 'URL:' %}</strong>
+                                <a href="{{ result.get_public_url }}">
+                                    {{ result.content|markdownify|highlight_query:query|safe }}
+                                </a>
+                            {% elif result|class_name == 'Division' %}
+                                <strong>{% trans 'Division:' %}</strong>
+                                <a href="{{ result.get_public_url }}">
+                                    {{ result.title|markdownify|highlight_query:query|safe }}
+                                </a>
+                            {% elif result|class_name == 'Branch' %}
+                                <strong>{% trans 'Branch:' %}</strong>
+                                <a href="{{ result.get_public_url }}">
+                                    {{ result.title|markdownify|highlight_query:query|safe }}
+                                </a>
+                                <strong>{% trans 'Address:' %}</strong>
+                                <a href="{{ result.get_public_url }}">
+                                    {{ result.address|highlight_query:query|safe }}
+                                </a>
+                            {% elif result|class_name == 'Person' %}
+                                <strong>{% trans 'Person:' %}</strong>
+                                <span>{{ result.first_name|highlight_query:query|safe }} {{ result.last_name|highlight_query:query|safe }}</span>
+
+                                {% with result.get_associated_branches as branches %}
+                                    {% if branches %}
+                                        <ul>
+                                            {% for branch in branches %}
+                                                <li>
+                                                    <a href="{{ branch.get_public_url }}">
+                                                        {{ branch.title|highlight_query:query|safe }}
+                                                    </a>
+                                                    - <small>{% trans 'Division:' %} {{ branch.division.title }}</small>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% else %}
+                                        <p><em>{% trans 'No branches associated with this person.' %}</em></p>
+                                    {% endif %}
+                                {% endwith %}
+                            {% endif %}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+
+        {% else %}
+            <p class="alert alert-warning">{% trans 'No results found.' %}</p>
+        {% endif %}
+    {% endif %}
+{% endblock content %}
