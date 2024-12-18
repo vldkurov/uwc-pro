@@ -60,4 +60,5 @@ urlpatterns = [
     ),
     path("section/order/", views.SectionOrderView.as_view(), name="section_order"),
     path("content/order/", views.ContentOrderView.as_view(), name="content_order"),
+    path("global-search/", views.global_search, name="global_search"),
 ]

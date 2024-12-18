@@ -66,9 +66,9 @@
                     {#                    <a class="nav-link" href="{% url 'account_signup' %}" aria-label="Create User">Create User</a>#}
                     {#                </li>#}
                 </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="{% trans 'Search' %}"
-                           aria-label="Search">
+                <form class="d-flex" role="search" action="{% url 'public_search' %}" method="get">
+                    <input class="form-control me-2" type="search" placeholder="{% trans 'Search' %}" name="query"
+                           aria-label="Search" value="{{ query|default_if_none:'' }}">
                     <button class="btn btn-outline-success" type="submit">{% trans 'Search' %}</button>
                 </form>
                 <div class="mr-auto">
