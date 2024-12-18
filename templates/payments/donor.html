@@ -12,9 +12,8 @@
             </a>
         </p>
 
-        <h2 class="mb-4">
-            {{ donor.last_name }}, {{ donor.first_name }}
-        </h2>
+        <p class="fs-2 mb-0">{{ donor.last_name }}, {{ donor.first_name }}</p>
+        <p class="fw-lighter fst-italic"><a href="mailto:{{ donor.email }}">{{ donor.email }}</a></p>
 
         <h3>{% trans 'Donation History' %}</h3>
 
