@@ -33,6 +33,9 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                 <ul class="navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">{% trans 'Home' %}</a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">{% trans 'Who we are' %}
@@ -50,14 +53,11 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">{% trans 'Home' %}</a>
+                        <a class="nav-link" href="{% url 'page' slug='get-involved' %}">{% trans 'Get Involved' %}</a>
                     </li>
                     <li class="nav-item">
                         <a class="btn btn-outline-info" aria-current="page"
                            href="{% url 'create_donation' %}">{% trans 'Donate' %}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
                     </li>
                     {#                <li class="nav-item">#}
                     {#                    <a class="nav-link" href="{% url 'account_login' %}" aria-label="Log In">Log In</a>#}
@@ -67,7 +67,7 @@
                     {#                </li>#}
                 </ul>
                 <form class="d-flex" role="search" action="{% url 'public_search' %}" method="get">
-                    <input class="form-control me-2" type="search" placeholder="{% trans 'Search' %}" name="query"
+                    <input class="form-control mx-2" type="search" placeholder="{% trans 'Search' %}" name="query"
                            aria-label="Search" value="{{ query|default_if_none:'' }}">
                     <button class="btn btn-outline-success" type="submit">{% trans 'Search' %}</button>
                 </form>
