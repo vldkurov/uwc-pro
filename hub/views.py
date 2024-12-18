@@ -844,9 +844,13 @@ def global_search(request):
             ).filter(search=query)
 
             if user_role == CustomUser.Role.OWNER:
-                donors = Donor.objects.annotate(
-                    search=SearchVector("first_name", "last_name", "email")
-                ).filter(search=query)
+                donors = (
+                    Donor.objects.annotate(
+                        search=SearchVector("first_name", "last_name", "email")
+                    )
+                    .filter(search=query)
+                    .distinct()
+                )
 
                 donations = Donation.objects.annotate(
                     search=SearchVector("transaction_id")
