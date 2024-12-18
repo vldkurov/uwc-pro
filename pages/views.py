@@ -1,12 +1,15 @@
+from django.contrib.postgres.search import SearchVector
+from django.db.models import Q
 from django.http import Http404
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import select_template, TemplateDoesNotExist
 from django.views import View
 from django.views.generic import TemplateView
 from environs import Env
 
-from hub.models import Section, Page, Content
-from locations.models import Division, Branch
+from hub.models import Section, Page, Content, Text, File, Image, Video, URL
+from locations.models import Division, Branch, Person
+from .forms import SearchForm
 
 env = Env()
 env.read_env()
@@ -94,6 +97,7 @@ class LocationsPageView(TemplateView):
 
         locations = [
             {
+                "id": str(location.id),
                 "title": location.title,
                 "parish_priest": (
                     str(location.parish_priest) if location.parish_priest else ""
@@ -119,3 +123,127 @@ class LocationsPageView(TemplateView):
         context["locations"] = locations
 
         return context
+
+
+def public_search(request):
+    form = SearchForm()
+    query = None
+    results = []
+
+    if "query" in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data["query"]
+
+            pages = Page.objects.annotate(
+                search=SearchVector("title_en", "title_uk")
+            ).filter(search=query)
+
+            sections = Section.published.annotate(
+                search=SearchVector("title_en", "title_uk")
+            ).filter(search=query)
+
+            text_content = (
+                Text.objects.filter(
+                    id__in=Content.displayed.filter(
+                        content_type__model="text"
+                    ).values_list("object_id", flat=True)
+                )
+                .annotate(
+                    search=SearchVector(
+                        "content_en",
+                        "content_uk",
+                    )
+                )
+                .filter(search=query)
+            )
+
+            file_content = (
+                File.objects.filter(
+                    id__in=Content.displayed.filter(
+                        content_type__model="file"
+                    ).values_list("object_id", flat=True)
+                )
+                .annotate(search=SearchVector("content"))
+                .filter(search=query)
+            )
+
+            image_content = (
+                Image.objects.filter(
+                    id__in=Content.displayed.filter(
+                        content_type__model="image"
+                    ).values_list("object_id", flat=True)
+                )
+                .annotate(search=SearchVector("content"))
+                .filter(search=query)
+            )
+
+            video_content = (
+                Video.objects.filter(
+                    id__in=Content.displayed.filter(
+                        content_type__model="video"
+                    ).values_list("object_id", flat=True)
+                )
+                .annotate(
+                    search=SearchVector(
+                        "content",
+                    )
+                )
+                .filter(search=query)
+            )
+
+            url_content = (
+                URL.objects.filter(
+                    id__in=Content.displayed.filter(
+                        content_type__model="url"
+                    ).values_list("object_id", flat=True)
+                )
+                .annotate(search=SearchVector("content"))
+                .filter(search=query)
+            )
+
+            divisions = Division.objects.annotate(
+                search=SearchVector("title_en", "title_uk")
+            ).filter(search=query)
+
+            branches = Branch.displayed.annotate(
+                search=SearchVector("title_en", "title_uk", "address_en", "address_uk")
+            ).filter(search=query)
+
+            persons = (
+                Person.objects.annotate(
+                    search=SearchVector(
+                        "first_name_en", "last_name_en", "first_name_uk", "last_name_uk"
+                    )
+                )
+                .filter(search=query)
+                .filter(
+                    Q(branch_chair__status=Branch.Status.DISPLAY)
+                    | Q(parish_priest__status=Branch.Status.DISPLAY)
+                    | Q(branch_secretary__status=Branch.Status.DISPLAY)
+                )
+                .distinct()
+            )
+
+            results = (
+                list(pages)
+                + list(sections)
+                + list(text_content)
+                + list(file_content)
+                + list(image_content)
+                + list(video_content)
+                + list(url_content)
+                + list(divisions)
+                + list(branches)
+                + list(persons)
+            )
+
+    return render(
+        request,
+        "pages/public_search.html",
+        {
+            "form": form,
+            "query": query,
+            "results": results,
+        },
+    )

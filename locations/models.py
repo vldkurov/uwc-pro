@@ -1,13 +1,12 @@
 from uuid import uuid4
 
-import googlemaps
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from environs import Env
 
 from locations.fields import OrderField
 from locations.validators import validate_uk_phone_number, format_uk_phone_number
-
 
 env = Env()
 env.read_env()
@@ -45,6 +44,17 @@ class Division(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse(
+            "locations:division_edit",
+            args=[
+                self.slug,
+            ],
+        )
+
+    def get_public_url(self):
+        return reverse("locations", args=[self.slug])
 
 
 class DisplayManager(models.Manager):
@@ -138,6 +148,18 @@ class Branch(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return reverse(
+            "locations:division_branch_update",
+            kwargs={"division_slug": self.division.slug, "branch_slug": self.slug},
+        )
+
+    def get_public_url(self):
+        return (
+            reverse("locations", kwargs={"slug": self.division.slug})
+            + f"#branch-{self.id}"
+        )
+
 
 class Person(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
@@ -152,6 +174,19 @@ class Person(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+    def get_absolute_url(self):
+        return reverse(
+            "locations:person_edit",
+            kwargs={"pk": self.id},
+        )
+
+    def get_associated_branches(self):
+        return Branch.displayed.filter(
+            models.Q(parish_priest=self)
+            | models.Q(branch_chair=self)
+            | models.Q(branch_secretary=self)
+        )
 
 
 class Phone(models.Model):
