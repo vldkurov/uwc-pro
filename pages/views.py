@@ -141,13 +141,47 @@ def public_search(request):
             query = form.cleaned_data["query"]
             search_query = SearchQuery(query)
 
-            pages = Page.objects.annotate(
-                search=SearchVector("title_en", "title_uk")
-            ).filter(search=query)
+            # pages = Page.objects.annotate(
+            #     search=SearchVector("title_en", "title_uk")
+            # ).filter(search=query)
 
-            sections = Section.published.annotate(
-                search=SearchVector("title_en", "title_uk")
-            ).filter(search=query)
+            pages = (
+                Page.objects.annotate(
+                    search=SearchVector("title_en", "title_uk"),
+                    rank=SearchRank(SearchVector("title_en", "title_uk"), search_query),
+                    similarity=TrigramSimilarity("title_en", query)
+                    + TrigramSimilarity("title_uk", query),
+                )
+                .filter(Q(search=query) | Q(similarity__gte=0.1))
+                .order_by("-similarity", "-rank")
+            )
+
+            # sections = Section.published.annotate(
+            #     search=SearchVector("title_en", "title_uk")
+            # ).filter(search=query)
+
+            sections = (
+                Section.published.annotate(
+                    search=SearchVector("title_en", "title_uk"),
+                    rank=SearchRank(SearchVector("title_en", "title_uk"), search_query),
+                    similarity=TrigramSimilarity("title_en", query)
+                    + TrigramSimilarity("title_uk", query),
+                )
+                .filter(Q(search=query) | Q(similarity__gte=0.1))
+                .order_by("-similarity", "-rank")
+            )
+
+            # text_content = (
+            #     Text.objects.filter(
+            #         id__in=Content.displayed.filter(
+            #             content_type__model="text"
+            #         ).values_list("object_id", flat=True)
+            #     )
+            #     .annotate(
+            #         search=SearchVector("content_en", "content_uk"),
+            #     )
+            #     .filter(search=query)
+            # )
 
             text_content = (
                 Text.objects.filter(
@@ -211,13 +245,44 @@ def public_search(request):
                 .filter(search=query)
             )
 
-            divisions = Division.objects.annotate(
-                search=SearchVector("title_en", "title_uk")
-            ).filter(search=query)
+            # divisions = Division.objects.annotate(
+            #     search=SearchVector("title_en", "title_uk")
+            # ).filter(search=query)
 
-            branches = Branch.displayed.annotate(
-                search=SearchVector("title_en", "title_uk", "address_en", "address_uk")
-            ).filter(search=query)
+            divisions = (
+                Division.objects.annotate(
+                    search=SearchVector("title_en", "title_uk"),
+                    rank=SearchRank(SearchVector("title_en", "title_uk"), search_query),
+                    similarity=TrigramSimilarity("title_en", query)
+                    + TrigramSimilarity("title_uk", query),
+                )
+                .filter(Q(search=query) | Q(similarity__gte=0.01))
+                .order_by("-similarity", "-rank")
+            )
+
+            # branches = Branch.displayed.annotate(
+            #     search=SearchVector("title_en", "title_uk", "address_en", "address_uk")
+            # ).filter(search=query)
+
+            branches = (
+                Branch.displayed.annotate(
+                    search=SearchVector(
+                        "title_en", "title_uk", "address_en", "address_uk"
+                    ),
+                    rank=SearchRank(
+                        SearchVector(
+                            "title_en", "title_uk", "address_en", "address_uk"
+                        ),
+                        search_query,
+                    ),
+                    similarity=TrigramSimilarity("title_en", query)
+                    + TrigramSimilarity("title_uk", query)
+                    + TrigramSimilarity("address_en", query)
+                    + TrigramSimilarity("address_uk", query),
+                )
+                .filter(Q(search=query) | Q(similarity__gte=0.5))
+                .order_by("-similarity", "-rank")
+            )
 
             persons = (
                 Person.objects.annotate(

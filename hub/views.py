@@ -6,7 +6,7 @@ from django.apps import apps
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.contrib.postgres.search import SearchVector
+from django.contrib.postgres.search import SearchVector, SearchRank
 from django.core.exceptions import PermissionDenied
 from django.db import models
 from django.db.models.fields.files import FieldFile
