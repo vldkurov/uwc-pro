@@ -1,4 +1,9 @@
-from django.contrib.postgres.search import SearchVector
+from django.contrib.postgres.search import (
+    SearchVector,
+    SearchRank,
+    TrigramSimilarity,
+    SearchQuery,
+)
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
@@ -134,6 +139,7 @@ def public_search(request):
         form = SearchForm(request.GET)
         if form.is_valid():
             query = form.cleaned_data["query"]
+            search_query = SearchQuery(query)
 
             pages = Page.objects.annotate(
                 search=SearchVector("title_en", "title_uk")
@@ -150,12 +156,15 @@ def public_search(request):
                     ).values_list("object_id", flat=True)
                 )
                 .annotate(
-                    search=SearchVector(
-                        "content_en",
-                        "content_uk",
-                    )
+                    search=SearchVector("content_en", "content_uk"),
+                    rank=SearchRank(
+                        SearchVector("content_en", "content_uk"), search_query
+                    ),
+                    similarity=TrigramSimilarity("content_en", query)
+                    + TrigramSimilarity("content_uk", query),
                 )
-                .filter(search=query)
+                .filter(Q(search=query) | Q(similarity__gte=0.01))
+                .order_by("-similarity", "-rank")
             )
 
             file_content = (
