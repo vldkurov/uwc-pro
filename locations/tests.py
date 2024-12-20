@@ -28,7 +28,7 @@ class BranchFormTests(TestCase):
         form_data = {
             "title_en": "   example branch   ",
             "title_uk": "   приклад філії   ",
-            "address": "   123 example street   ",
+            "address_en": "   123 example street   ",
             "postcode": "   SW1A 1AA   ",
             "url": "https://example.com",
         }
@@ -38,7 +38,7 @@ class BranchFormTests(TestCase):
 
         self.assertEqual(cleaned_data["title_en"], "Example Branch")
         self.assertEqual(cleaned_data["title_uk"], "Приклад Філії")
-        self.assertEqual(cleaned_data["address"], "123 Example Street")
+        self.assertEqual(cleaned_data["address_en"], "123 Example Street")
         self.assertEqual(cleaned_data["postcode"], "SW1A 1AA")
 
 
