@@ -1245,3 +1245,96 @@ class PageSectionUpdateViewTests(TestCase):
         self.assertIn("formset", response.context)
         formset_errors = response.context["formset"].errors
         self.assertGreater(len(formset_errors), 0, "Formset should contain errors")
+
+
+class SectionDeleteViewTests(TestCase):
+    def setUp(self):
+        # Create a user with delete permissions
+        self.user_with_permission = get_user_model().objects.create_user(
+            username="user_with_permission", password="password"
+        )
+        permission_view_page = Permission.objects.get(
+            content_type__app_label="hub", codename="view_page"
+        )
+        permission_view_section = Permission.objects.get(
+            content_type__app_label="hub", codename="view_section"
+        )
+        permission_delete_section = Permission.objects.get(
+            content_type__app_label="hub", codename="delete_section"
+        )
+        self.user_with_permission.user_permissions.add(
+            permission_view_page, permission_view_section, permission_delete_section
+        )
+
+        # Create a user without permissions
+        self.user_without_permission = get_user_model().objects.create_user(
+            username="user_without_permission", password="password"
+        )
+
+        # Create a draft section
+        self.page = Page.objects.create(
+            title="Test Page", slug="test-page", modified_by=self.user_with_permission
+        )
+        self.draft_section = Section.objects.create(
+            page=self.page, title="Draft Section", status=Section.Status.DRAFT
+        )
+
+        # Create a published section
+        self.published_section = Section.objects.create(
+            page=self.page, title="Published Section", status=Section.Status.PUBLISHED
+        )
+
+    def test_user_without_permission(self):
+        """Test that a user without permission cannot access the delete view."""
+        self.client.login(username="user_without_permission", password="password")
+        url = reverse("delete_section", kwargs={"pk": self.draft_section.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_delete_draft_section(self):
+        """Test that a user with permission can delete a draft section."""
+        self.client.login(username="user_with_permission", password="password")
+        url = reverse("delete_section", kwargs={"pk": self.draft_section.id})
+        response = self.client.post(url)
+        self.assertRedirects(
+            response,
+            reverse("page_section_update", kwargs={"slug": self.page.slug}),
+        )
+        with self.assertRaises(Section.DoesNotExist):
+            Section.objects.get(id=self.draft_section.id)
+
+    def test_delete_published_section(self):
+        """Test that a user with permission cannot delete a published section."""
+        self.client.login(username="user_with_permission", password="password")
+        url = reverse("delete_section", kwargs={"pk": self.published_section.id})
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 403)
+        self.assertTrue(Section.objects.filter(id=self.published_section.id).exists())
+
+    def test_redirect_after_deletion(self):
+        """Test redirection after successful deletion."""
+        self.client.login(username="user_with_permission", password="password")
+        url = reverse("delete_section", kwargs={"pk": self.draft_section.id})
+        response = self.client.post(url)
+        self.assertRedirects(
+            response,
+            reverse("page_section_update", kwargs={"slug": self.page.slug}),
+        )
+
+    def test_correct_template_used(self):
+        """Test that the correct template is used for the delete section view."""
+        self.client.login(username="user_with_permission", password="password")
+
+        url = reverse("delete_section", kwargs={"pk": self.draft_section.id})
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "hub/manage/section/delete.html")
+
+    def test_redirect_to_login_for_unauthenticated_user(self):
+        """Test that unauthenticated users are redirected to the login page."""
+        url = reverse("delete_section", kwargs={"pk": self.draft_section.id})
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f"{reverse('account_login')}?next={url}")
