@@ -1473,3 +1473,97 @@ class SectionPublishViewTests(TestCase):
         self.assertRedirects(
             response, reverse("page_section_update", kwargs={"slug": self.page.slug})
         )
+
+
+class SectionUnpublishViewTests(TestCase):
+    def setUp(self):
+        self.user_with_permission = get_user_model().objects.create_user(
+            username="user_with_permission", password="password"
+        )
+        permission_unpublish_section = Permission.objects.get(
+            content_type__app_label="hub", codename="unpublish_section"
+        )
+        permission_view_page = Permission.objects.get(
+            content_type__app_label="hub", codename="view_page"
+        )
+        permission_view_section = Permission.objects.get(
+            content_type__app_label="hub", codename="view_section"
+        )
+        self.user_with_permission.user_permissions.add(
+            permission_view_page, permission_view_section, permission_unpublish_section
+        )
+
+        self.user_without_permission = get_user_model().objects.create_user(
+            username="user_without_permission", password="password"
+        )
+
+        self.page = Page.objects.create(
+            title="Test Page",
+            modified_by=self.user_with_permission,
+        )
+
+        self.published_section = Section.objects.create(
+            page=self.page,
+            status=Section.Status.PUBLISHED,
+        )
+
+        self.draft_section = Section.objects.create(
+            page=self.page,
+            status=Section.Status.DRAFT,
+        )
+
+        self.url = reverse(
+            "unpublish_section", kwargs={"id": self.published_section.id}
+        )
+
+        self.logger = logging.getLogger("django.request")
+        self.logger.setLevel(logging.CRITICAL)
+
+    def tearDown(self):
+        self.logger.setLevel(logging.DEBUG)
+
+    def test_render_template_on_get(self):
+        """Test that the correct template is rendered for published sections."""
+        self.client.login(username="user_with_permission", password="password")
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "hub/manage/section/unpublish.html")
+        self.assertEqual(response.context["section"], self.published_section)
+
+    def test_unpublish_non_published_section_get(self):
+        """Test that a GET request for a non-published section returns 403."""
+        self.client.login(username="user_with_permission", password="password")
+        url = reverse("unpublish_section", kwargs={"id": self.draft_section.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_redirect_unauthenticated_user(self):
+        """Test that unauthenticated users are redirected to the login page."""
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f"{reverse('account_login')}?next={self.url}")
+
+    def test_permission_required(self):
+        """Test that users without the 'unpublish_section' permission cannot access the view."""
+        self.client.login(username="user_without_permission", password="password")
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_successful_unpublishing(self):
+        """Test that a published section is successfully unpublished."""
+        self.client.login(username="user_with_permission", password="password")
+        response = self.client.post(self.url)
+
+        self.published_section.refresh_from_db()
+        self.assertEqual(self.published_section.status, Section.Status.DRAFT)
+
+        self.assertRedirects(
+            response, reverse("page_section_update", kwargs={"slug": self.page.slug})
+        )
+
+    def test_unpublish_non_published_section_post(self):
+        """Test that a POST request for a non-published section returns 403."""
+        self.client.login(username="user_with_permission", password="password")
+        url = reverse("unpublish_section", kwargs={"id": self.draft_section.id})
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 403)
