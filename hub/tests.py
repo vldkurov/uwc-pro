@@ -1284,6 +1284,12 @@ class SectionDeleteViewTests(TestCase):
             page=self.page, title="Published Section", status=Section.Status.PUBLISHED
         )
 
+        self.logger = logging.getLogger("django.request")
+        self.logger.setLevel(logging.CRITICAL)
+
+    def tearDown(self):
+        self.logger.setLevel(logging.DEBUG)
+
     def test_user_without_permission(self):
         """Test that a user without permission cannot access the delete view."""
         self.client.login(username="user_without_permission", password="password")
@@ -1338,3 +1344,132 @@ class SectionDeleteViewTests(TestCase):
 
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, f"{reverse('account_login')}?next={url}")
+
+
+class SectionPublishViewTests(TestCase):
+    def setUp(self):
+        self.user_with_permission = get_user_model().objects.create_user(
+            username="user_with_permission", password="password"
+        )
+        permission_publish_section = Permission.objects.get(
+            content_type__app_label="hub", codename="publish_section"
+        )
+        permission_view_page = Permission.objects.get(
+            content_type__app_label="hub", codename="view_page"
+        )
+        permission_view_section = Permission.objects.get(
+            content_type__app_label="hub", codename="view_section"
+        )
+        self.user_with_permission.user_permissions.add(
+            permission_view_page, permission_view_section, permission_publish_section
+        )
+
+        self.user_without_permission = get_user_model().objects.create_user(
+            username="user_without_permission", password="password"
+        )
+
+        self.page = Page.objects.create(
+            title="Test Page",
+            modified_by=self.user_with_permission,
+        )
+
+        self.draft_section = Section.objects.create(
+            page=self.page,
+            status=Section.Status.DRAFT,
+            title_draft_en="Draft Title EN",
+            title_draft_uk="Draft Title UK",
+            is_update_confirmed_en=True,
+            is_update_confirmed_uk=True,
+        )
+
+        self.published_section = Section.objects.create(
+            page=self.page,
+            status=Section.Status.PUBLISHED,
+        )
+
+        self.url = reverse("publish_section", kwargs={"id": self.draft_section.id})
+
+        self.logger = logging.getLogger("django.request")
+        self.logger.setLevel(logging.CRITICAL)
+
+    def tearDown(self):
+        self.logger.setLevel(logging.DEBUG)
+
+    def test_render_template_on_get(self):
+        """Test that the correct template is rendered on GET requests."""
+        self.client.login(username="user_with_permission", password="password")
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "hub/manage/section/publish.html")
+        self.assertEqual(response.context["section"], self.draft_section)
+
+    def test_redirect_unauthenticated_user(self):
+        """Test that unauthenticated users are redirected to the login page."""
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f"{reverse('account_login')}?next={self.url}")
+
+    def test_permission_required(self):
+        """Test that users without the 'publish_section' permission cannot access the view."""
+        self.client.login(username="user_without_permission", password="password")
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_already_published_section(self):
+        """Test that publishing an already published section shows an error message."""
+        self.client.login(username="user_with_permission", password="password")
+        url = reverse("publish_section", kwargs={"id": self.published_section.id})
+        response = self.client.post(url)
+
+        self.published_section.refresh_from_db()
+        self.assertEqual(self.published_section.status, Section.Status.PUBLISHED)
+
+        messages = list(response.wsgi_request._messages)
+        self.assertIn(
+            "This section is already published.", [str(msg) for msg in messages]
+        )
+        self.assertRedirects(
+            response, reverse("page_section_update", kwargs={"slug": self.page.slug})
+        )
+
+    def test_updates_not_confirmed(self):
+        """Test that publishing fails if updates are not confirmed."""
+        self.draft_section.is_update_confirmed_en = False
+        self.draft_section.is_update_confirmed_uk = True
+        self.draft_section.save()
+
+        self.client.login(username="user_with_permission", password="password")
+        response = self.client.post(self.url)
+
+        self.draft_section.refresh_from_db()
+        self.assertEqual(self.draft_section.status, Section.Status.DRAFT)
+
+        messages = list(response.wsgi_request._messages)
+        self.assertIn(
+            "Please confirm all content updates before publishing.",
+            [str(msg) for msg in messages],
+        )
+        self.assertRedirects(
+            response, reverse("page_section_update", kwargs={"slug": self.page.slug})
+        )
+
+    def test_successful_publishing(self):
+        """Test that a draft section is successfully published."""
+        self.client.login(username="user_with_permission", password="password")
+        response = self.client.post(self.url)
+
+        self.draft_section.refresh_from_db()
+        self.assertEqual(self.draft_section.status, Section.Status.PUBLISHED)
+        self.assertEqual(self.draft_section.title_en, "Draft Title EN")
+        self.assertEqual(self.draft_section.title_uk, "Draft Title UK")
+        self.assertIsNone(self.draft_section.original_data)
+        self.assertFalse(self.draft_section.is_update_pending_en)
+        self.assertFalse(self.draft_section.is_update_pending_uk)
+        self.assertFalse(self.draft_section.is_update_confirmed_en)
+        self.assertFalse(self.draft_section.is_update_confirmed_uk)
+
+        messages = list(response.wsgi_request._messages)
+        self.assertIn("Section published successfully.", [str(msg) for msg in messages])
+        self.assertRedirects(
+            response, reverse("page_section_update", kwargs={"slug": self.page.slug})
+        )
