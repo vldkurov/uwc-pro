@@ -1,21 +1,28 @@
 import logging
+import os
+import uuid
+from io import BytesIO
 
+from PIL import Image
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse, resolve
 from django.utils.translation import activate
+from django.apps import apps
 
 from accounts.models import CustomUser
 from .forms import PageForm
-from .models import Page, Section
+from .models import Page, Section, Content
 from .views import (
     DashboardView,
     ManagePageListView,
     PageUpdateView,
     PageCreateView,
     PageDeleteView,
+    ContentCreateUpdateView,
 )
 
 
@@ -463,7 +470,7 @@ class SectionCreateViewTests(TestCase):
         self.client.login(username="user_with_permission", password="password")
         self.assertTrue(
             self.user_with_permission.has_perm("hub.add_section"),
-            "The user must have the admin_pages.add_section permission.",
+            "The user must have the hub.add_section permission.",
         )
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
@@ -673,7 +680,6 @@ class PageSectionUpdateViewTests(TestCase):
 
         # Refresh the section object and check original_data
         self.section.refresh_from_db()
-        print("self.section.original_data:", self.section.original_data)
 
         self.assertIsNotNone(
             self.section.original_data,
@@ -716,7 +722,6 @@ class PageSectionUpdateViewTests(TestCase):
 
         # Refresh the section object and check original_data
         self.section.refresh_from_db()
-        print("self.section.original_data:", self.section.original_data)
 
         self.assertIsNotNone(
             self.section.original_data,
@@ -1567,3 +1572,955 @@ class SectionUnpublishViewTests(TestCase):
         url = reverse("unpublish_section", kwargs={"id": self.draft_section.id})
         response = self.client.post(url)
         self.assertEqual(response.status_code, 403)
+
+
+class ContentCreateUpdateViewTests(TestCase):
+    """
+    Test case for the ContentCreateUpdateView.
+
+    This class tests the behavior of the ContentCreateUpdateView, including
+    permissions, form validation, and handling of different content types.
+    """
+
+    def setUp(self):
+        """
+        Set up test data, permissions, and user accounts for the tests.
+        """
+        # -------------------------------
+        # 1. Users with and without permissions
+        # -------------------------------
+        self.user_with_permissions = get_user_model().objects.create_user(
+            username="user_with_permissions", password="password"
+        )
+        self.user_without_permissions = get_user_model().objects.create_user(
+            username="user_without_permissions", password="password"
+        )
+
+        # -------------------------------
+        # 2. Content Types
+        # -------------------------------
+        # Fetch content types for each model in the app
+        content_type_page = ContentType.objects.get(app_label="hub", model="page")
+        content_type_section = ContentType.objects.get(app_label="hub", model="section")
+        content_type_content = ContentType.objects.get(app_label="hub", model="content")
+
+        # Content types for each content model
+        content_type_text = ContentType.objects.get(app_label="hub", model="text")
+        content_type_file = ContentType.objects.get(app_label="hub", model="file")
+        content_type_image = ContentType.objects.get(app_label="hub", model="image")
+        content_type_video = ContentType.objects.get(app_label="hub", model="video")
+        content_type_url = ContentType.objects.get(app_label="hub", model="url")
+
+        # -------------------------------
+        # 3. Permissions
+        # -------------------------------
+
+        # Permissions for a Page model
+        permissions_page = Permission.objects.filter(
+            content_type=content_type_page,
+            codename__in=[
+                "view_page",
+            ],
+        )
+
+        # Permissions for a Section model
+        permissions_section = Permission.objects.filter(
+            content_type=content_type_section,
+            codename__in=[
+                "request_update_en",
+                "request_update_uk",
+                "confirm_update_en",
+                "confirm_update_uk",
+                "reject_update_en",
+                "reject_update_uk",
+            ],
+        )
+
+        # Permissions for a Content model
+        permissions_content = Permission.objects.filter(
+            content_type=content_type_content,
+            codename__in=[
+                "view_content",
+                "add_content",
+                "request_update",
+                "confirm_update",
+                "reject_update",
+            ],
+        )
+
+        # Permissions for specific content types
+        permissions_text = Permission.objects.filter(
+            content_type=content_type_text,
+            codename__in=[
+                "request_update_en",
+                "request_update_uk",
+                "confirm_update_en",
+                "confirm_update_uk",
+                "reject_update_en",
+                "reject_update_uk",
+            ],
+        )
+
+        permissions_other_types = Permission.objects.filter(
+            content_type__in=[
+                content_type_file,
+                content_type_image,
+                content_type_video,
+                content_type_url,
+            ],
+            codename__in=[
+                "request_update",
+                "confirm_update",
+                "reject_update",
+            ],
+        )
+
+        # Assign all permissions to the test user
+        self.user_with_permissions.user_permissions.add(
+            *permissions_page,
+            *permissions_section,
+            *permissions_content,
+            *permissions_text,
+            *permissions_other_types,
+        )
+
+        # -------------------------------
+        # 4. Test Data
+        # -------------------------------
+
+        # Test Page
+        self.page = Page.objects.create(
+            title="Test Page",
+            modified_by=self.user_with_permissions,
+        )
+
+        # Test Section
+        self.section = Section.objects.create(
+            page=self.page,
+            title="Test Section",
+        )
+
+        # Models for different content types
+        self.text_model = apps.get_model(app_label="hub", model_name="text")
+        self.file_model = apps.get_model(app_label="hub", model_name="file")
+        self.image_model = apps.get_model(app_label="hub", model_name="image")
+        self.video_model = apps.get_model(app_label="hub", model_name="video")
+        self.url_model = apps.get_model(app_label="hub", model_name="url")
+
+        # -------------------------------
+        # 5. Content Instances
+        # -------------------------------
+
+        # --- Mock data ---
+        self.mock_file_name = "test_file.txt"
+        self.mock_file = SimpleUploadedFile(
+            self.mock_file_name, b"Mock file content", content_type="text/plain"
+        )
+
+        self.mock_image_name = "test_image.jpg"
+        self.mock_image = SimpleUploadedFile(
+            self.mock_image_name, b"Mock image content", content_type="image/jpeg"
+        )
+
+        self.mock_video_url = "https://example.com/video.mp4"
+        self.mock_url = "https://example.com"
+
+        # Text Content
+        self.text_content = self.text_model.objects.create(
+            title="Test Text",
+            content_draft_en="Draft Text EN",
+            content_draft_uk="Draft Text UK",
+            modified_by=self.user_with_permissions,
+        )
+        Content.objects.create(section=self.section, item=self.text_content)
+
+        # File Content
+        self.file_content = self.file_model.objects.create(
+            title="Test File",
+            content_draft=self.mock_file,
+            modified_by=self.user_with_permissions,
+        )
+        Content.objects.create(section=self.section, item=self.file_content)
+
+        image = BytesIO()
+        img = Image.new("RGB", (100, 100), color="red")
+        img.save(image, format="JPEG")
+        image.seek(0)
+
+        # Image Content
+        self.image_content = self.image_model.objects.create(
+            title="Test Image",
+            content_draft=self.mock_image,
+            modified_by=self.user_with_permissions,
+        )
+        Content.objects.create(section=self.section, item=self.image_content)
+
+        # Video Content
+        self.video_content = self.video_model.objects.create(
+            title="Test Video",
+            content_draft=self.mock_video_url,
+            modified_by=self.user_with_permissions,
+        )
+        Content.objects.create(section=self.section, item=self.video_content)
+
+        # URL Content
+        self.url_content = self.url_model.objects.create(
+            title="Test URL",
+            content_draft=self.mock_url,
+            modified_by=self.user_with_permissions,
+        )
+        Content.objects.create(section=self.section, item=self.url_content)
+
+        # -------------------------------
+        # 6. URLs
+        # -------------------------------
+        self.create_url = reverse(
+            "section_content_create",
+            kwargs={"section_id": self.section.id, "model_name": "text"},
+        )
+        self.update_url = reverse(
+            "section_content_update",
+            kwargs={
+                "section_id": self.section.id,
+                "model_name": "text",
+                "id": self.text_content.id,
+            },
+        )
+
+        # -------------------------------
+        # 7. Template Name
+        # -------------------------------
+        self.template_name = "hub/manage/content/form.html"
+
+        self.logger = logging.getLogger("django.request")
+        self.logger.setLevel(logging.CRITICAL)
+
+    def tearDown(self):
+        """
+        Tear down any additional test data if necessary.
+        """
+        self.logger.setLevel(logging.DEBUG)
+
+    def test_view_with_permission(self):
+        """
+        Test that a user with the 'view_content' permission can access the view.
+        """
+        # Log in as user with permissions
+        self.client.login(username="user_with_permissions", password="password")
+
+        # Send GET request to create URL
+        response = self.client.get(self.create_url)
+        self.assertEqual(
+            response.status_code,
+            200,
+            "User with 'view_content' permission should access the view.",
+        )
+
+        # Send GET request to update URL
+        response = self.client.get(self.update_url)
+        self.assertEqual(
+            response.status_code,
+            200,
+            "User with 'view_content' permission should access the update view.",
+        )
+        self.assertTemplateUsed(
+            response,
+            self.template_name,
+            "The correct template should be used for content creation.",
+        )
+
+        view = ContentCreateUpdateView()
+
+        self.assertEqual(
+            view.get_model("text").__name__,
+            "Text",
+            "The 'get_model' method should return the 'Text' model.",
+        )
+        self.assertEqual(
+            view.get_model("file").__name__,
+            "File",
+            "The 'get_model' method should return the 'File' model.",
+        )
+        self.assertEqual(
+            view.get_model("image").__name__,
+            "Image",
+            "The 'get_model' method should return the 'Image' model.",
+        )
+        self.assertEqual(
+            view.get_model("video").__name__,
+            "Video",
+            "The 'get_model' method should return the 'Video' model.",
+        )
+        self.assertEqual(
+            view.get_model("url").__name__,
+            "URL",
+            "The 'get_model' method should return the 'URL' model.",
+        )
+
+        self.assertIsNone(
+            view.get_model("invalid_model"),
+            "The 'get_model' method should return None for an invalid model.",
+        )
+
+        form = view.get_form(self.text_model)
+        self.assertIn(
+            "content_draft_en", form.fields, "Form should include 'content_draft_en'."
+        )
+        self.assertIn(
+            "content_draft_uk", form.fields, "Form should include 'content_draft_uk'."
+        )
+
+        form = view.get_form(self.file_model)
+        self.assertIn(
+            "content_draft", form.fields, "Form should include 'content_draft'."
+        )
+
+        form = view.get_form(self.image_model)
+        self.assertIn(
+            "content_draft", form.fields, "Form should include 'content_draft'."
+        )
+
+        form = view.get_form(self.video_model)
+        self.assertIn(
+            "content_draft", form.fields, "Form should include 'content_draft'."
+        )
+
+        form = view.get_form(self.url_model)
+        self.assertIn(
+            "content_draft", form.fields, "Form should include 'content_draft'."
+        )
+
+        """
+        Update view
+        """
+
+        # Text Content (update)
+        form = view.get_form(self.text_model, instance=self.text_content)
+        self.assertEqual(
+            form.instance.content_draft_en,
+            "Draft Text EN",
+            "Mock data for 'content_draft_en' should match instance data.",
+        )
+        self.assertEqual(
+            form.instance.content_draft_uk,
+            "Draft Text UK",
+            "Mock data for 'content_draft_uk' should match instance data.",
+        )
+
+        # --- File Content ---
+        form = view.get_form(self.file_model, instance=self.file_content)
+        content_draft = form.instance.content_draft
+        db_file_name = os.path.basename(content_draft.name)
+        mock_file_name = self.mock_file.name
+
+        self.assertTrue(
+            db_file_name.startswith(os.path.splitext(mock_file_name)[0]),
+            "Mock file base name should match instance data (ignoring suffix).",
+        )
+
+        self.assertEqual(
+            os.path.splitext(db_file_name)[1],
+            os.path.splitext(mock_file_name)[1],
+            "File extension should match instance data.",
+        )
+
+        # --- Image Content ---
+        form = view.get_form(self.image_model, instance=self.image_content)
+        db_image_name = os.path.basename(form.instance.content_draft.name)
+        mock_image_name = self.mock_image.name
+
+        self.assertTrue(
+            db_image_name.startswith(os.path.splitext(mock_image_name)[0]),
+            "Mock file base name should match instance data (ignoring suffix).",
+        )
+
+        self.assertEqual(
+            os.path.splitext(db_image_name)[1],
+            os.path.splitext(mock_image_name)[1],
+            "File extension should match instance data.",
+        )
+
+        # --- Video Content ---
+        form = view.get_form(self.video_model, instance=self.video_content)
+        self.assertEqual(
+            form.instance.content_draft,
+            self.mock_video_url,
+            "Mock video URL should match instance data.",
+        )
+
+        # --- URL Content ---
+        form = view.get_form(self.url_model, instance=self.url_content)
+        self.assertEqual(
+            form.instance.content_draft,
+            self.mock_url,
+            "Mock URL should match instance data.",
+        )
+
+    def test_view_without_permission(self):
+        """
+        Test that a user without the 'view_content' permission is denied access.
+        """
+        # Log in as user without permissions
+        self.client.login(username="user_without_permissions", password="password")
+
+        # Send GET request to create URL
+        response = self.client.get(self.create_url)
+        self.assertEqual(
+            response.status_code,
+            403,
+            "User without 'view_content' permission should be denied access.",
+        )
+
+        # Send GET request to update URL
+        response = self.client.get(self.update_url)
+        self.assertEqual(
+            response.status_code,
+            403,
+            "User without 'view_content' permission should be denied access to update view.",
+        )
+
+    def test_dispatch_create_permission_required(self):
+        """Test that PermissionDenied is raised if a user lacks 'add_content' permission when creating."""
+        self.client.login(username="user_without_permissions", password="password")
+        response = self.client.post(self.create_url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_dispatch_invalid_section(self):
+        """Test that Http404 is raised if a section does not exist."""
+        self.client.login(username="user_with_permissions", password="password")
+        invalid_url = reverse(
+            "section_content_create",
+            kwargs={"section_id": uuid.uuid4(), "model_name": "text"},
+        )
+        response = self.client.get(invalid_url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_dispatch_invalid_model_name(self):
+        """Test that Http404 is raised if an invalid model name is provided."""
+        self.client.login(username="user_with_permissions", password="password")
+        invalid_url = reverse(
+            "section_content_create",
+            kwargs={"section_id": self.section.id, "model_name": "invalid_model"},
+        )
+        response = self.client.get(invalid_url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_dispatch_invalid_object_id(self):
+        """Test that Http404 is raised if object ID does not exist."""
+        self.client.login(username="user_with_permissions", password="password")
+        invalid_url = reverse(
+            "section_content_update",
+            kwargs={
+                "section_id": self.section.id,
+                "model_name": "text",
+                "id": uuid.uuid4(),
+            },
+        )
+        response = self.client.get(invalid_url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_get_create_content(self):
+        """Test GET request for creating new content (empty form)."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        # GET-запрос на создание нового контента
+        response = self.client.get(self.create_url)
+
+        # Проверка кода ответа
+        self.assertEqual(response.status_code, 200)
+
+        # Проверка использования шаблона
+        self.assertTemplateUsed(response, self.template_name)
+
+        # Проверка, что форма пуста
+        form = response.context["form"]
+        self.assertFalse(form.is_bound, "Form should be unbound for new content.")
+
+    def test_get_update_content(self):
+        """Test GET request for updating existing content (pre-filled form)."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        response = self.client.get(self.update_url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, self.template_name)
+
+        form = response.context["form"]
+        self.assertFalse(form.is_bound, "Form should not be bound in GET request.")
+        self.assertEqual(
+            form.initial.get("content_draft_en"),
+            self.text_content.content_draft_en,
+            "EN draft should match instance data.",
+        )
+        self.assertEqual(
+            form.initial.get("content_draft_uk"),
+            self.text_content.content_draft_uk,
+            "UK draft should match instance data.",
+        )
+
+    def test_request_update_permission_denied(self):
+        """Test permission denied for request update without proper permissions."""
+        self.client.login(username="user_without_permissions", password="password")
+
+        post_data = {
+            "request_update": "on",
+            "content_draft_en": "Updated EN",
+            "content_draft_uk": "Updated UK",
+        }
+
+        response = self.client.post(self.update_url, data=post_data)
+        self.assertEqual(
+            response.status_code, 403, "PermissionDenied should be raised."
+        )
+
+    def test_request_update_with_permissions(self):
+        """Test successful request update with proper permissions for all content types."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        # --- TEXT Content ---
+        post_data_text = {
+            "request_update_en": "on",
+            "request_update_uk": "on",
+            "content_draft_en": "Updated EN",
+            "content_draft_uk": "Updated UK",
+        }
+
+        response = self.client.post(self.update_url, data=post_data_text)
+        self.assertEqual(
+            response.status_code, 302, "Should redirect after update request."
+        )
+
+        updated_text_content = self.text_model.objects.get(id=self.text_content.id)
+        self.assertTrue(updated_text_content.is_update_pending_en)
+        self.assertTrue(updated_text_content.is_update_pending_uk)
+
+        self.assertIn("content_draft_en", updated_text_content.original_data)
+        self.assertIn("content_draft_uk", updated_text_content.original_data)
+
+        # --- FILE Content ---
+        post_data_file = {
+            "request_update": "on",
+        }
+
+        response = self.client.post(
+            reverse(
+                "section_content_update",
+                kwargs={
+                    "section_id": self.section.id,
+                    "model_name": "file",
+                    "id": self.file_content.id,
+                },
+            ),
+            data=post_data_file,
+        )
+        self.assertEqual(
+            response.status_code, 302, "Should redirect after update request (File)."
+        )
+
+        updated_file_content = self.file_model.objects.get(id=self.file_content.id)
+        self.assertTrue(updated_file_content.is_update_pending)
+        self.assertIn("content_draft", updated_file_content.original_data)
+
+        # --- IMAGE Content ---
+        post_data_image = {
+            "request_update": "on",
+        }
+
+        response = self.client.post(
+            reverse(
+                "section_content_update",
+                kwargs={
+                    "section_id": self.section.id,
+                    "model_name": "image",
+                    "id": self.image_content.id,
+                },
+            ),
+            data=post_data_image,
+        )
+        self.assertEqual(
+            response.status_code, 302, "Should redirect after update request (Image)."
+        )
+
+        updated_image_content = self.image_model.objects.get(id=self.image_content.id)
+        self.assertTrue(updated_image_content.is_update_pending)
+        self.assertIn("content_draft", updated_image_content.original_data)
+
+        # --- VIDEO Content ---
+        post_data_video = {
+            "request_update": "on",
+        }
+
+        response = self.client.post(
+            reverse(
+                "section_content_update",
+                kwargs={
+                    "section_id": self.section.id,
+                    "model_name": "video",
+                    "id": self.video_content.id,
+                },
+            ),
+            data=post_data_video,
+        )
+        self.assertEqual(
+            response.status_code, 302, "Should redirect after update request (Video)."
+        )
+
+        updated_video_content = self.video_model.objects.get(id=self.video_content.id)
+        self.assertTrue(updated_video_content.is_update_pending)
+        self.assertIn("content_draft", updated_video_content.original_data)
+
+        # --- URL Content ---
+        post_data_url = {
+            "request_update": "on",
+        }
+
+        response = self.client.post(
+            reverse(
+                "section_content_update",
+                kwargs={
+                    "section_id": self.section.id,
+                    "model_name": "url",
+                    "id": self.url_content.id,
+                },
+            ),
+            data=post_data_url,
+        )
+        self.assertEqual(
+            response.status_code, 302, "Should redirect after update request (URL)."
+        )
+
+        updated_url_content = self.url_model.objects.get(id=self.url_content.id)
+        self.assertTrue(updated_url_content.is_update_pending)
+        self.assertIn("content_draft", updated_url_content.original_data)
+
+    def test_confirm_update_permission_denied(self):
+        """Test permission denied for confirmation update without permissions."""
+        self.client.login(username="user_without_permissions", password="password")
+
+        post_data = {
+            "confirm_update": "on",
+        }
+
+        response = self.client.post(self.update_url, data=post_data)
+        self.assertEqual(
+            response.status_code, 403, "PermissionDenied should be raised."
+        )
+
+    def test_confirm_update_with_permissions(self):
+        """Test successfully confirm update with proper permissions for all content types."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        # --- TEXT CONTENT ---
+        post_data = {
+            "confirm_update": "on",
+            "confirm_update_en": "on",
+            "confirm_update_uk": "on",
+        }
+
+        response = self.client.post(self.update_url, data=post_data)
+        self.assertEqual(
+            response.status_code, 302, "Should redirect after confirm update."
+        )
+
+        # Test TEXT
+        updated_text_content = self.text_model.objects.get(id=self.text_content.id)
+
+        self.assertFalse(updated_text_content.is_update_pending_en)
+        self.assertFalse(updated_text_content.is_update_pending_uk)
+        self.assertTrue(updated_text_content.is_update_confirmed_en)
+        self.assertTrue(updated_text_content.is_update_confirmed_uk)
+        self.assertIsNone(
+            updated_text_content.original_data,
+            "Original data should be cleared after confirmation for text.",
+        )
+
+        # --- FILE CONTENT ---
+        post_data = {"confirm_update": "on"}
+        file_update_url = reverse(
+            "section_content_update",
+            kwargs={
+                "section_id": self.section.id,
+                "model_name": "file",
+                "id": self.file_content.id,
+            },
+        )
+        response = self.client.post(file_update_url, data=post_data)
+        self.assertEqual(
+            response.status_code, 302, "Should redirect after confirm update for file."
+        )
+
+        updated_file_content = self.file_model.objects.get(id=self.file_content.id)
+        self.assertFalse(updated_file_content.is_update_pending)
+        self.assertTrue(updated_file_content.is_update_confirmed)
+        self.assertIsNone(
+            updated_file_content.original_data,
+            "Original data should be cleared after confirmation for file.",
+        )
+
+        # --- IMAGE CONTENT ---
+        post_data = {"confirm_update": "on"}
+        image_update_url = reverse(
+            "section_content_update",
+            kwargs={
+                "section_id": self.section.id,
+                "model_name": "image",
+                "id": self.image_content.id,
+            },
+        )
+        response = self.client.post(image_update_url, data=post_data)
+        self.assertEqual(
+            response.status_code, 302, "Should redirect after confirm update for image."
+        )
+
+        updated_image_content = self.image_model.objects.get(id=self.image_content.id)
+        self.assertFalse(updated_image_content.is_update_pending)
+        self.assertTrue(updated_image_content.is_update_confirmed)
+        self.assertIsNone(
+            updated_image_content.original_data,
+            "Original data should be cleared after confirmation for image.",
+        )
+
+        # --- VIDEO CONTENT ---
+        post_data = {"confirm_update": "on"}
+        video_update_url = reverse(
+            "section_content_update",
+            kwargs={
+                "section_id": self.section.id,
+                "model_name": "video",
+                "id": self.video_content.id,
+            },
+        )
+        response = self.client.post(video_update_url, data=post_data)
+        self.assertEqual(
+            response.status_code, 302, "Should redirect after confirm update for video."
+        )
+
+        updated_video_content = self.video_model.objects.get(id=self.video_content.id)
+        self.assertFalse(updated_video_content.is_update_pending)
+        self.assertTrue(updated_video_content.is_update_confirmed)
+        self.assertIsNone(
+            updated_video_content.original_data,
+            "Original data should be cleared after confirmation for video.",
+        )
+
+        # --- URL CONTENT ---
+        post_data = {"confirm_update": "on"}
+        url_update_url = reverse(
+            "section_content_update",
+            kwargs={
+                "section_id": self.section.id,
+                "model_name": "url",
+                "id": self.url_content.id,
+            },
+        )
+        response = self.client.post(url_update_url, data=post_data)
+        self.assertEqual(
+            response.status_code, 302, "Should redirect after confirm update for URL."
+        )
+
+        updated_url_content = self.url_model.objects.get(id=self.url_content.id)
+        self.assertFalse(updated_url_content.is_update_pending)
+        self.assertTrue(updated_url_content.is_update_confirmed)
+        self.assertIsNone(
+            updated_url_content.original_data,
+            "Original data should be cleared after confirmation for URL.",
+        )
+
+    def test_reject_update_permission_denied(self):
+        """Test permission denied for reject update without permissions."""
+        self.client.login(username="user_without_permissions", password="password")
+
+        post_data = {
+            "reject_update": "on",
+        }
+
+        response = self.client.post(self.update_url, data=post_data)
+        self.assertEqual(
+            response.status_code, 403, "PermissionDenied should be raised."
+        )
+
+    def test_reject_update_with_permissions(self):
+        """Test successful reject update with proper permissions for all content types."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        # --- Step 1: Request update to create backup ---
+        post_data_request = {
+            "request_update": "on",
+            "request_update_en": "on",
+            "request_update_uk": "on",
+            "content_draft_en": "Updated EN",
+            "content_draft_uk": "Updated UK",
+        }
+
+        self.client.post(self.update_url, data=post_data_request)
+
+        # --- Step 2: Reject update ---
+        post_data_reject = {
+            "reject_update": "on",
+            "reject_update_en": "on",
+            "reject_update_uk": "on",
+        }
+
+        response = self.client.post(self.update_url, data=post_data_reject)
+        self.assertEqual(
+            response.status_code, 302, "Should redirect after reject update."
+        )
+
+        # --- TEXT CONTENT ---
+        updated_text_content = self.text_model.objects.get(id=self.text_content.id)
+
+        # Assert flags are reset
+        self.assertFalse(updated_text_content.is_update_pending_en)
+        self.assertFalse(updated_text_content.is_update_pending_uk)
+
+        # Check content restoration
+        self.assertEqual(
+            updated_text_content.content_draft_en,
+            "Draft Text EN",
+            "Content draft EN should be restored after reject.",
+        )
+        self.assertEqual(
+            updated_text_content.content_draft_uk,
+            "Draft Text UK",
+            "Content draft UK should be restored after reject.",
+        )
+
+        # --- FILE CONTENT ---
+        updated_file_content = self.file_model.objects.get(id=self.file_content.id)
+
+        # Check flags
+        self.assertFalse(updated_file_content.is_update_pending)
+        self.assertFalse(updated_file_content.is_update_confirmed)
+
+        # Extract restored file name and validate
+        restored_file_name = os.path.basename(updated_file_content.content_draft.name)
+        mock_file_name = self.mock_file.name
+
+        self.assertTrue(
+            restored_file_name.startswith(os.path.splitext(mock_file_name)[0]),
+            "Mock file base name should match instance data (ignoring suffix).",
+        )
+        self.assertEqual(
+            os.path.splitext(restored_file_name)[1],
+            os.path.splitext(mock_file_name)[1],
+            "File extension should match instance data.",
+        )
+
+        # --- IMAGE CONTENT ---
+        updated_image_content = self.image_model.objects.get(id=self.image_content.id)
+
+        # Check flags
+        self.assertFalse(updated_image_content.is_update_pending)
+        self.assertFalse(updated_image_content.is_update_confirmed)
+
+        # Extract restored image name and validate
+        restored_image_name = os.path.basename(updated_image_content.content_draft.name)
+        mock_image_name = self.mock_image.name
+
+        self.assertTrue(
+            restored_image_name.startswith(os.path.splitext(mock_image_name)[0]),
+            "Mock image base name should match instance data (ignoring suffix).",
+        )
+        self.assertEqual(
+            os.path.splitext(restored_image_name)[1],
+            os.path.splitext(mock_image_name)[1],
+            "Image extension should match instance data.",
+        )
+
+        # --- VIDEO CONTENT ---
+        updated_video_content = self.video_model.objects.get(id=self.video_content.id)
+
+        # Check flags
+        self.assertFalse(updated_video_content.is_update_pending)
+        self.assertFalse(updated_video_content.is_update_confirmed)
+
+        # Check restored video URL
+        self.assertEqual(
+            updated_video_content.content_draft,
+            self.mock_video_url,
+            "Video URL should be restored after reject.",
+        )
+
+        # --- URL CONTENT ---
+        updated_url_content = self.url_model.objects.get(id=self.url_content.id)
+
+        # Check flags
+        self.assertFalse(updated_url_content.is_update_pending)
+        self.assertFalse(updated_url_content.is_update_confirmed)
+
+        # Check restored URL
+        self.assertEqual(
+            updated_url_content.content_draft,
+            self.mock_url,
+            "URL should be restored after reject.",
+        )
+
+    def test_post_valid_form(self):
+        """Test form submission with optional fields (valid case)."""
+        # Логинимся с нужными правами
+        self.client.login(username="user_with_permissions", password="password")
+
+        # Данные формы с дополнительными ключами для установки флагов
+        post_data = {
+            "request_update": "on",
+            "request_update_en": "on",  # Добавлено для EN
+            "request_update_uk": "on",  # Добавлено для UK
+        }
+
+        # Отправляем POST-запрос
+        response = self.client.post(self.update_url, data=post_data)
+
+        # Проверяем, что редирект прошел успешно
+        self.assertEqual(
+            response.status_code, 302, "Should redirect for valid form submission."
+        )
+
+        # Загружаем обновленный объект из базы данных
+        updated_content = self.text_model.objects.get(id=self.text_content.id)
+
+        # Проверяем, что флаг обновления установлен (логика разрешений и флагов)
+        self.assertTrue(
+            updated_content.is_update_pending_en,
+            "Update pending EN flag should be set.",
+        )
+        self.assertTrue(
+            updated_content.is_update_pending_uk,
+            "Update pending UK flag should be set.",
+        )
+
+        # Проверяем, что оригинальные данные сохранены (если они были заданы ранее)
+        self.assertIsNotNone(
+            updated_content.original_data,
+            "Original data should be saved for rollback.",
+        )
+
+    def test_create_content_copy(self):
+        """Test creating a content copy."""
+        ContentCreateUpdateView.create_content_copy(self.text_content)
+
+        self.assertIn("content_draft_en", self.text_content.original_data)
+        self.assertIn("content_draft_uk", self.text_content.original_data)
+
+    def test_update_content_copy(self):
+        """Test updating content copy."""
+        ContentCreateUpdateView.create_content_copy(self.text_content)
+        ContentCreateUpdateView.update_content_copy(
+            self.text_content, "content_draft_en"
+        )
+
+        self.assertEqual(
+            self.text_content.original_data["content_draft_en"],
+            self.text_content.content_draft_en,
+        )
+
+    def test_restore_content_from_copy(self):
+        """Test restoring content from copy."""
+        ContentCreateUpdateView.create_content_copy(self.text_content)
+        self.text_content.content_draft_en = "Modified EN"
+        ContentCreateUpdateView.restore_content_from_copy(self.text_content)
+
+        self.assertEqual(
+            self.text_content.content_draft_en,
+            "Draft Text EN",
+            "Content should be restored from original copy.",
+        )

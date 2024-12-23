@@ -12,13 +12,14 @@ from django.db import models
 from django.db.models.fields.files import FieldFile
 from django.forms.models import model_to_dict
 from django.forms.models import modelform_factory
-from django.http import HttpResponseForbidden, JsonResponse
+from django.http import HttpResponseForbidden, JsonResponse, Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import TemplateView
 from django.views.generic.base import TemplateResponseMixin, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
+from django.utils.translation import gettext_lazy as _
 
 from accounts.models import CustomUser
 from locations.models import Division, Branch, Person
@@ -346,8 +347,13 @@ class ContentCreateUpdateView(
 
         self.section = get_object_or_404(Section, id=section_id)
         self.model = self.get_model(model_name)
+
+        if not self.model:
+            raise Http404(_("Invalid model name."))
+
         if object_id:
             self.obj = get_object_or_404(self.model, id=object_id)
+
         return super().dispatch(request, section_id, model_name, object_id)
 
     def get(self, request, *args, **kwargs):
@@ -588,7 +594,7 @@ class ContentCreateUpdateView(
                                 setattr(content, field, value)
                             except Exception as e:
                                 setattr(content, field, None)
-                                print(f"File '{value}' not found in storage: {e}")
+                                print(_(f"File '{value}' not found in storage: {e}"))
                         else:
                             setattr(content, field, None)
                     elif isinstance(model_field, models.URLField):
