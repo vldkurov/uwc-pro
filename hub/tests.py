@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import uuid
@@ -3495,4 +3496,176 @@ class SectionContentListViewTests(TestCase):
             resolved_url,
             f"/en/dashboard/hub/section/{self.section.id}/",
             "URL resolution should match the expected path.",
+        )
+
+
+class SectionOrderViewTests(TestCase):
+    def setUp(self):
+        """Set up test data, permissions, and users."""
+        # Create users
+        self.user_with_permissions = get_user_model().objects.create_user(
+            username="user_with_permissions", password="password"
+        )
+        self.user_without_permissions = get_user_model().objects.create_user(
+            username="user_without_permissions", password="password"
+        )
+
+        # Permissions
+        content_type_section = ContentType.objects.get(app_label="hub", model="section")
+        permission = Permission.objects.get(
+            content_type=content_type_section, codename="change_section_order"
+        )
+        self.user_with_permissions.user_permissions.add(permission)
+
+        # Test Page and Sections
+        self.page = Page.objects.create(
+            title="Test Page", modified_by=self.user_with_permissions
+        )
+        self.section1 = Section.objects.create(
+            page=self.page, title="Section 1", order=1
+        )
+        self.section2 = Section.objects.create(
+            page=self.page, title="Section 2", order=2
+        )
+
+        # URLs
+        self.url = reverse("section_order")
+
+        self.logger = logging.getLogger("django.request")
+        self.logger.setLevel(logging.CRITICAL)
+
+    def tearDown(self):
+        """
+        Tear down any additional test data if necessary.
+        """
+        self.logger.setLevel(logging.DEBUG)
+
+    def test_authorized_user_can_update_order(self):
+        """Test that an authorized user can successfully update section order."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        # --- Prepare valid JSON data ---
+        data = {
+            str(self.section1.id): 2,  # UUID for the first section
+            str(self.section2.id): 1,  # UUID for the second section
+        }
+
+        # --- Send POST request ---
+        response = self.client.post(
+            self.url, data=json.dumps(data), content_type="application/json"
+        )
+
+        # --- Assert Response ---
+        self.assertEqual(response.status_code, 200)
+
+        # Check database updates
+        self.section1.refresh_from_db()
+        self.section2.refresh_from_db()
+
+        self.assertEqual(self.section1.order, 2)
+        self.assertEqual(self.section2.order, 1)
+
+    def test_unauthorized_user_cannot_update_order(self):
+        """Test that an unauthorized user cannot update section order."""
+        self.client.login(username="user_without_permissions", password="password")
+
+        data = {
+            str(self.section1.id): 2,  # UUID for the first section
+            str(self.section2.id): 1,  # UUID for the second section
+        }
+        response = self.client.post(
+            self.url, data=json.dumps(data), content_type="application/json"
+        )
+
+        # Check response status
+        self.assertEqual(response.status_code, 403)
+
+        # Ensure order remains unchanged
+        self.section1.refresh_from_db()
+        self.section2.refresh_from_db()
+        self.assertEqual(self.section1.order, 1)
+        self.assertEqual(self.section2.order, 2)
+
+    def test_unauthenticated_user_redirected_to_login(self):
+        """Test that an unauthenticated user receives a 403 JSON response."""
+        # Prepare data
+        data = {str(self.section1.id): 2, str(self.section2.id): 1}
+
+        # Send POST request without authentication
+        response = self.client.post(
+            self.url, data=json.dumps(data), content_type="application/json"
+        )
+
+        self.assertEqual(response.status_code, 403)
+
+        response_data = json.loads(response.content)
+
+        self.assertIn("error", response_data)
+        self.assertEqual(
+            response_data["error"],
+            "You do not have permission to change the section order.",
+        )
+
+    def test_invalid_data_empty_request(self):
+        """Test that an empty request does not update order."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        response = self.client.post(self.url, {}, content_type="application/json")
+
+        self.assertEqual(response.status_code, 400)  # Expect bad request
+
+    def test_invalid_section_id(self):
+        """Test invalid section ID in the data."""
+        # Логинимся как пользователь с правами
+        self.client.login(username="user_with_permissions", password="password")
+
+        # Отправляем некорректный ID
+        data = {"invalid-uuid": 1}
+
+        # POST-запрос с некорректными данными
+        response = self.client.post(
+            self.url, data=json.dumps(data), content_type="application/json"
+        )
+
+        # Проверка кода состояния ответа
+        self.assertEqual(response.status_code, 400)
+
+        # Проверка сообщения об ошибке
+        response_data = json.loads(response.content)
+        self.assertIn("error", response_data)
+        self.assertEqual(response_data["error"], "Invalid section ID provided.")
+
+    def test_partial_update(self):
+        """Test partial updates where only one section order is changed."""
+        # Логинимся как пользователь с правами
+        self.client.login(username="user_with_permissions", password="password")
+
+        # Данные для частичного обновления
+        data = {
+            str(self.section1.id): 2,  # Изменяем порядок первой секции
+            str(self.section2.id): 1,  # Указываем текущий порядок второй секции
+        }
+
+        # Отправляем запрос
+        response = self.client.post(
+            self.url, data=json.dumps(data), content_type="application/json"
+        )
+
+        # Проверка кода состояния ответа
+        self.assertEqual(response.status_code, 200)
+
+        # Обновляем данные секций из БД
+        self.section1.refresh_from_db()
+        self.section2.refresh_from_db()
+
+        # Проверяем, что порядок обновился корректно
+        self.assertEqual(self.section1.order, 2)  # Порядок изменился
+        self.assertEqual(self.section2.order, 1)  # Порядок не изменился
+
+        # Проверяем содержимое ответа
+        response_data = json.loads(response.content)
+        self.assertIn("updated", response_data)
+        self.assertEqual(
+            set(response_data["updated"]),  # Проверяем ID обновлённых секций
+            {str(self.section1.id), str(self.section2.id)},
         )
