@@ -3669,3 +3669,158 @@ class SectionOrderViewTests(TestCase):
             set(response_data["updated"]),  # Проверяем ID обновлённых секций
             {str(self.section1.id), str(self.section2.id)},
         )
+
+
+class ContentOrderViewTests(TestCase):
+    def setUp(self):
+        """Set up test data, permissions, and users."""
+        self.user_with_permissions = get_user_model().objects.create_user(
+            username="user_with_permissions", password="password"
+        )
+        self.user_without_permissions = get_user_model().objects.create_user(
+            username="user_without_permissions", password="password"
+        )
+
+        content_type_content = ContentType.objects.get(app_label="hub", model="content")
+        permission = Permission.objects.get(
+            content_type=content_type_content, codename="change_content_order"
+        )
+        self.user_with_permissions.user_permissions.add(permission)
+
+        self.page = Page.objects.create(
+            title="Test Page", modified_by=self.user_with_permissions
+        )
+        self.section = Section.objects.create(page=self.page, title="Test Section")
+
+        content_type = ContentType.objects.get_for_model(self.page)
+
+        self.content1 = Content.objects.create(
+            content_type=content_type,
+            object_id=self.page.id,
+            section=self.section,
+            order=1,
+        )
+
+        self.content2 = Content.objects.create(
+            content_type=content_type,
+            object_id=self.page.id,
+            section=self.section,
+            order=2,
+        )
+
+        self.url = reverse("content_order")
+
+        self.logger = logging.getLogger("django.request")
+        self.logger.setLevel(logging.CRITICAL)
+
+    def tearDown(self):
+        """
+        Tear down any additional test data if necessary.
+        """
+        self.logger.setLevel(logging.DEBUG)
+
+    def test_authorized_user_can_update_order(self):
+        """Тест: авторизованный пользователь может изменить порядок контента."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        data = {
+            str(self.content1.id): 2,
+            str(self.content2.id): 1,
+        }
+
+        response = self.client.post(
+            self.url, data=json.dumps(data), content_type="application/json"
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.content1.refresh_from_db()
+        self.content2.refresh_from_db()
+        self.assertEqual(self.content1.order, 2)
+        self.assertEqual(self.content2.order, 1)
+
+    def test_unauthorized_user_cannot_update_order(self):
+        """Test: unauthorised user cannot change the order."""
+        self.client.login(username="user_without_permissions", password="password")
+
+        data = {
+            str(self.content1.id): 2,
+            str(self.content2.id): 1,
+        }
+        response = self.client.post(
+            self.url, data=json.dumps(data), content_type="application/json"
+        )
+
+        self.assertEqual(response.status_code, 403)
+
+        self.content1.refresh_from_db()
+        self.content2.refresh_from_db()
+        self.assertEqual(self.content1.order, 1)
+        self.assertEqual(self.content2.order, 2)
+
+    def test_unauthenticated_user_redirected_to_login(self):
+        """Test: unauthorised user receives a 403 JSON response."""
+        data = {str(self.content1.id): 2, str(self.content2.id): 1}
+
+        response = self.client.post(
+            self.url, data=json.dumps(data), content_type="application/json"
+        )
+
+        self.assertEqual(response.status_code, 403)
+
+        response_data = json.loads(response.content)
+        self.assertIn("error", response_data)
+        self.assertEqual(
+            response_data["error"],
+            "You do not have permission to change the content order.",
+        )
+
+    def test_invalid_data_empty_request(self):
+        """Test: empty request returns a 400 error."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        response = self.client.post(self.url, {}, content_type="application/json")
+        self.assertEqual(response.status_code, 400)
+
+    def test_invalid_content_id(self):
+        """Test: invalid content ID returns a 400 error."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        data = {"invalid-uuid": 1}
+
+        response = self.client.post(
+            self.url, data=json.dumps(data), content_type="application/json"
+        )
+
+        self.assertEqual(response.status_code, 400)
+
+        response_data = json.loads(response.content)
+        self.assertIn("error", response_data)
+        self.assertEqual(response_data["error"], "Invalid content ID provided.")
+
+    def test_partial_update(self):
+        """Test: partial update of content order."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        data = {
+            str(self.content1.id): 2,
+            str(self.content2.id): 1,
+        }
+
+        response = self.client.post(
+            self.url, data=json.dumps(data), content_type="application/json"
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.content1.refresh_from_db()
+        self.content2.refresh_from_db()
+        self.assertEqual(self.content1.order, 2)
+        self.assertEqual(self.content2.order, 1)
+
+        response_data = json.loads(response.content)
+        self.assertIn("updated", response_data)
+        self.assertEqual(
+            set(response_data["updated"]),
+            {str(self.content1.id), str(self.content2.id)},
+        )
