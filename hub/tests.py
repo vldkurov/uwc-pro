@@ -2524,3 +2524,240 @@ class ContentCreateUpdateViewTests(TestCase):
             "Draft Text EN",
             "Content should be restored from original copy.",
         )
+
+
+class ContentDisplayViewTests(TestCase):
+    def setUp(self):
+        """Set up test data, permissions, and user accounts."""
+        # Create users
+        self.user_with_permissions = get_user_model().objects.create_user(
+            username="user_with_permissions", password="password"
+        )
+        self.user_without_permissions = get_user_model().objects.create_user(
+            username="user_without_permissions", password="password"
+        )
+
+        # Permissions
+        content_type_content = ContentType.objects.get(app_label="hub", model="content")
+        display_permission = Permission.objects.get(
+            content_type=content_type_content, codename="display"
+        )
+        self.user_with_permissions.user_permissions.add(display_permission)
+
+        # Test Page and Section
+        self.page = Page.objects.create(
+            title="Test Page",
+            modified_by=self.user_with_permissions,
+        )
+        self.section = Section.objects.create(page=self.page, title="Test Section")
+
+        # Test Content Types
+        self.text_model = apps.get_model(app_label="hub", model_name="text")
+        self.file_model = apps.get_model(app_label="hub", model_name="file")
+
+        # Mock Data
+        self.mock_file = SimpleUploadedFile(
+            "test_file.txt", b"Mock file content", content_type="text/plain"
+        )
+
+        # Text Content
+        self.text_content = self.text_model.objects.create(
+            title="Test Text",
+            content_draft_en="Draft Text EN",
+            content_draft_uk="Draft Text UK",
+            content_en="Content EN",
+            content_uk="Content UK",
+            modified_by=self.user_with_permissions,
+            is_update_confirmed_en=True,
+            is_update_confirmed_uk=True,
+        )
+        self.content = Content.objects.create(
+            section=self.section, item=self.text_content
+        )
+
+        # File Content
+        self.file_content = self.file_model.objects.create(
+            title="Test File",
+            content_draft=self.mock_file,
+            modified_by=self.user_with_permissions,
+            is_update_confirmed=True,
+        )
+        self.file_content_instance = Content.objects.create(
+            section=self.section, item=self.file_content
+        )
+
+        # URLs
+        self.display_url = reverse(
+            "section_content_display", kwargs={"id": self.content.id}
+        )
+        self.display_file_url = reverse(
+            "section_content_display", kwargs={"id": self.file_content_instance.id}
+        )
+
+        self.template_name = "hub/manage/content/display.html"
+
+        self.logger = logging.getLogger("django.request")
+        self.logger.setLevel(logging.CRITICAL)
+
+    def tearDown(self):
+        """
+        Tear down any additional test data if necessary.
+        """
+        self.logger.setLevel(logging.DEBUG)
+
+    # -------------------------------
+    # TESTS FOR PERMISSIONS
+    # -------------------------------
+
+    def test_view_with_permission(self):
+        """Test GET request with required permissions."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        # Check access
+        response = self.client.get(self.display_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, self.template_name)
+
+    def test_view_without_permission(self):
+        """Test GET request without required permissions."""
+        self.client.login(username="user_without_permissions", password="password")
+
+        # Check forbidden response
+        response = self.client.get(self.display_url)
+        self.assertEqual(response.status_code, 403)
+
+    # -------------------------------
+    # TESTS FOR GET REQUEST
+    # -------------------------------
+
+    def test_get_display_page(self):
+        """Test GET request to display content."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        response = self.client.get(self.display_url)
+
+        # Template and context check
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, self.template_name)
+        self.assertIn("content", response.context)
+
+    # -------------------------------
+    # TESTS FOR POST REQUESTS
+    # -------------------------------
+
+    def test_post_valid_display_text_content(self):
+        """Test POST request to display text content after confirmation."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        # POST request
+        response = self.client.post(self.display_url)
+
+        # Redirect check
+        self.assertEqual(response.status_code, 302)
+
+        # Check updated text content
+        updated_content = self.text_model.objects.get(id=self.text_content.id)
+
+        self.assertEqual(updated_content.content_en, "Draft Text EN")
+        self.assertEqual(updated_content.content_uk, "Draft Text UK")
+        self.assertIsNone(updated_content.original_data)
+
+    def test_post_valid_display_file_content(self):
+        """Test POST request to display file content after confirmation."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        post_data_confirm = {"confirm_update": "on"}
+        self.client.post(self.display_file_url, data=post_data_confirm)
+
+        post_data_display = {}
+        response = self.client.post(self.display_file_url, data=post_data_display)
+
+        self.assertEqual(
+            response.status_code, 302, "Should redirect after displaying file content."
+        )
+
+        if not self.file_model.objects.filter(id=self.file_content.id).exists():
+            self.fail("File content instance was deleted during the test!")
+
+        updated_file_content = self.file_model.objects.get(id=self.file_content.id)
+
+        self.assertFalse(updated_file_content.is_update_pending)
+        self.assertFalse(updated_file_content.is_update_confirmed)
+
+        restored_file_name = os.path.basename(updated_file_content.content.name)
+        mock_file_name = os.path.basename(self.mock_file.name)
+
+        self.assertTrue(
+            restored_file_name.startswith(os.path.splitext(mock_file_name)[0]),
+            "Restored file base name should match the mock file.",
+        )
+
+        self.assertEqual(
+            os.path.splitext(restored_file_name)[1],
+            os.path.splitext(mock_file_name)[1],
+            "File extension should match the mock file.",
+        )
+
+        content_instance = Content.objects.get(object_id=self.file_content.id)
+        self.assertEqual(
+            content_instance.status,
+            Content.Status.DISPLAY,
+            "Content should be displayed.",
+        )
+
+    def test_post_invalid_display_text_content(self):
+        """Test POST request with unconfirmed text content."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        self.text_content.is_update_confirmed_en = False
+        self.text_content.is_update_confirmed_uk = False
+        self.text_content.save()
+
+        post_data_display = {}
+        response = self.client.post(self.display_url, data=post_data_display)
+
+        self.assertEqual(
+            response.status_code, 302, "Should redirect after invalid display request."
+        )
+
+        from django.contrib.messages import get_messages
+
+        messages = list(get_messages(response.wsgi_request))
+
+        self.assertTrue(
+            any(
+                "Please confirm all content updates (EN and UK) before displaying."
+                in str(message)
+                for message in messages
+            ),
+            "Should display error message for unconfirmed content.",
+        )
+
+        content_instance = Content.objects.get(id=self.content.id)
+        self.assertNotEqual(
+            content_instance.status,
+            Content.Status.DISPLAY,
+            "Content should not be displayed when updates are unconfirmed.",
+        )
+
+    def test_post_invalid_display_file_content(self):
+        """Test POST request with unconfirmed file content."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        # Unconfirmed updates
+        self.file_content.is_update_confirmed = False
+        self.file_content.save()
+
+        # POST request
+        response = self.client.post(self.display_file_url)
+
+        # Redirect and error message check
+        self.assertEqual(response.status_code, 302)
+
+        from django.contrib.messages import get_messages
+
+        messages = list(get_messages(response.wsgi_request))
+        self.assertIn(
+            "Please confirm all content updates before displaying.",
+            [str(msg) for msg in messages],
+        )
