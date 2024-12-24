@@ -1,5 +1,6 @@
 import logging
 import os
+import uuid
 
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from django.apps import apps
@@ -753,14 +754,54 @@ class SectionOrderView(
 
     def handle_no_permission(self):
         return JsonResponse(
-            {"error": "You do not have permission to change the section order."},
+            {
+                "error": str(
+                    _("You do not have permission to change the section order.")
+                )
+            },
             status=403,
         )
 
+    # def post(self, request):
+    #     if not self.request_json:
+    #         return JsonResponse(
+    #             {"error": _("Request data is empty or invalid.")}, status=400
+    #         )
+    #
+    #     for section_id, order in self.request_json.items():
+    #         try:
+    #             uuid.UUID(section_id)
+    #         except ValueError:
+    #             return JsonResponse(
+    #                 {"error": _("Invalid section ID provided.")}, status=400
+    #             )
+    #
+    #         Section.objects.filter(id=section_id).update(order=order)
+    #
+    #     return self.render_json_response({"saved": "OK"})
+
     def post(self, request):
+        if not self.request_json:
+            return JsonResponse(
+                {"error": _("Request data is empty or invalid.")}, status=400
+            )
+
+        updated_sections = []
         for section_id, order in self.request_json.items():
-            Section.objects.filter(id=section_id).update(order=order)
-        return self.render_json_response({"saved": "OK"})
+            try:
+                uuid.UUID(section_id)
+            except ValueError:
+                return JsonResponse(
+                    {"error": _("Invalid section ID provided.")}, status=400
+                )
+
+            updated_count = Section.objects.filter(id=section_id).update(order=order)
+
+            if updated_count == 0:
+                return JsonResponse({"error": _("Section ID not found.")}, status=404)
+            updated_sections.append(section_id)
+
+        return self.render_json_response({"updated": updated_sections})
 
 
 class ContentOrderView(
