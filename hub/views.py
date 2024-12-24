@@ -804,6 +804,29 @@ class SectionOrderView(
         return self.render_json_response({"updated": updated_sections})
 
 
+# class ContentOrderView(
+#     CsrfExemptMixin,
+#     JsonRequestResponseMixin,
+#     LoginRequiredMixin,
+#     PermissionRequiredMixin,
+#     View,
+# ):
+#     permission_required = "hub.change_content_order"
+#     login_url = "account_login"
+#     redirect_field_name = "next"
+#
+#     def handle_no_permission(self):
+#         return JsonResponse(
+#             {"error": "You do not have permission to change the content order."},
+#             status=403,
+#         )
+#
+#     def post(self, request):
+#         for content_id, order in self.request_json.items():
+#             Content.objects.filter(id=content_id).update(order=order)
+#         return self.render_json_response({"saved": "OK"})
+
+
 class ContentOrderView(
     CsrfExemptMixin,
     JsonRequestResponseMixin,
@@ -817,14 +840,38 @@ class ContentOrderView(
 
     def handle_no_permission(self):
         return JsonResponse(
-            {"error": "You do not have permission to change the content order."},
+            {
+                "error": str(
+                    _("You do not have permission to change the content order.")
+                )
+            },
             status=403,
         )
 
     def post(self, request):
+
+        if not self.request_json:
+            return JsonResponse(
+                {"error": _("Request data is empty or invalid.")}, status=400
+            )
+
+        updated_contents = []
         for content_id, order in self.request_json.items():
-            Content.objects.filter(id=content_id).update(order=order)
-        return self.render_json_response({"saved": "OK"})
+
+            try:
+                uuid.UUID(content_id)
+            except ValueError:
+                return JsonResponse(
+                    {"error": _("Invalid content ID provided.")}, status=400
+                )
+
+            updated_count = Content.objects.filter(id=content_id).update(order=order)
+
+            if updated_count == 0:
+                return JsonResponse({"error": _("Content ID not found.")}, status=404)
+            updated_contents.append(content_id)
+
+        return self.render_json_response({"updated": updated_contents})
 
 
 @login_required
