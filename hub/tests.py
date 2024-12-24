@@ -2984,3 +2984,200 @@ class ContentHideViewTests(TestCase):
 
         response = self.client.post(invalid_url)
         self.assertEqual(response.status_code, 404, "Should return 404 for invalid ID.")
+
+
+class ContentDeleteViewTests(TestCase):
+    """Test suite for ContentDeleteView."""
+
+    def setUp(self):
+        """Set up test data, permissions, users, and mock content."""
+        # -------------------------------
+        # Users
+        # -------------------------------
+        self.user_with_permissions = get_user_model().objects.create_user(
+            username="user_with_permissions", password="password"
+        )
+        self.user_without_permissions = get_user_model().objects.create_user(
+            username="user_without_permissions", password="password"
+        )
+
+        # Permissions
+        content_type_content = ContentType.objects.get(app_label="hub", model="content")
+        delete_permission = Permission.objects.get(
+            content_type=content_type_content, codename="delete_content"
+        )
+        self.user_with_permissions.user_permissions.add(delete_permission)
+
+        # -------------------------------
+        # Page and Section
+        # -------------------------------
+        self.page = Page.objects.create(
+            title="Test Page",
+            modified_by=self.user_with_permissions,
+        )
+        self.section = Section.objects.create(page=self.page, title="Test Section")
+
+        # -------------------------------
+        # Content Models
+        # -------------------------------
+        self.text_model = apps.get_model(app_label="hub", model_name="text")
+        self.file_model = apps.get_model(app_label="hub", model_name="file")
+
+        # Mock Data
+        self.mock_file = SimpleUploadedFile(
+            "test_file.txt", b"Mock file content", content_type="text/plain"
+        )
+
+        # Text Content
+        self.text_content = self.text_model.objects.create(
+            title="Test Text",
+            content_draft_en="Draft Text EN",
+            content_draft_uk="Draft Text UK",
+            content_en="Content EN",
+            content_uk="Content UK",
+            modified_by=self.user_with_permissions,
+        )
+        self.text_content_instance = Content.objects.create(
+            section=self.section, item=self.text_content
+        )
+
+        # File Content
+        self.file_content = self.file_model.objects.create(
+            title="Test File",
+            content_draft=self.mock_file,
+            modified_by=self.user_with_permissions,
+        )
+        self.file_content_instance = Content.objects.create(
+            section=self.section, item=self.file_content
+        )
+
+        # -------------------------------
+        # URLs
+        # -------------------------------
+        self.delete_url_text = reverse(
+            "section_content_delete", kwargs={"id": self.text_content_instance.id}
+        )
+        self.delete_url_file = reverse(
+            "section_content_delete", kwargs={"id": self.file_content_instance.id}
+        )
+
+        # Template name
+        self.template_name = "hub/manage/content/delete.html"
+
+        self.logger = logging.getLogger("django.request")
+        self.logger.setLevel(logging.CRITICAL)
+
+    def tearDown(self):
+        """
+        Tear down any additional test data if necessary.
+        """
+        self.logger.setLevel(logging.DEBUG)
+
+    # -----------------------------------------
+    # 1. Permissions and Template Tests
+    # -----------------------------------------
+    def test_view_with_permission(self):
+        """Test GET request with required permissions."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        response = self.client.get(self.delete_url_text)
+        self.assertEqual(
+            response.status_code, 200, "Should return 200 for GET request."
+        )
+        self.assertTemplateUsed(response, self.template_name)
+
+        # Context should include a content object
+        self.assertIn("content", response.context, "Context should include 'content'.")
+
+    def test_view_without_permission(self):
+        """Test GET request without required permissions."""
+        self.client.login(username="user_without_permissions", password="password")
+
+        response = self.client.get(self.delete_url_text)
+        self.assertEqual(
+            response.status_code, 403, "Should return 403 without permission."
+        )
+
+    # -----------------------------------------
+    # 2. Valid POST - Delete Text Content
+    # -----------------------------------------
+    def test_post_valid_delete_text_content(self):
+        """Test POST request to delete text content."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        response = self.client.post(self.delete_url_text)
+
+        # Redirect check
+        self.assertEqual(
+            response.status_code, 302, "Should redirect after successful delete."
+        )
+
+        # Database check
+        with self.assertRaises(Content.DoesNotExist):
+            Content.objects.get(id=self.text_content_instance.id)
+
+        with self.assertRaises(self.text_model.DoesNotExist):
+            self.text_model.objects.get(id=self.text_content.id)
+
+    # -----------------------------------------
+    # 3. Valid POST - Delete File Content
+    # -----------------------------------------
+    def test_post_valid_delete_file_content(self):
+        """Test POST request to delete file content."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        # File existence check before deletion
+        self.assertTrue(
+            os.path.exists(self.file_content.content_draft.path),
+            "File should exist before deletion.",
+        )
+
+        response = self.client.post(self.delete_url_file)
+
+        # Redirect check
+        self.assertEqual(
+            response.status_code, 302, "Should redirect after successful delete."
+        )
+
+        # Database check
+        with self.assertRaises(Content.DoesNotExist):
+            Content.objects.get(id=self.file_content_instance.id)
+
+        with self.assertRaises(self.file_model.DoesNotExist):
+            self.file_model.objects.get(id=self.file_content.id)
+
+        # File should be deleted from storage
+        self.assertFalse(
+            os.path.exists(self.file_content.content_draft.path),
+            "File should be deleted from storage.",
+        )
+
+    # -----------------------------------------
+    # 4. POST without Permissions
+    # -----------------------------------------
+    def test_post_without_permission(self):
+        """Test POST request without required permissions."""
+        self.client.login(username="user_without_permissions", password="password")
+
+        response = self.client.post(self.delete_url_text)
+        self.assertEqual(
+            response.status_code, 403, "Should return 403 without permission."
+        )
+
+    # -----------------------------------------
+    # 5. Invalid Content ID
+    # -----------------------------------------
+    def test_invalid_content_id(self):
+        """Test request with invalid content ID."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        invalid_url = reverse(
+            "section_content_delete",
+            kwargs={"id": "00000000-0000-0000-0000-000000000000"},
+        )
+
+        response = self.client.get(invalid_url)
+        self.assertEqual(response.status_code, 404, "Should return 404 for invalid ID.")
+
+        response = self.client.post(invalid_url)
+        self.assertEqual(response.status_code, 404, "Should return 404 for invalid ID.")
