@@ -2761,3 +2761,226 @@ class ContentDisplayViewTests(TestCase):
             "Please confirm all content updates before displaying.",
             [str(msg) for msg in messages],
         )
+
+
+class ContentHideViewTests(TestCase):
+    """Test suite for ContentHideView."""
+
+    def setUp(self):
+        """Set up test data, users, permissions, and mock content."""
+        # -------------------------------
+        # Users
+        # -------------------------------
+        self.user_with_permissions = get_user_model().objects.create_user(
+            username="user_with_permissions", password="password"
+        )
+        self.user_without_permissions = get_user_model().objects.create_user(
+            username="user_without_permissions", password="password"
+        )
+
+        # Permissions
+        content_type_content = ContentType.objects.get(app_label="hub", model="content")
+        hide_permission = Permission.objects.get(
+            content_type=content_type_content, codename="hide"
+        )
+        self.user_with_permissions.user_permissions.add(hide_permission)
+
+        # -------------------------------
+        # Page and Section
+        # -------------------------------
+        self.page = Page.objects.create(
+            title="Test Page",
+            modified_by=self.user_with_permissions,
+        )
+        self.section = Section.objects.create(page=self.page, title="Test Section")
+
+        # -------------------------------
+        # Content Models
+        # -------------------------------
+        self.text_model = apps.get_model(app_label="hub", model_name="text")
+        self.file_model = apps.get_model(app_label="hub", model_name="file")
+
+        # Mock Data
+        self.mock_file = SimpleUploadedFile(
+            "test_file.txt", b"Mock file content", content_type="text/plain"
+        )
+
+        # Text Content
+        self.text_content = self.text_model.objects.create(
+            title="Test Text",
+            content_draft_en="Draft Text EN",
+            content_draft_uk="Draft Text UK",
+            content_en="Content EN",
+            content_uk="Content UK",
+            modified_by=self.user_with_permissions,
+            is_update_confirmed_en=True,
+            is_update_confirmed_uk=True,
+        )
+        self.text_content_instance = Content.objects.create(
+            section=self.section, item=self.text_content, status=Content.Status.DISPLAY
+        )
+
+        # File Content
+        self.file_content = self.file_model.objects.create(
+            title="Test File",
+            content_draft=self.mock_file,
+            modified_by=self.user_with_permissions,
+            is_update_confirmed=True,
+        )
+        self.file_content_instance = Content.objects.create(
+            section=self.section, item=self.file_content, status=Content.Status.DISPLAY
+        )
+
+        # -------------------------------
+        # URLs
+        # -------------------------------
+        self.hide_url_text = reverse(
+            "section_content_hide", kwargs={"id": self.text_content_instance.id}
+        )
+        self.hide_url_file = reverse(
+            "section_content_hide", kwargs={"id": self.file_content_instance.id}
+        )
+
+        # Template name
+        self.template_name = "hub/manage/content/hide.html"
+
+        self.logger = logging.getLogger("django.request")
+        self.logger.setLevel(logging.CRITICAL)
+
+    def tearDown(self):
+        """
+        Tear down any additional test data if necessary.
+        """
+        self.logger.setLevel(logging.DEBUG)
+
+    # -----------------------------------------
+    # 1. Permissions and Template Tests
+    # -----------------------------------------
+    def test_view_with_permission(self):
+        """Test GET request with required permissions."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        response = self.client.get(self.hide_url_text)
+        self.assertEqual(
+            response.status_code, 200, "Should return 200 for GET request."
+        )
+        self.assertTemplateUsed(response, self.template_name)
+
+        # Context contains content object
+        self.assertIn("content", response.context, "Context should include 'content'.")
+
+    def test_view_without_permission(self):
+        """Test GET request without required permissions."""
+        self.client.login(username="user_without_permissions", password="password")
+
+        response = self.client.get(self.hide_url_text)
+        self.assertEqual(
+            response.status_code, 403, "Should return 403 without permission."
+        )
+
+    # -----------------------------------------
+    # 2. Valid POST - Hide Text Content
+    # -----------------------------------------
+    def test_post_valid_hide_text_content(self):
+        """Test POST request to hide text content after confirmation."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        post_data = {}
+        response = self.client.post(self.hide_url_text, data=post_data)
+
+        # Redirect check
+        self.assertEqual(
+            response.status_code, 302, "Should redirect after successful hide."
+        )
+
+        # Status check
+        updated_text_content = Content.objects.get(id=self.text_content_instance.id)
+        self.assertEqual(
+            updated_text_content.status,
+            Content.Status.HIDE,
+            "Text content should be hidden.",
+        )
+
+        # Flags check
+        self.assertFalse(updated_text_content.item.is_update_pending_en)
+        self.assertFalse(updated_text_content.item.is_update_pending_uk)
+        self.assertFalse(updated_text_content.item.is_update_confirmed_en)
+        self.assertFalse(updated_text_content.item.is_update_confirmed_uk)
+
+        # Messages check
+        from django.contrib.messages import get_messages
+
+        messages = list(get_messages(response.wsgi_request))
+        self.assertTrue(
+            any("Content hidden successfully." in str(m) for m in messages),
+            "Should display success message.",
+        )
+
+    # -----------------------------------------
+    # 3. Valid POST - Hide File Content
+    # -----------------------------------------
+    def test_post_valid_hide_file_content(self):
+        """Test POST request to hide file content after confirmation."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        post_data = {}
+        response = self.client.post(self.hide_url_file, data=post_data)
+
+        # Redirect check
+        self.assertEqual(
+            response.status_code, 302, "Should redirect after successful hide."
+        )
+
+        # Status check
+        updated_file_content = Content.objects.get(id=self.file_content_instance.id)
+        self.assertEqual(
+            updated_file_content.status,
+            Content.Status.HIDE,
+            "File content should be hidden.",
+        )
+
+        # Flags check
+        self.assertFalse(updated_file_content.item.is_update_pending)
+        self.assertFalse(updated_file_content.item.is_update_confirmed)
+
+        # Messages check
+        from django.contrib.messages import get_messages
+
+        messages = list(get_messages(response.wsgi_request))
+        self.assertTrue(
+            any("Content hidden successfully." in str(m) for m in messages),
+            "Should display success message.",
+        )
+
+    # -----------------------------------------
+    # 4. POST without Permissions
+    # -----------------------------------------
+    def test_post_without_permission(self):
+        """Test POST request without required permissions."""
+        self.client.login(username="user_without_permissions", password="password")
+
+        post_data = {}
+        response = self.client.post(self.hide_url_text, data=post_data)
+
+        # Permission check
+        self.assertEqual(
+            response.status_code, 403, "Should return 403 without permission."
+        )
+
+    # -----------------------------------------
+    # 5. Invalid Content ID
+    # -----------------------------------------
+    def test_invalid_content_id(self):
+        """Test request with invalid content ID."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        invalid_url = reverse(
+            "section_content_hide",
+            kwargs={"id": "00000000-0000-0000-0000-000000000000"},
+        )
+
+        response = self.client.get(invalid_url)
+        self.assertEqual(response.status_code, 404, "Should return 404 for invalid ID.")
+
+        response = self.client.post(invalid_url)
+        self.assertEqual(response.status_code, 404, "Should return 404 for invalid ID.")
