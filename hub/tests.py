@@ -15,8 +15,10 @@ from django.utils.translation import activate
 from django.apps import apps
 
 from accounts.models import CustomUser
+from locations.models import Division, Branch, Person
+from payments.models import Donor, Donation
 from .forms import PageForm
-from .models import Page, Section, Content
+from .models import Page, Section, Content, Text, File, Image as ImageModel, Video, URL
 from .views import (
     DashboardView,
     ManagePageListView,
@@ -3720,7 +3722,7 @@ class ContentOrderViewTests(TestCase):
         self.logger.setLevel(logging.DEBUG)
 
     def test_authorized_user_can_update_order(self):
-        """Тест: авторизованный пользователь может изменить порядок контента."""
+        """Test: An authorised user can change the order of content."""
         self.client.login(username="user_with_permissions", password="password")
 
         data = {
@@ -3824,3 +3826,173 @@ class ContentOrderViewTests(TestCase):
             set(response_data["updated"]),
             {str(self.content1.id), str(self.content2.id)},
         )
+
+
+class GlobalSearchViewTests(TestCase):
+    """Tests for the global_search view."""
+
+    def setUp(self):
+        """Set up test data."""
+        self.url = reverse("global_search")
+        self.user = get_user_model().objects.create_user(
+            username="testuser", password="password"
+        )
+        self.owner = get_user_model().objects.create_user(
+            username="owneruser", password="password", role="OWR"
+        )
+
+        # Create sample data
+        self.page = Page.objects.create(title="Test Page")
+        self.section = Section.objects.create(page=self.page, title_en="Test Section")
+        self.text = Text.objects.create(
+            title="Sample Text",
+            content_en="Example content for testing purposes.",
+        )
+        self.file = File.objects.create(title="Sample File")
+        self.image = ImageModel.objects.create(title="Sample Image")
+        self.video = Video.objects.create(title="Sample Video")
+        self.url = URL.objects.create(title="Sample URL")
+        self.division = Division.objects.create(
+            title_en="Division 1", title_uk="Розділ 1"
+        )
+        self.branch = Branch.objects.create(
+            title_en="Branch 1",
+            address_en="Address 1",
+            division=self.division,
+        )
+        self.person = Person.objects.create(first_name_en="John", last_name_en="Doe")
+        self.donor = Donor.objects.create(
+            first_name="Jane", last_name="Doe", email="jane.doe@example.com"
+        )
+        self.donation = Donation.objects.create(
+            transaction_id="TRANS123", amount=100.0, donor=self.donor
+        )
+
+        self.logger = logging.getLogger("django.request")
+        self.logger.setLevel(logging.CRITICAL)
+
+    def tearDown(self):
+        """
+        Tear down any additional test data if necessary.
+        """
+        self.logger.setLevel(logging.DEBUG)
+
+    def test_login_required_redirect(self):
+        """Test that unauthenticated users are redirected to the login page."""
+        url = reverse("global_search")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.startswith("/accounts/login/"))
+
+    def test_search_no_query(self):
+        """Test search without a query parameter returns no results."""
+        self.client.login(username="testuser", password="password")
+
+        url = reverse("global_search")
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "No results found.")
+        self.assertEqual(len(response.context["results"]), 0)
+
+    def test_search_with_query(self):
+        """Test search with a query parameter returns relevant results."""
+        self.client.login(username="testuser", password="password")
+        url = reverse("global_search")
+        response = self.client.get(url, {"query": "Test"})
+        self.assertEqual(response.status_code, 200)
+
+        # Check that expected results are in context
+        results = response.context["results"]
+        self.assertIn(self.page, results)
+        self.assertIn(self.section, results)
+        self.assertNotIn(self.donor, results)
+
+    def test_search_for_owner_role(self):
+        """Test that owner role can see donors and donations."""
+        self.client.login(username="owneruser", password="password")
+        url = reverse("global_search")
+        response = self.client.get(url, {"query": "Jane"})
+        self.assertEqual(response.status_code, 200)
+
+        results = response.context["results"]
+        self.assertIn(self.donor, results)
+        self.assertNotIn(
+            self.page, results
+        )  # Testing that non-relevant results are excluded.
+
+    def test_partial_match_query(self):
+        """Test that partial matches return results."""
+        self.client.login(username="testuser", password="password")
+        url = reverse("global_search")
+        response = self.client.get(url, {"query": "Exampl"})
+        self.assertEqual(response.status_code, 200)
+        results = response.context["results"]
+        self.assertIn(self.text, results)
+
+    def test_no_results(self):
+        """Test search with no matching results."""
+        self.client.login(username="testuser", password="password")
+        url = reverse("global_search")
+        response = self.client.get(url, {"query": "NonExistent"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["results"]), 0)
+
+    def test_search_with_special_characters(self):
+        """Test search handles special characters gracefully."""
+        self.client.login(username="testuser", password="password")
+        url = reverse("global_search")
+        response = self.client.get(url, {"query": "!@#$%^&*()"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["results"]), 0)
+
+    def test_case_insensitive_search(self):
+        """Test that search is case-insensitive."""
+        self.client.login(username="testuser", password="password")
+        url = reverse("global_search")
+        response = self.client.get(url, {"query": "test section"})
+        self.assertEqual(response.status_code, 200)
+        results = response.context["results"]
+        self.assertIn(self.section, results)
+
+    def test_search_multiple_models(self):
+        """Test that the search returns results from multiple models."""
+        self.client.login(username="testuser", password="password")
+        url = reverse("global_search")
+        response = self.client.get(url, {"query": "Sample"})
+        self.assertEqual(response.status_code, 200)
+        results = response.context["results"]
+
+        # Check that results span multiple models
+        self.assertIn(self.text, results)
+        self.assertIn(self.file, results)
+        self.assertIn(self.image, results)
+        self.assertIn(self.video, results)
+
+    def test_search_donor_access(self):
+        """Test that non-owners cannot access donor data."""
+        self.client.login(username="testuser", password="password")
+        url = reverse("global_search")
+        response = self.client.get(url, {"query": "Jane"})
+        self.assertEqual(response.status_code, 200)
+        results = response.context["results"]
+        self.assertNotIn(
+            self.donor, results
+        )  # Donor should be excluded for non-owner users.
+
+    def test_owner_can_access_donors(self):
+        """Test that owners can access donor and donation data."""
+        self.client.login(username="owneruser", password="password")
+        url = reverse("global_search")
+        response = self.client.get(url, {"query": "Jane"})
+        self.assertEqual(response.status_code, 200)
+        results = response.context["results"]
+        self.assertIn(self.donor, results)  # Owner should see donor data.
+
+    def test_invalid_query_param(self):
+        """Test that invalid query parameter does not cause errors."""
+        self.client.login(username="testuser", password="password")
+        url = reverse("global_search")
+        response = self.client.get(url, {"query": ""})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["results"]), 0)
