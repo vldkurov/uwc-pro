@@ -3181,3 +3181,318 @@ class ContentDeleteViewTests(TestCase):
 
         response = self.client.post(invalid_url)
         self.assertEqual(response.status_code, 404, "Should return 404 for invalid ID.")
+
+
+class SectionContentListViewTests(TestCase):
+    """Test suite for SectionContentListView with extended setup."""
+
+    def setUp(self):
+        """Set up test data, permissions, and user accounts."""
+        # -------------------------------
+        # 1. Users
+        # -------------------------------
+        self.user_with_permissions = get_user_model().objects.create_user(
+            username="user_with_permissions", password="password"
+        )
+        self.user_without_permissions = get_user_model().objects.create_user(
+            username="user_without_permissions", password="password"
+        )
+
+        # -------------------------------
+        # 2. Content Types
+        # -------------------------------
+        content_type_page = ContentType.objects.get(app_label="hub", model="page")
+        content_type_section = ContentType.objects.get(app_label="hub", model="section")
+        content_type_content = ContentType.objects.get(app_label="hub", model="content")
+
+        # Content models
+        content_type_text = ContentType.objects.get(app_label="hub", model="text")
+        content_type_file = ContentType.objects.get(app_label="hub", model="file")
+        content_type_image = ContentType.objects.get(app_label="hub", model="image")
+        content_type_video = ContentType.objects.get(app_label="hub", model="video")
+        content_type_url = ContentType.objects.get(app_label="hub", model="url")
+
+        # -------------------------------
+        # 3. Permissions
+        # -------------------------------
+        # Permissions for a Page model
+        permissions_page = Permission.objects.filter(
+            content_type=content_type_page,
+            codename__in=[
+                "view_page",
+            ],
+        )
+
+        # Permissions for a Section model
+        permissions_section = Permission.objects.filter(
+            content_type=content_type_section,
+            codename__in=[
+                "request_update_en",
+                "request_update_uk",
+                "confirm_update_en",
+                "confirm_update_uk",
+                "reject_update_en",
+                "reject_update_uk",
+            ],
+        )
+
+        # Permissions for a Content model
+        permissions_content = Permission.objects.filter(
+            content_type=content_type_content,
+            codename__in=[
+                "view_content",
+                "add_content",
+                "request_update",
+                "confirm_update",
+                "reject_update",
+            ],
+        )
+
+        # Permissions for specific content types
+        permissions_text = Permission.objects.filter(
+            content_type=content_type_text,
+            codename__in=[
+                "request_update_en",
+                "request_update_uk",
+                "confirm_update_en",
+                "confirm_update_uk",
+                "reject_update_en",
+                "reject_update_uk",
+            ],
+        )
+
+        permissions_other_types = Permission.objects.filter(
+            content_type__in=[
+                content_type_file,
+                content_type_image,
+                content_type_video,
+                content_type_url,
+            ],
+            codename__in=[
+                "request_update",
+                "confirm_update",
+                "reject_update",
+            ],
+        )
+
+        # Assign all permissions to the test user
+        self.user_with_permissions.user_permissions.add(
+            *permissions_page,
+            *permissions_section,
+            *permissions_content,
+            *permissions_text,
+            *permissions_other_types,
+        )
+
+        # -------------------------------
+        # 4. Test Page and Section
+        # -------------------------------
+        # Test Page
+        self.page = Page.objects.create(
+            title="Test Page",
+            modified_by=self.user_with_permissions,
+        )
+
+        # Test Section
+        self.section = Section.objects.create(
+            page=self.page,
+            title="Test Section",
+        )
+
+        # Models for different content types
+        self.text_model = apps.get_model(app_label="hub", model_name="text")
+        self.file_model = apps.get_model(app_label="hub", model_name="file")
+        self.image_model = apps.get_model(app_label="hub", model_name="image")
+        self.video_model = apps.get_model(app_label="hub", model_name="video")
+        self.url_model = apps.get_model(app_label="hub", model_name="url")
+
+        # -------------------------------
+        # 5. Mock Data for Content Types
+        # -------------------------------
+        self.mock_file_name = "test_file.txt"
+        self.mock_file = SimpleUploadedFile(
+            self.mock_file_name, b"Mock file content", content_type="text/plain"
+        )
+
+        self.mock_image_name = "test_image.jpg"
+        self.mock_image = SimpleUploadedFile(
+            self.mock_image_name, b"Mock image content", content_type="image/jpeg"
+        )
+
+        self.mock_video_url = "https://example.com/video.mp4"
+        self.mock_url = "https://example.com"
+
+        # Text Content
+        self.text_content = self.text_model.objects.create(
+            title="Test Text",
+            content_draft_en="Draft Text EN",
+            content_draft_uk="Draft Text UK",
+            modified_by=self.user_with_permissions,
+        )
+        Content.objects.create(section=self.section, item=self.text_content)
+
+        # File Content
+        self.file_content = self.file_model.objects.create(
+            title="Test File",
+            content_draft=self.mock_file,
+            modified_by=self.user_with_permissions,
+        )
+        Content.objects.create(section=self.section, item=self.file_content)
+
+        image = BytesIO()
+        img = Image.new("RGB", (100, 100), color="red")
+        img.save(image, format="JPEG")
+        image.seek(0)
+
+        # Image Content
+        self.image_content = self.image_model.objects.create(
+            title="Test Image",
+            content_draft=self.mock_image,
+            modified_by=self.user_with_permissions,
+        )
+        Content.objects.create(section=self.section, item=self.image_content)
+
+        # Video Content
+        self.video_content = self.video_model.objects.create(
+            title="Test Video",
+            content_draft=self.mock_video_url,
+            modified_by=self.user_with_permissions,
+        )
+        Content.objects.create(section=self.section, item=self.video_content)
+
+        # URL Content
+        self.url_content = self.url_model.objects.create(
+            title="Test URL",
+            content_draft=self.mock_url,
+            modified_by=self.user_with_permissions,
+        )
+        Content.objects.create(section=self.section, item=self.url_content)
+
+        # -------------------------------
+        # 6. URLs
+        # -------------------------------
+        self.list_url = reverse(
+            "section_content_list", kwargs={"section_id": self.section.id}
+        )
+
+        # -------------------------------
+        # 8. Template
+        # -------------------------------
+        self.template_name = "hub/manage/section/content_list.html"
+
+        self.logger = logging.getLogger("django.request")
+        self.logger.setLevel(logging.CRITICAL)
+
+    def tearDown(self):
+        """
+        Tear down any additional test data if necessary.
+        """
+        self.logger.setLevel(logging.DEBUG)
+
+    # -----------------------------------------
+    # Test Cases
+    # -----------------------------------------
+
+    def test_view_with_permission(self):
+        """Test GET request with required permissions."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        response = self.client.get(self.list_url)
+
+        # Response and template checks
+        self.assertEqual(
+            response.status_code, 200, "Should return 200 for GET request."
+        )
+        self.assertTemplateUsed(
+            response,
+            self.template_name,
+            "Should use the correct template for content list.",
+        )
+
+        # Context check
+        self.assertIn(
+            "section", response.context, "Context should include 'section' object."
+        )
+        self.assertEqual(
+            response.context["section"].id,
+            self.section.id,
+            "Section in context should match the requested section.",
+        )
+
+    def test_view_without_permission(self):
+        """Test GET request without required permissions."""
+        self.client.login(username="user_without_permissions", password="password")
+
+        response = self.client.get(self.list_url)
+
+        # Permission check
+        self.assertEqual(
+            response.status_code, 403, "Should return 403 without proper permissions."
+        )
+
+    def test_invalid_section_id(self):
+        """Test GET request with an invalid section ID."""
+        self.client.login(username="user_with_permissions", password="password")
+
+        invalid_url = reverse(
+            "section_content_list",
+            kwargs={"section_id": "00000000-0000-0000-0000-000000000000"},
+        )
+
+        response = self.client.get(invalid_url)
+
+        # Invalid ID check
+        self.assertEqual(
+            response.status_code, 404, "Should return 404 for an invalid section ID."
+        )
+
+    def test_unauthenticated_access(self):
+        """Test GET request without login."""
+        response = self.client.get(self.list_url)
+
+        # Redirect to log in
+        self.assertEqual(response.status_code, 302, "Should redirect to login page.")
+
+        # Verify redirect URL contains 'login'
+        self.assertIn(
+            reverse("account_login"),
+            response.url,
+            "Redirect should lead to login page.",
+        )
+
+    def test_section_with_content(self):
+        """Test section with all content types."""
+        self.client.login(username="user_with_permissions", password="password")
+        response = self.client.get(self.list_url)
+
+        # Ensure all content types exist in the section
+        self.assertEqual(
+            len(response.context["section"].contents.all()),
+            5,
+            "Section should have 5 content items.",
+        )
+
+    def test_correct_template_used(self):
+        """Test that the correct template is used for rendering."""
+        self.client.login(username="user_with_permissions", password="password")
+        response = self.client.get(self.list_url)
+
+        # Check that the correct template is used
+        self.assertTemplateUsed(
+            response,
+            self.template_name,
+            "View should render the correct template.",
+        )
+
+    def test_url_resolution(self):
+        """Test URL resolution for the section content list."""
+        # Reverse lookup for the URL
+        resolved_url = reverse(
+            "section_content_list", kwargs={"section_id": self.section.id}
+        )
+        # Assert that the resolved URL matches the expected path
+        self.assertEqual(
+            resolved_url,
+            f"/en/dashboard/hub/section/{self.section.id}/",
+            "URL resolution should match the expected path.",
+        )
