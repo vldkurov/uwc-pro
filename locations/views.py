@@ -1,9 +1,10 @@
 import logging
+import uuid
 from itertools import groupby
 
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.core.exceptions import FieldError
+from django.core.exceptions import FieldError, ValidationError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
@@ -13,6 +14,7 @@ from django.utils.translation import get_language
 from django.views.generic import ListView, View
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, ModelFormMixin
+from django.db import transaction
 
 from .forms import BranchForm, PersonForm, PhoneFormSet, EmailFormSet, DivisionForm
 from .models import Branch, Division, Person
@@ -156,9 +158,19 @@ class DivisionCreateView(DivisionMixin, TrackUserMixin, CreateView):
 
 
 class DivisionUpdateView(DivisionMixin, TrackUserMixin, UpdateView):
-    fields = ["title_en", "title_uk"]
+    form_class = DivisionForm
     template_name = "locations/manage/division/form.html"
     permission_required = "locations.change_division"
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse("locations:division_list", kwargs={"slug": self.object.slug})
 
 
 class DivisionDeleteView(DivisionMixin, DeleteView):
@@ -166,6 +178,28 @@ class DivisionDeleteView(DivisionMixin, DeleteView):
     login_url = "account_login"
     redirect_field_name = "next"
     permission_required = "locations.delete_division"
+
+
+# class DivisionOrderView(
+#     CsrfExemptMixin,
+#     JsonRequestResponseMixin,
+#     DivisionMixin,
+#     View,
+# ):
+#     login_url = "account_login"
+#     redirect_field_name = "next"
+#     permission_required = "locations.change_division_order"
+#
+#     def handle_no_permission(self):
+#         return JsonResponse(
+#             {"error": "You do not have permission to change the Division order."},
+#             status=403,
+#         )
+#
+#     def post(self, request):
+#         for division_id, order in self.request_json.items():
+#             Division.objects.filter(id=division_id).update(order=order)
+#         return self.render_json_response({"saved": "OK"})
 
 
 class DivisionOrderView(
@@ -185,9 +219,30 @@ class DivisionOrderView(
         )
 
     def post(self, request):
-        for division_id, order in self.request_json.items():
-            Division.objects.filter(id=division_id).update(order=order)
-        return self.render_json_response({"saved": "OK"})
+        try:
+            # Validate incoming JSON data
+            data = self.request_json
+
+            # Validate that each key is a valid UUID
+            with transaction.atomic():  # Ensure atomicity
+                for division_id, order in data.items():
+                    try:
+                        # Validate UUID
+                        uuid.UUID(division_id)
+                        # Update the order
+                        Division.objects.filter(id=division_id).update(order=order)
+                    except (ValueError, ValidationError):
+                        # Invalid UUID or order
+                        return JsonResponse(
+                            {"error": f"Invalid ID: {division_id}"}, status=400
+                        )
+
+            # Success response
+            return self.render_json_response({"saved": "OK"})
+
+        except Exception as e:
+            # Catch any unexpected errors
+            return JsonResponse({"error": str(e)}, status=400)
 
 
 class BranchCreateUpdateView(DivisionMixin, TemplateResponseMixin, View):

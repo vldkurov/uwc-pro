@@ -1,3 +1,4 @@
+import json
 import logging
 from unittest.mock import patch
 from urllib.parse import quote
@@ -551,3 +552,319 @@ class DivisionCreateView(TestCase):
         )
 
         self.assertEqual(Division.objects.count(), 0)
+
+
+class DivisionUpdateViewTests(TestCase):
+    """
+    Test cases for DivisionUpdateView.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Create test data shared across all tests.
+        """
+
+        cls.user = User.objects.create_user(username="testuser", password="password")
+        cls.admin_user = User.objects.create_superuser(
+            username="adminuser", password="password"
+        )
+
+        cls.view_division = Permission.objects.get(codename="view_division")
+        cls.change_division = Permission.objects.get(codename="change_division")
+        cls.user.user_permissions.add(cls.view_division, cls.change_division)
+
+        cls.division = Division.objects.create(
+            title_en="Old Title EN", title_uk="Old Title UK"
+        )
+
+    def test_update_valid_division(self):
+        """
+        Verify that a valid division update works correctly.
+        """
+        # Логиним пользователя
+        self.client.login(username="testuser", password="password")
+
+        # Получаем текущий языковой префикс
+        lang_prefix = f"/{get_language()}" if get_language() != "en" else ""
+
+        # Отправляем валидные данные для обновления
+        response = self.client.post(
+            reverse("locations:division_edit", kwargs={"slug": self.division.slug}),
+            {
+                "title_en": "New Title EN",
+                "title_uk": "New Title UK",
+            },
+        )
+
+        # Генерируем ожидаемый URL с префиксом языка
+        expected_url = f"{lang_prefix}{reverse('locations:division_list', kwargs={'slug': self.division.slug})}"
+
+        # Логируем URL для отладки
+        print(f"Redirect URL: {response.url}")
+        print(f"Expected URL: {expected_url}")
+
+        # Проверяем редирект
+        self.assertRedirects(response, expected_url)
+
+        # Обновляем данные из базы и проверяем изменения
+        self.division.refresh_from_db()
+        self.assertEqual(self.division.title_en, "New Title EN")
+        self.assertEqual(self.division.title_uk, "New Title UK")
+
+    def test_update_invalid_division(self):
+        """
+        Verify validation errors when invalid data is submitted.
+        """
+        self.client.login(username="adminuser", password="password")
+
+        response = self.client.post(
+            reverse("locations:division_edit", kwargs={"slug": self.division.slug}),
+            {"title_en": "", "title_uk": ""},
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        form = response.context.get("form")
+        self.assertTrue(form.errors)
+
+        self.assertEqual(
+            form.errors["title_en"], ["This field is required in English."]
+        )
+        self.assertEqual(
+            form.errors["title_uk"], ["This field is required in Ukrainian."]
+        )
+
+    def test_redirect_requires_login(self):
+        """
+        Verify that unauthenticated users are redirected to the login page.
+        """
+        target_url = reverse(
+            "locations:division_edit", kwargs={"slug": self.division.slug}
+        )
+        login_url = reverse("account_login")
+        expected_url = f"{login_url}?next={target_url}"
+
+        response = self.client.get(target_url)
+        self.assertRedirects(response, expected_url)
+
+    def test_permission_required(self):
+        """
+        Verify that users without the required permission cannot access the view.
+        """
+        self.client.login(username="testuser", password="password")
+
+        self.user.user_permissions.remove(self.change_division)
+
+        response = self.client.get(
+            reverse("locations:division_edit", kwargs={"slug": self.division.slug})
+        )
+        self.assertEqual(response.status_code, 403)  # Доступ запрещен
+
+    def test_permission_granted(self):
+        """
+        Verify that users with the required permission can access the view.
+        """
+        self.client.login(username="testuser", password="password")
+
+        response = self.client.get(
+            reverse("locations:division_edit", kwargs={"slug": self.division.slug})
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "locations/manage/division/form.html")
+
+
+class DivisionDeleteViewTests(TestCase):
+    """
+    Test cases for the DivisionDeleteView.
+    """
+
+    def setUp(self):
+        """
+        Set up test data for each test.
+        """
+        activate("en")
+
+        self.user = User.objects.create_user(username="testuser", password="password")
+        permission = Permission.objects.get(codename="delete_division")
+        self.user.user_permissions.add(permission)
+
+        self.client.login(username="testuser", password="password")
+
+        self.division = Division.objects.create(title="Test Division")
+
+        self.logger = logging.getLogger("django.request")
+        self.logger.setLevel(logging.CRITICAL)
+
+    def tearDown(self):
+        """
+        Clean up after each test.
+        """
+        self.logger.setLevel(logging.DEBUG)
+        self.client.logout()
+
+    def test_delete_valid_division(self):
+        """
+        Verify that a valid division can be deleted.
+        """
+        lang_prefix = f"/{get_language()}"
+
+        self.delete_url = reverse(
+            "locations:division_delete", kwargs={"slug": self.division.slug}
+        )
+        self.redirect_url = f"{lang_prefix}{reverse('locations:division_redirect')}"
+
+        response = self.client.post(self.delete_url)
+
+        self.assertFalse(Division.objects.filter(id=self.division.id).exists())
+
+    def test_delete_division_without_permission(self):
+        """
+        Verify that deletion fails if the user lacks permissions.
+        """
+        self.client.logout()
+        user_no_permission = User.objects.create_user(
+            username="noperm", password="password"
+        )
+        self.client.login(username="noperm", password="password")
+
+        self.delete_url = reverse(
+            "locations:division_delete", kwargs={"slug": self.division.slug}
+        )
+        response = self.client.post(self.delete_url)
+
+        self.assertEqual(response.status_code, 403)
+
+        self.assertTrue(Division.objects.filter(id=self.division.id).exists())
+
+    def test_delete_division_not_logged_in(self):
+        """
+        Verify that unauthenticated users are redirected to the login page.
+        """
+        self.client.logout()
+
+        login_url = reverse("account_login")
+
+        self.delete_url = reverse(
+            "locations:division_delete", kwargs={"slug": self.division.slug}
+        )
+        expected_url = f"{login_url}?next={self.delete_url}"
+
+        response = self.client.post(self.delete_url)
+
+        self.assertRedirects(response, expected_url)
+
+        self.assertTrue(Division.objects.filter(id=self.division.id).exists())
+
+
+class DivisionOrderViewTests(TestCase):
+    def setUp(self):
+        """
+        Set up test data for each test.
+        """
+        # Activate English language
+        activate("en")
+
+        # Create test user with required permissions
+        self.user = User.objects.create_user(username="testuser", password="password")
+        permission = Permission.objects.get(codename="change_division_order")
+        self.user.user_permissions.add(permission)
+
+        self.client.login(username="testuser", password="password")
+
+        # Create sample divisions
+        self.div1 = Division.objects.create(title="Division 1", order=1)
+        self.div2 = Division.objects.create(title="Division 2", order=2)
+        self.div3 = Division.objects.create(title="Division 3", order=3)
+
+        # API endpoint
+        self.url = reverse("locations:division_order")
+
+        self.logger = logging.getLogger("django.request")
+        self.logger.setLevel(logging.CRITICAL)
+
+    def tearDown(self):
+        """
+        Clean up after each test.
+        """
+        self.logger.setLevel(logging.DEBUG)
+        self.client.logout()
+
+    def test_valid_order_change(self):
+        """
+        Verify that a valid order change request updates divisions successfully.
+        """
+        data = {
+            str(self.div1.id): 3,
+            str(self.div2.id): 1,
+            str(self.div3.id): 2,
+        }
+
+        response = self.client.post(
+            self.url,
+            data=json.dumps(data),
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {"saved": "OK"})
+
+        self.div1.refresh_from_db()
+        self.div2.refresh_from_db()
+        self.div3.refresh_from_db()
+
+        self.assertEqual(self.div1.order, 3)
+        self.assertEqual(self.div2.order, 1)
+        self.assertEqual(self.div3.order, 2)
+
+    def test_no_permission(self):
+        """
+        Verify that a user without the required permission receives a 403 error.
+        """
+        user = User.objects.create_user(username="noperms", password="password")
+        self.client.login(username="noperms", password="password")
+
+        response = self.client.post(
+            self.url,
+            data=json.dumps({str(self.div1.id): 3}),
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 403)
+        self.assertJSONEqual(
+            response.content,
+            {"error": "You do not have permission to change the Division order."},
+        )
+
+    def test_invalid_data(self):
+        """
+        Verify that invalid data does not crash the server and returns a 400 error.
+        """
+        data = {"invalid_id": 1}
+
+        response = self.client.post(
+            self.url,
+            data=json.dumps(data),
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertJSONEqual(response.content, {"error": "Invalid ID: invalid_id"})
+
+    def test_unauthenticated_request(self):
+        """
+        Verify that unauthenticated users cannot access the endpoint.
+        """
+        self.client.logout()
+
+        response = self.client.post(
+            self.url,
+            data=json.dumps({str(self.div1.id): 1}),
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 403)
+        self.assertJSONEqual(
+            response.content,
+            {"error": "You do not have permission to change the Division order."},
+        )
