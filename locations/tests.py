@@ -432,3 +432,122 @@ class DivisionListViewTests(TestCase):
             reverse("locations:division_list", kwargs={"slug": self.division1.slug})
         )
         self.assertEqual(len(response.context["branches"]), 0)
+
+
+class DivisionCreateView(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="password")
+        self.admin_user = User.objects.create_superuser(
+            username="adminuser", password="password"
+        )
+
+        add_division = Permission.objects.get(codename="add_division")
+        view_division = Permission.objects.get(codename="view_division")
+        self.admin_user.user_permissions.add(view_division, add_division)
+
+        self.logger = logging.getLogger("django.request")
+        self.logger.setLevel(logging.CRITICAL)
+
+    def tearDown(self):
+        """
+        Clean up after each test.
+        """
+        self.logger.setLevel(logging.DEBUG)
+        self.client.logout()
+
+    def test_create_division_requires_login(self):
+        """
+        Verify that unauthenticated users are redirected to the login page.
+        """
+        lang_prefix = f"/{get_language()}" if get_language() != "en" else ""
+
+        login_url = reverse("account_login")
+        expected_url = f"{lang_prefix}{login_url}?next={quote(lang_prefix + reverse('locations:division_create'))}"
+
+        response = self.client.get(reverse("locations:division_create"))
+
+        self.assertRedirects(response, expected_url)
+
+    def test_create_division_requires_permission(self):
+        """
+        Verify that only users with 'add_division' permission can access the view.
+        """
+        self.client.login(username="testuser", password="password")
+
+        response = self.client.get(reverse("locations:division_create"))
+
+        self.assertEqual(response.status_code, 403)
+
+        permission = Permission.objects.get(codename="add_division")
+        self.user.user_permissions.add(permission)
+
+        response = self.client.get(reverse("locations:division_create"))
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_create_division_form_displayed(self):
+        """
+        Verify that the form is displayed correctly for users with permissions.
+        """
+        permission = Permission.objects.get(codename="add_division")
+        self.user.user_permissions.add(permission)
+
+        self.client.login(username="testuser", password="password")
+
+        response = self.client.get(reverse("locations:division_create"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "form")
+        self.assertContains(response, "title_en")
+        self.assertContains(response, "title_uk")
+
+    def test_create_valid_division(self):
+        """
+        Verify that a valid division can be created successfully.
+        """
+        self.client.login(username="adminuser", password="password")
+
+        form_data = {
+            "title_en": "New Division",
+            "title_uk": "Нова Дивізія",
+        }
+
+        response = self.client.post(reverse("locations:division_create"), form_data)
+
+        division = Division.objects.get(title="New Division")
+
+        expected_url = reverse(
+            "locations:division_list", kwargs={"slug": division.slug}
+        )
+        self.assertRedirects(response, expected_url)
+
+        self.assertTrue(Division.objects.filter(title="New Division").exists())
+
+    def test_create_invalid_division(self):
+        """
+        Verify that invalid data does not create a division.
+        """
+        activate("en")
+
+        self.client.login(username="adminuser", password="password")
+
+        response = self.client.post(reverse("locations:division_create"), {})
+
+        self.assertEqual(response.status_code, 200)
+
+        form = response.context.get("form")
+        self.assertIsNotNone(form, "Form is not available in the context.")
+
+        self.assertTrue(form.errors, "Form errors are not present.")
+
+        self.assertIn("title_en", form.errors)
+        self.assertIn("title_uk", form.errors)
+
+        self.assertEqual(
+            form.errors["title_en"], ["This field is required in English."]
+        )
+        self.assertEqual(
+            form.errors["title_uk"], ["This field is required in Ukrainian."]
+        )
+
+        self.assertEqual(Division.objects.count(), 0)
