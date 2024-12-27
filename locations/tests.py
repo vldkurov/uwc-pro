@@ -1,9 +1,21 @@
+import logging
+from unittest.mock import patch
+from urllib.parse import quote
+
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.test import TestCase
+from django.urls import reverse
+from django.utils.translation import activate, get_language
 
+from accounts.admin import CustomUser
 from locations.forms import BranchForm, PersonForm, EmailForm
 from locations.models import Phone, Branch, Division
 from locations.validators import validate_uk_phone_number, format_uk_phone_number
+
+User = get_user_model()
 
 
 class PostcodeValidationTest(TestCase):
@@ -112,3 +124,311 @@ class EmailFormTests(TestCase):
         form = EmailForm(data=form_data)
         self.assertFalse(form.is_valid())
         self.assertIn("email", form.errors)
+
+
+class DivisionRedirectViewTests(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            username="testuser", password="password"
+        )  # Добавляем разрешения
+        content_type = ContentType.objects.get_for_model(Division)
+        view_permission = Permission.objects.get(
+            codename="view_division", content_type=content_type
+        )
+        add_permission = Permission.objects.get(
+            codename="add_division", content_type=content_type
+        )
+        self.user.user_permissions.add(view_permission, add_permission)
+
+        self.client.login(username="testuser", password="password")
+
+    def test_redirect_to_first_division(self):
+        division1 = Division.objects.create(title="Division 1", slug="division-1")
+        Division.objects.create(title="Division 2", slug="division-2")
+
+        response = self.client.get(reverse("locations:division_redirect"))
+
+        self.assertRedirects(
+            response,
+            reverse("locations:division_list", kwargs={"slug": division1.slug}),
+        )
+
+    def test_redirect_to_create_division_if_empty(self):
+        Division.objects.all().delete()
+
+        response = self.client.get(reverse("locations:division_redirect"))
+
+        self.assertRedirects(response, reverse("locations:division_create"))
+
+    def test_redirect_requires_login(self):
+        """Check that the redirect is accessible without authentication."""
+        response = self.client.get(reverse("locations:division_redirect"))
+
+        expected_url = reverse("locations:division_create")
+        self.assertRedirects(response, expected_url)
+
+
+class DivisionListViewTests(TestCase):
+    @patch("locations.signals.update_geocoding")
+    def setUp(self, mock_update_geocoding):
+        """
+        Set up test data before each test.
+        """
+        mock_update_geocoding.return_value = None
+
+        # Create a test user
+        self.user = User.objects.create_user(username="testuser", password="password")
+        self.admin_user = User.objects.create_superuser(
+            username="adminuser", password="password"
+        )
+
+        # Assign permission to view divisions
+        permission = Permission.objects.get(codename="view_division")
+        self.user.user_permissions.add(permission)
+
+        # Create test divisions
+        self.division1 = Division.objects.create(title="Church Division")
+        self.division2 = Division.objects.create(title="Community Division")
+
+        # Create branches within the divisions
+        self.branch1 = Branch.objects.create(
+            division=self.division1,
+            title="Branch A",
+            address="123 Test Street",
+            postcode="AB12 3CD",
+        )
+        self.branch2 = Branch.objects.create(
+            division=self.division1,
+            title="Branch B",
+            address="456 Test Street",
+            postcode="AB13 3CD",
+        )
+        self.branch3 = Branch.objects.create(
+            division=self.division2,
+            title="Branch C",
+            address="789 Test Street",
+            postcode="CD14 3CD",
+        )
+
+        # Activate English as the default language for tests
+        activate("en")
+
+        self.logger = logging.getLogger("django.request")
+        self.logger.setLevel(logging.CRITICAL)
+
+    # -------------------------
+    # Final cleanup
+    # -------------------------
+
+    def tearDown(self):
+        """
+        Clean up after each test.
+        """
+        self.logger.setLevel(logging.DEBUG)
+        self.client.logout()
+
+    # -------------------------
+    # 1. Permissions Tests
+    # -------------------------
+
+    def test_redirect_requires_login(self):
+        """Verify that unauthenticated users are redirected to the login page."""
+
+        lang_prefix = f"/{get_language()}" if get_language() != "en" else ""
+
+        login_url = reverse("account_login")
+        target_url = reverse(
+            "locations:division_list", kwargs={"slug": self.division1.slug}
+        )
+        expected_url = (
+            f"{lang_prefix}{login_url}?next={quote(lang_prefix + target_url)}"
+        )
+
+        response = self.client.get(target_url)
+
+        self.assertRedirects(response, expected_url)
+
+    def test_access_with_permission(self):
+        """
+        Ensure that a user with view permissions can access the view.
+        """
+        self.client.login(username="testuser", password="password")
+        response = self.client.get(
+            reverse("locations:division_list", kwargs={"slug": self.division1.slug})
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_access_denied_without_permission(self):
+        """
+        Confirm that a user without permissions is denied access.
+        """
+        User.objects.create_user(username="noperm", password="password")
+        self.client.login(username="noperm", password="password")
+        response = self.client.get(
+            reverse("locations:division_list", kwargs={"slug": self.division1.slug})
+        )
+        self.assertEqual(response.status_code, 403)  # Forbidden
+
+    # -------------------------
+    # 2. Template Rendering Tests
+    # -------------------------
+
+    def test_correct_template_used(self):
+        """
+        Verify that the correct template is rendered.
+        """
+        self.client.login(username="testuser", password="password")
+        response = self.client.get(
+            reverse("locations:division_list", kwargs={"slug": self.division1.slug})
+        )
+        self.assertTemplateUsed(response, "locations/manage/division/list.html")
+
+    # -------------------------
+    # 3. Context Data Tests
+    # -------------------------
+
+    def test_context_contains_current_division(self):
+        """
+        Ensure the current division is included in the context.
+        """
+        self.client.login(username="testuser", password="password")
+        response = self.client.get(
+            reverse("locations:division_list", kwargs={"slug": self.division1.slug})
+        )
+        self.assertEqual(response.context["current_division"], self.division1)
+
+    def test_context_identifies_religious_division(self):
+        """
+        Verify that divisions with religious keywords are flagged as religious.
+        """
+        self.client.login(username="testuser", password="password")
+        response = self.client.get(
+            reverse("locations:division_list", kwargs={"slug": self.division1.slug})
+        )
+        self.assertTrue(response.context["is_religious"])  # Division contains 'Church'
+
+    def test_context_identifies_non_religious_division(self):
+        """
+        Confirm non-religious divisions are flagged correctly.
+        """
+        self.client.login(username="testuser", password="password")
+        response = self.client.get(
+            reverse("locations:division_list", kwargs={"slug": self.division2.slug})
+        )
+        self.assertFalse(
+            response.context["is_religious"]
+        )  # Division does not contain religious keywords
+
+    def test_context_contains_branches_sorted_by_title(self):
+        """
+        Ensure branches are included in the context and sorted by title.
+        """
+        self.client.login(username="testuser", password="password")
+        response = self.client.get(
+            reverse("locations:division_list", kwargs={"slug": self.division1.slug})
+        )
+        self.assertQuerySetEqual(
+            response.context["branches"],
+            [self.branch1, self.branch2],
+            transform=lambda x: x,
+        )
+
+    def test_context_with_sort_direction_desc(self):
+        """
+        Test branches sorted in descending order based on the query parameter.
+        """
+        self.client.login(username="testuser", password="password")
+        response = self.client.get(
+            reverse("locations:division_list", kwargs={"slug": self.division1.slug}),
+            {"sort": "title", "direction": "desc"},
+        )
+        self.assertQuerySetEqual(
+            response.context["branches"],
+            [self.branch2, self.branch1],  # Sorted in reverse
+            transform=lambda x: x,
+        )
+
+    # -------------------------
+    # 4. Sorting and Query Parameter Tests
+    # -------------------------
+
+    def test_sorting_by_title_in_english(self):
+        """
+        Test sorting by title in English language.
+        """
+        self.client.login(username="testuser", password="password")
+        response = self.client.get(
+            reverse("locations:division_list", kwargs={"slug": self.division1.slug}),
+            {"sort": "title", "direction": "asc"},
+        )
+        self.assertEqual(response.context["branches"][0], self.branch1)
+
+    def test_sorting_by_title_in_ukrainian(self):
+        """
+        Test sorting by title in Ukrainian language.
+        """
+        activate("uk")
+        self.client.login(username="testuser", password="password")
+        response = self.client.get(
+            reverse("locations:division_list", kwargs={"slug": self.division1.slug}),
+            {"sort": "title", "direction": "asc"},
+        )
+        self.assertEqual(response.context["branches"][0], self.branch1)
+
+    def test_invalid_sort_column_fallback(self):
+        """
+        Test fallback to default sorting if an invalid column is provided.
+        """
+        # Log in the user with the required permissions
+        self.client.login(username="testuser", password="password")
+
+        # Perform a GET request with an invalid sorting parameter
+        response = self.client.get(
+            reverse("locations:division_list", kwargs={"slug": self.division1.slug}),
+            {"sort": "invalid_column"},
+        )
+
+        # Verify that the request completes with status code 200
+        self.assertEqual(response.status_code, 200)
+
+        # Ensure that the sorting defaults to the expected order (title)
+        branches = list(response.context["branches"])
+        self.assertEqual(branches[0], self.branch1)
+        self.assertEqual(branches[1], self.branch2)
+
+    # -------------------------
+    # 5. Edge Cases
+    # -------------------------
+
+    def test_empty_division_list(self):
+        """
+        Verify handling when no divisions exist.
+        """
+        # Activate the English locale
+        activate("en")
+
+        self.client.login(username="testuser", password="password")
+
+        permission_add = Permission.objects.get(codename="add_division")
+        self.user.user_permissions.add(permission_add)
+
+        Division.objects.all().delete()
+
+        lang_prefix = f"/{get_language()}" if get_language() != "en" else ""
+
+        expected_url = f"{lang_prefix}{reverse('locations:division_create')}"
+
+        response = self.client.get(reverse("locations:division_redirect"))
+
+        self.assertRedirects(response, expected_url)
+
+    def test_empty_branches(self):
+        """
+        Confirm view handles divisions with no branches gracefully.
+        """
+        Branch.objects.all().delete()  # Remove all branches
+        self.client.login(username="testuser", password="password")
+        response = self.client.get(
+            reverse("locations:division_list", kwargs={"slug": self.division1.slug})
+        )
+        self.assertEqual(len(response.context["branches"]), 0)

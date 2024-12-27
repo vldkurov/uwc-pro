@@ -3,6 +3,7 @@ from itertools import groupby
 
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.exceptions import FieldError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
@@ -51,7 +52,45 @@ class DivisionListView(DivisionMixin, ListView):
     redirect_field_name = "next"
     permission_required = "locations.view_division"
 
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     slug = self.kwargs.get("slug")
+    #     current_division = (
+    #         get_object_or_404(Division, slug=slug) if slug else Division.objects.first()
+    #     )
+    #     context["current_division"] = current_division
+    #
+    #     religious_keywords = ["Church", "Церква", "Церкви", "Parish", "Парафія"]
+    #
+    #     is_religious = any(
+    #         keyword.lower() in current_division.title.lower()
+    #         for keyword in religious_keywords
+    #     )
+    #     context["is_religious"] = is_religious
+    #
+    #     current_language = translation.get_language() or "en"
+    #
+    #     sort_column = self.request.GET.get("sort", "title")
+    #     sort_direction = self.request.GET.get("direction", "asc")
+    #
+    #     if sort_column == "title":
+    #         sort_column = f"title_{current_language}"
+    #
+    #     sort_order = f"-{sort_column}" if sort_direction == "desc" else sort_column
+    #
+    #     branches = current_division.branches.all().order_by(sort_order)
+    #
+    #     context["branches"] = branches
+    #     context["current_base_sort"] = self.request.GET.get("sort", "title")
+    #     context["current_direction"] = sort_direction
+    #
+    #     return context
+
     def get_context_data(self, **kwargs):
+
+        if not Division.objects.exists():
+            return redirect("locations:division_create")
+
         context = super().get_context_data(**kwargs)
         slug = self.kwargs.get("slug")
         current_division = (
@@ -77,7 +116,10 @@ class DivisionListView(DivisionMixin, ListView):
 
         sort_order = f"-{sort_column}" if sort_direction == "desc" else sort_column
 
-        branches = current_division.branches.all().order_by(sort_order)
+        try:
+            branches = current_division.branches.all().order_by(sort_order)
+        except FieldError:
+            branches = current_division.branches.all().order_by("title")
 
         context["branches"] = branches
         context["current_base_sort"] = self.request.GET.get("sort", "title")
