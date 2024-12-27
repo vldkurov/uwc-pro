@@ -14,7 +14,7 @@ from django.views.generic import ListView, View
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, ModelFormMixin
 
-from .forms import BranchForm, PersonForm, PhoneFormSet, EmailFormSet
+from .forms import BranchForm, PersonForm, PhoneFormSet, EmailFormSet, DivisionForm
 from .models import Branch, Division, Person
 
 logger = logging.getLogger(__name__)
@@ -128,12 +128,31 @@ class DivisionListView(DivisionMixin, ListView):
         return context
 
 
+# class DivisionCreateView(DivisionMixin, TrackUserMixin, CreateView):
+#     fields = ["title_en", "title_uk"]
+#     template_name = "locations/manage/division/form.html"
+#     login_url = "account_login"
+#     redirect_field_name = "next"
+#     permission_required = "locations.add_division"
+
+
 class DivisionCreateView(DivisionMixin, TrackUserMixin, CreateView):
-    fields = ["title_en", "title_uk"]
+    model = Division
+    form_class = DivisionForm
     template_name = "locations/manage/division/form.html"
     login_url = "account_login"
     redirect_field_name = "next"
     permission_required = "locations.add_division"
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse("locations:division_list", kwargs={"slug": self.object.slug})
 
 
 class DivisionUpdateView(DivisionMixin, TrackUserMixin, UpdateView):
