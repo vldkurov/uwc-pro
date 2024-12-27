@@ -1,7 +1,8 @@
+from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase
 from django.urls import reverse, resolve
 
-from hub.models import Page
+from hub.models import Page, Section, Text, Content, File, Video, URL
 from locations.models import Division, Branch
 from .views import GenericPageView, HomePageView
 
@@ -220,3 +221,147 @@ class LocationsPageViewTests(TestCase):
         # Ensure the hidden branch is not included
         for location in locations:
             self.assertNotEqual(location["title"], self.hidden_branch.title)
+
+
+class PublicSearchTests(TestCase):
+    def setUp(self):
+        self.page = Page.objects.create(
+            title_en="Example Page", title_uk="Приклад Сторінка"
+        )
+        self.section = Section.objects.create(
+            page=self.page,
+            title_en="Example Section",
+            title_uk="Приклад Розділ",
+            status=Section.Status.PUBLISHED,
+        )
+        self.text = Text.objects.create(
+            content_en="Example content",
+            content_uk="Приклад вміст",
+        )
+        content = Content.objects.create(
+            section=self.section,
+            object_id=self.text.id,
+            content_type=ContentType.objects.get_for_model(Text),
+            status=Content.Status.DISPLAY,
+        )
+        self.division = Division.objects.create(title_en="Example Division")
+        self.branch = Branch.objects.create(
+            division=self.division,
+            title_en="Example Branch",
+            address_en="123 Example St",
+            status=Branch.Status.DISPLAY,
+        )
+
+    def test_load_page_without_query(self):
+        """Test that the page loads without query parameters."""
+        response = self.client.get(reverse("public_search"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "No results found.")
+
+    def test_search_with_valid_query(self):
+        """Test that valid queries return expected results."""
+        response = self.client.get(reverse("public_search"), {"query": "Example"})
+        self.assertEqual(response.status_code, 200)
+
+        results = response.context["results"]
+
+        self.assertIn(self.page, results)
+        self.assertIn(self.section, results)
+        self.assertIn(self.text, results)
+        self.assertIn(self.division, results)
+        self.assertIn(self.branch, results)
+
+    def test_partial_match_query(self):
+        """Test that partial matches return results."""
+        response = self.client.get(reverse("public_search"), {"query": "Exampl"})
+        self.assertEqual(response.status_code, 200)
+        results = response.context["results"]
+        self.assertIn(self.page, results)
+
+    def test_branch_hidden_exclusion(self):
+        """Test that hidden branches are excluded from results."""
+        hidden_branch = Branch.objects.create(
+            division=self.division,
+            title_en="Hidden Branch",
+            address_en="123 Example St",
+            status=Branch.Status.HIDE,
+        )
+        response = self.client.get(reverse("public_search"), {"query": "Hidden"})
+        self.assertEqual(response.status_code, 200)
+        results = response.context["results"]
+        self.assertNotIn(hidden_branch, results)
+
+    def test_search_ranking(self):
+        """Test ranking of results by relevance."""
+        less_relevant_page = Page.objects.create(title_en="Less Relevant Example")
+        response = self.client.get(reverse("public_search"), {"query": "Example"})
+        results = response.context["results"]
+        self.assertGreater(results.index(less_relevant_page), results.index(self.page))
+
+    def test_trigram_similarity(self):
+        """Test trigram similarity with typos."""
+        response = self.client.get(reverse("public_search"), {"query": "Exampl"})
+        self.assertEqual(response.status_code, 200)
+        results = response.context["results"]
+        self.assertIn(self.page, results)
+
+    def test_exclude_inactive_content(self):
+        """Test that inactive content is excluded from results."""
+        inactive_text = Text.objects.create(
+            content_en="Hidden text", content_uk="Прихований текст"
+        )
+        inactive_file = File.objects.create(title="Hidden File")
+        inactive_video = Video.objects.create(title="Hidden Video")
+        inactive_url = URL.objects.create(title="Hidden URL")
+
+        Content.objects.create(
+            section=self.section,
+            object_id=inactive_text.id,
+            content_type=ContentType.objects.get_for_model(Text),
+            status=Content.Status.HIDE,
+        )
+        Content.objects.create(
+            section=self.section,
+            object_id=inactive_file.id,
+            content_type=ContentType.objects.get_for_model(File),
+            status=Content.Status.HIDE,
+        )
+        Content.objects.create(
+            section=self.section,
+            object_id=inactive_video.id,
+            content_type=ContentType.objects.get_for_model(Video),
+            status=Content.Status.HIDE,
+        )
+        Content.objects.create(
+            section=self.section,
+            object_id=inactive_url.id,
+            content_type=ContentType.objects.get_for_model(URL),
+            status=Content.Status.HIDE,
+        )
+
+        response = self.client.get(reverse("public_search"), {"query": "Hidden"})
+        self.assertEqual(response.status_code, 200)
+
+        results = response.context["results"]
+        self.assertNotIn(inactive_text, results)
+        self.assertNotIn(inactive_file, results)
+        self.assertNotIn(inactive_video, results)
+        self.assertNotIn(inactive_url, results)
+
+    def test_large_volume_of_results(self):
+        """Test that search handles large volumes of results."""
+        pages = [
+            Page(
+                title_en=f"Example Page {i}",
+                slug=f"example-page-{i}",
+            )
+            for i in range(1000)
+        ]
+
+        Page.objects.bulk_create(pages)
+
+        response = self.client.get(reverse("public_search"), {"query": "Example"})
+        self.assertEqual(response.status_code, 200)
+
+        results = response.context["results"]
+        self.assertGreaterEqual(len(results), 1000)
