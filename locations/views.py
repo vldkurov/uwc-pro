@@ -378,7 +378,7 @@ class BranchDeleteView(DivisionMixin, DeleteView):
         )
 
 
-class BranchDisplayView(View):
+class BranchDisplayView(DivisionMixin, View):
     login_url = "account_login"
     redirect_field_name = "next"
     permission_required = "locations.display"
