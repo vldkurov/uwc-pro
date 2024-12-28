@@ -1,8 +1,10 @@
 import logging
+import uuid
 from itertools import groupby
 
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.exceptions import FieldError, ValidationError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
@@ -12,8 +14,9 @@ from django.utils.translation import get_language
 from django.views.generic import ListView, View
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, ModelFormMixin
+from django.db import transaction
 
-from .forms import BranchForm, PersonForm, PhoneFormSet, EmailFormSet
+from .forms import BranchForm, PersonForm, PhoneFormSet, EmailFormSet, DivisionForm
 from .models import Branch, Division, Person
 
 logger = logging.getLogger(__name__)
@@ -51,7 +54,45 @@ class DivisionListView(DivisionMixin, ListView):
     redirect_field_name = "next"
     permission_required = "locations.view_division"
 
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     slug = self.kwargs.get("slug")
+    #     current_division = (
+    #         get_object_or_404(Division, slug=slug) if slug else Division.objects.first()
+    #     )
+    #     context["current_division"] = current_division
+    #
+    #     religious_keywords = ["Church", "Церква", "Церкви", "Parish", "Парафія"]
+    #
+    #     is_religious = any(
+    #         keyword.lower() in current_division.title.lower()
+    #         for keyword in religious_keywords
+    #     )
+    #     context["is_religious"] = is_religious
+    #
+    #     current_language = translation.get_language() or "en"
+    #
+    #     sort_column = self.request.GET.get("sort", "title")
+    #     sort_direction = self.request.GET.get("direction", "asc")
+    #
+    #     if sort_column == "title":
+    #         sort_column = f"title_{current_language}"
+    #
+    #     sort_order = f"-{sort_column}" if sort_direction == "desc" else sort_column
+    #
+    #     branches = current_division.branches.all().order_by(sort_order)
+    #
+    #     context["branches"] = branches
+    #     context["current_base_sort"] = self.request.GET.get("sort", "title")
+    #     context["current_direction"] = sort_direction
+    #
+    #     return context
+
     def get_context_data(self, **kwargs):
+
+        if not Division.objects.exists():
+            return redirect("locations:division_create")
+
         context = super().get_context_data(**kwargs)
         slug = self.kwargs.get("slug")
         current_division = (
@@ -77,7 +118,10 @@ class DivisionListView(DivisionMixin, ListView):
 
         sort_order = f"-{sort_column}" if sort_direction == "desc" else sort_column
 
-        branches = current_division.branches.all().order_by(sort_order)
+        try:
+            branches = current_division.branches.all().order_by(sort_order)
+        except FieldError:
+            branches = current_division.branches.all().order_by("title")
 
         context["branches"] = branches
         context["current_base_sort"] = self.request.GET.get("sort", "title")
@@ -86,18 +130,47 @@ class DivisionListView(DivisionMixin, ListView):
         return context
 
 
+# class DivisionCreateView(DivisionMixin, TrackUserMixin, CreateView):
+#     fields = ["title_en", "title_uk"]
+#     template_name = "locations/manage/division/form.html"
+#     login_url = "account_login"
+#     redirect_field_name = "next"
+#     permission_required = "locations.add_division"
+
+
 class DivisionCreateView(DivisionMixin, TrackUserMixin, CreateView):
-    fields = ["title_en", "title_uk"]
+    model = Division
+    form_class = DivisionForm
     template_name = "locations/manage/division/form.html"
     login_url = "account_login"
     redirect_field_name = "next"
     permission_required = "locations.add_division"
 
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse("locations:division_list", kwargs={"slug": self.object.slug})
+
 
 class DivisionUpdateView(DivisionMixin, TrackUserMixin, UpdateView):
-    fields = ["title_en", "title_uk"]
+    form_class = DivisionForm
     template_name = "locations/manage/division/form.html"
     permission_required = "locations.change_division"
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse("locations:division_list", kwargs={"slug": self.object.slug})
 
 
 class DivisionDeleteView(DivisionMixin, DeleteView):
@@ -105,6 +178,28 @@ class DivisionDeleteView(DivisionMixin, DeleteView):
     login_url = "account_login"
     redirect_field_name = "next"
     permission_required = "locations.delete_division"
+
+
+# class DivisionOrderView(
+#     CsrfExemptMixin,
+#     JsonRequestResponseMixin,
+#     DivisionMixin,
+#     View,
+# ):
+#     login_url = "account_login"
+#     redirect_field_name = "next"
+#     permission_required = "locations.change_division_order"
+#
+#     def handle_no_permission(self):
+#         return JsonResponse(
+#             {"error": "You do not have permission to change the Division order."},
+#             status=403,
+#         )
+#
+#     def post(self, request):
+#         for division_id, order in self.request_json.items():
+#             Division.objects.filter(id=division_id).update(order=order)
+#         return self.render_json_response({"saved": "OK"})
 
 
 class DivisionOrderView(
@@ -124,9 +219,30 @@ class DivisionOrderView(
         )
 
     def post(self, request):
-        for division_id, order in self.request_json.items():
-            Division.objects.filter(id=division_id).update(order=order)
-        return self.render_json_response({"saved": "OK"})
+        try:
+            # Validate incoming JSON data
+            data = self.request_json
+
+            # Validate that each key is a valid UUID
+            with transaction.atomic():  # Ensure atomicity
+                for division_id, order in data.items():
+                    try:
+                        # Validate UUID
+                        uuid.UUID(division_id)
+                        # Update the order
+                        Division.objects.filter(id=division_id).update(order=order)
+                    except (ValueError, ValidationError):
+                        # Invalid UUID or order
+                        return JsonResponse(
+                            {"error": f"Invalid ID: {division_id}"}, status=400
+                        )
+
+            # Success response
+            return self.render_json_response({"saved": "OK"})
+
+        except Exception as e:
+            # Catch any unexpected errors
+            return JsonResponse({"error": str(e)}, status=400)
 
 
 class BranchCreateUpdateView(DivisionMixin, TemplateResponseMixin, View):
@@ -203,11 +319,27 @@ class BranchCreateUpdateView(DivisionMixin, TemplateResponseMixin, View):
             print("Email formset validation failed:")
             print(email_formset.errors)
 
+        # if is_valid:
+        #     branch = branch_form.save(commit=False)
+        #     branch.division = self.division
+        #
+        #     branch.save()
+        #     phone_formset.save()
+        #     email_formset.save()
+        #
+        #     return redirect("locations:division_list", slug=self.division.slug)
+
         if is_valid:
+            # Save the branch first
             branch = branch_form.save(commit=False)
             branch.division = self.division
+            branch.save()  # Save the branch before saving related formsets
 
-            branch.save()
+            # Assign branch instance to formsets
+            phone_formset.instance = branch
+            email_formset.instance = branch
+
+            # Save formsets
             phone_formset.save()
             email_formset.save()
 
@@ -224,7 +356,7 @@ class BranchCreateUpdateView(DivisionMixin, TemplateResponseMixin, View):
         )
 
 
-class BranchDeleteView(DeleteView):
+class BranchDeleteView(DivisionMixin, DeleteView):
     model = Branch
     template_name = "locations/manage/branch/delete.html"
     context_object_name = "branch"
@@ -246,7 +378,7 @@ class BranchDeleteView(DeleteView):
         )
 
 
-class BranchDisplayView(View):
+class BranchDisplayView(DivisionMixin, View):
     login_url = "account_login"
     redirect_field_name = "next"
     permission_required = "locations.display"
@@ -260,7 +392,7 @@ class BranchDisplayView(View):
         return redirect("locations:division_list", slug=division_slug)
 
 
-class BranchHideView(View):
+class BranchHideView(DivisionMixin, View):
     login_url = "account_login"
     redirect_field_name = "next"
     permission_required = "locations.hide"
@@ -274,10 +406,13 @@ class BranchHideView(View):
         return redirect("locations:division_list", slug=division_slug)
 
 
-class PersonListView(ListView):
+class PersonListView(DivisionMixin, ListView):
     model = Person
     context_object_name = "persons"
     template_name = "locations/manage/person/list.html"
+    login_url = "account_login"
+    redirect_field_name = "next"
+    permission_required = "locations.view_person"
 
     def get_queryset(self):
         language = get_language()
@@ -306,21 +441,30 @@ class PersonListView(ListView):
         return context
 
 
-class PersonCreateView(CreateView):
+class PersonCreateView(DivisionMixin, CreateView):
     model = Person
     form_class = PersonForm
     template_name = "locations/manage/person/form.html"
     success_url = reverse_lazy("locations:division_redirect")
+    login_url = "account_login"
+    redirect_field_name = "next"
+    permission_required = "locations.add_person"
 
 
-class PersonUpdateView(UpdateView):
+class PersonUpdateView(DivisionMixin, UpdateView):
     model = Person
     form_class = PersonForm
     template_name = "locations/manage/person/form.html"
     success_url = reverse_lazy("locations:division_redirect")
+    login_url = "account_login"
+    redirect_field_name = "next"
+    permission_required = "locations.change_person"
 
 
-class PersonDeleteView(DeleteView):
+class PersonDeleteView(DivisionMixin, DeleteView):
     model = Person
     template_name = "locations/manage/person/delete.html"
     success_url = reverse_lazy("locations:person_list")
+    login_url = "account_login"
+    redirect_field_name = "next"
+    permission_required = "locations.delete_person"
