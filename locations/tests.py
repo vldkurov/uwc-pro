@@ -1276,3 +1276,180 @@ class BranchDeleteViewTests(TestCase):
 
         # Ensure the branch still exists
         self.assertTrue(Branch.objects.filter(id=another_branch.id).exists())
+
+
+class BranchDisplayViewTests(TestCase):
+    @patch("locations.signals.update_geocoding")
+    def setUp(self, mock_update_geocoding):
+        """
+        Set up test data for BranchDisplayView.
+        """
+        mock_update_geocoding.return_value = None
+
+        # Activate English language for consistency
+        activate("en")
+
+        # Create test users
+        self.user = User.objects.create_user(username="testuser", password="password")
+        self.admin_user = User.objects.create_superuser(
+            username="adminuser", password="password"
+        )
+
+        # Assign permission to display branches
+        permission_display = Permission.objects.get(
+            codename="display",
+            content_type__app_label="locations",
+            content_type__model="branch",
+        )
+        permission_view_division = Permission.objects.get(
+            codename="view_division",
+            content_type__app_label="locations",
+            content_type__model="division",
+        )
+        permission_view_branch = Permission.objects.get(
+            codename="view_branch",
+            content_type__app_label="locations",
+            content_type__model="branch",
+        )
+        self.user.user_permissions.add(
+            permission_display, permission_view_division, permission_view_branch
+        )
+
+        # Create test division and branch
+        self.division = Division.objects.create(
+            title_en="Test Division", title_uk="Тестовий Відділ"
+        )
+
+        self.branch = Branch.objects.create(
+            division=self.division,
+            title_en="Test Branch",
+            title_uk="Тестове Відділення",
+            address="123 Test Street",
+            postcode="AB12 3CD",
+        )
+
+        # URLs for testing
+        self.display_url = reverse(
+            "locations:division_branch_display",
+            kwargs={
+                "division_slug": self.division.slug,
+                "branch_slug": self.branch.slug,
+            },
+        )
+        self.redirect_url = reverse(
+            "locations:division_list", kwargs={"slug": self.division.slug}
+        )
+
+        # Log in the test user
+        self.client.login(username="testuser", password="password")
+
+        self.logger = logging.getLogger("django.request")
+        self.logger.setLevel(logging.CRITICAL)
+
+    def tearDown(self):
+        """
+        Clean up after each test.
+        """
+        self.client.logout()
+        self.logger.setLevel(logging.DEBUG)
+
+    # ---------------------------------
+    # TEST CASES
+    # ---------------------------------
+
+    @patch("locations.signals.update_geocoding")
+    def test_display_valid_branch(self, mock_update_geocoding):
+        """
+        Verify that a valid branch can be displayed successfully.
+        """
+        # Mock the display method
+        mock_update_geocoding.return_value = None
+
+        # Ensure branch is initially HIDE
+        self.assertEqual(self.branch.status, Branch.Status.HIDE)
+
+        # Perform POST request
+        response = self.client.post(self.display_url)
+
+        # Verify redirection to a division list
+        self.assertRedirects(response, self.redirect_url)
+
+        # Refresh branch from database to get the updated status
+        self.branch.refresh_from_db()
+
+        # Assert branch status is updated to DISPLAY
+        self.assertEqual(self.branch.status, Branch.Status.DISPLAY)
+
+    def test_display_branch_no_permission(self):
+        """
+        Verify that users without display permission cannot access the view.
+        """
+        # Remove permissions
+        self.user.user_permissions.clear()
+
+        # Perform POST request
+        response = self.client.post(self.display_url)
+
+        # Check forbidden access
+        self.assertEqual(response.status_code, 403)
+
+    def test_display_branch_not_authenticated(self):
+        """
+        Verify that unauthenticated users cannot access the view.
+        """
+        # Log out the user
+        self.client.logout()
+
+        # Perform POST request
+        response = self.client.post(self.display_url)
+
+        # Verify redirection to login page
+        login_url = reverse("account_login")
+        expected_url = f"{login_url}?next={self.display_url}"
+        self.assertRedirects(response, expected_url)
+
+    def test_display_nonexistent_branch(self):
+        """
+        Verify that attempting to display a nonexistent branch returns 404.
+        """
+        # Construct URL with invalid slug
+        invalid_url = reverse(
+            "locations:division_branch_display",
+            kwargs={"division_slug": self.division.slug, "branch_slug": "invalid-slug"},
+        )
+
+        # Perform POST request
+        response = self.client.post(invalid_url)
+
+        # Verify 404 response
+        self.assertEqual(response.status_code, 404)
+
+    def test_display_branch_in_wrong_division(self):
+        """
+        Verify that a branch from another division cannot be displayed.
+        """
+        # Create a new division and branch
+        another_division = Division.objects.create(
+            title_en="Another Division", title_uk="Інший Відділ"
+        )
+        another_branch = Branch.objects.create(
+            division=another_division,
+            title_en="Another Branch",
+            address="456 Another Street",
+            postcode="AB13 3CD",
+        )
+
+        # Construct URL with mismatched division and branch
+        invalid_url = reverse(
+            "locations:division_branch_display",
+            kwargs={
+                "division_slug": self.division.slug,
+                "branch_slug": another_branch.slug,
+            },
+        )
+
+        # Perform POST request
+        response = self.client.post(invalid_url)
+
+        # Verify 404 response
+        self.assertEqual(response.status_code, 404)
