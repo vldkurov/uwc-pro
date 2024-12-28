@@ -451,11 +451,14 @@ class PersonCreateView(DivisionMixin, CreateView):
     permission_required = "locations.add_person"
 
 
-class PersonUpdateView(UpdateView):
+class PersonUpdateView(DivisionMixin, UpdateView):
     model = Person
     form_class = PersonForm
     template_name = "locations/manage/person/form.html"
     success_url = reverse_lazy("locations:division_redirect")
+    login_url = "account_login"
+    redirect_field_name = "next"
+    permission_required = "locations.change_person"
 
 
 class PersonDeleteView(DeleteView):

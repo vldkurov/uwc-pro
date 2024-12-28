@@ -1893,3 +1893,133 @@ class PersonCreateViewTests(TestCase):
         person = Person.objects.first()
         self.assertEqual(person.first_name_en, "Admin")
         self.assertEqual(person.last_name_en, "User")
+
+
+class PersonUpdateViewTests(TestCase):
+    def setUp(self):
+        # Create test user and permissions
+        self.user = User.objects.create_user(username="testuser", password="password")
+
+        permissions = Permission.objects.filter(
+            codename__in=[
+                "add_person",
+                "change_person",
+                "view_person",
+                "view_division",
+                "add_division",
+            ]
+        )
+        self.user.user_permissions.add(*permissions)
+
+        # Create a test person
+        self.person = Person.objects.create(first_name="John", last_name="Doe")
+
+        # Update URL
+        self.update_url = reverse(
+            "locations:person_edit", kwargs={"pk": self.person.id}
+        )
+        self.redirect_url = reverse("locations:division_redirect")
+
+        self.logger = logging.getLogger("django.request")
+        self.logger.setLevel(logging.CRITICAL)
+
+    def tearDown(self):
+        """
+        Clean up after each test.
+        """
+        self.client.logout()
+        self.logger.setLevel(logging.DEBUG)
+
+    def test_unauthenticated_user_redirected_to_login(self):
+        """
+        Unauthenticated users should be redirected to the login page.
+        """
+        # Get the login URL dynamically
+        login_url = reverse("account_login")
+
+        # Expected redirect URL including 'next' parameter
+        expected_url = f"{login_url}?next={self.update_url}"
+
+        # Perform the GET request without authentication
+        response = self.client.get(self.update_url)
+
+        # Check the redirection URL
+        self.assertRedirects(response, expected_url)
+
+    def test_user_without_permission_cannot_access(self):
+        """
+        Users without 'change_person' permission should be denied access.
+        """
+        self.client.login(username="testuser", password="password")
+        self.user.user_permissions.clear()  # Remove permissions
+
+        response = self.client.get(self.update_url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_form_displayed_correctly(self):
+        """
+        Verify that the form renders correctly for users with permission.
+        """
+        # Login and make GET request
+        self.client.login(username="testuser", password="password")
+        response = self.client.get(self.update_url)
+
+        # Verify response status and template
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "locations/manage/person/form.html")
+
+        # Parse HTML response with BeautifulSoup
+        soup = BeautifulSoup(response.content, "html.parser")
+
+        # Locate form tag
+        form = soup.find("form", {"method": "post"})
+        self.assertIsNotNone(form, "Form tag not found")
+
+        # Check the presence of specific input fields by name
+        self.assertTrue(
+            soup.find("input", {"name": "first_name_en"}),
+            "Field 'first_name_en' not found",
+        )
+        self.assertTrue(
+            soup.find("input", {"name": "last_name_en"}),
+            "Field 'last_name_en' not found",
+        )
+        self.assertTrue(
+            soup.find("input", {"name": "first_name_uk"}),
+            "Field 'first_name_uk' not found",
+        )
+        self.assertTrue(
+            soup.find("input", {"name": "last_name_uk"}),
+            "Field 'last_name_uk' not found",
+        )
+
+        # Verify pre-filled values for existing data
+        self.assertEqual(soup.find("input", {"name": "first_name_en"})["value"], "John")
+        self.assertEqual(soup.find("input", {"name": "last_name_en"})["value"], "Doe")
+
+        # Verify the presence of submitted button
+        self.assertTrue(
+            form.find("button", {"type": "submit"}), "Submit button not found"
+        )
+
+    def test_valid_update(self):
+        """
+        Verify a person can be updated successfully.
+        """
+        self.client.login(username="testuser", password="password")
+
+        data = {
+            "first_name_en": "Jane",
+            "last_name_en": "Smith",
+        }
+
+        # Perform POST request and follow redirects
+        response = self.client.post(self.update_url, data, follow=True)
+
+        # Verify the final response status is 200
+        self.assertEqual(response.status_code, 200)
+
+        # Verify updates in the database
+        self.person.refresh_from_db()
+        self.assertEqual(self.person.first_name_en, "Jane")
+        self.assertEqual(self.person.last_name_en, "Smith")
