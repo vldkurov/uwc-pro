@@ -11,11 +11,10 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils.translation import activate, get_language
 
-from accounts.admin import CustomUser
 from locations.forms import BranchForm, PersonForm, EmailForm
 from locations.models import Phone, Branch, Division
 from locations.validators import validate_uk_phone_number, format_uk_phone_number
-from populate.populate_augb import title_uk
+
 
 User = get_user_model()
 
@@ -189,25 +188,32 @@ class DivisionListViewTests(TestCase):
         self.user.user_permissions.add(permission)
 
         # Create test divisions
-        self.division1 = Division.objects.create(title="Church Division")
-        self.division2 = Division.objects.create(title="Community Division")
+        self.division1 = Division.objects.create(
+            title_en="Church Division", title_uk="Церковний відділ"
+        )
+        self.division2 = Division.objects.create(
+            title_en="Community Division", title_uk="Громадський відділ"
+        )
 
         # Create branches within the divisions
         self.branch1 = Branch.objects.create(
             division=self.division1,
-            title="Branch A",
+            title_en="Branch A",
+            title_uk="Відділення А",
             address="123 Test Street",
             postcode="AB12 3CD",
         )
         self.branch2 = Branch.objects.create(
             division=self.division1,
-            title="Branch B",
+            title_en="Branch B",
+            title_uk="Відділення Б",
             address="456 Test Street",
             postcode="AB13 3CD",
         )
         self.branch3 = Branch.objects.create(
             division=self.division2,
-            title="Branch C",
+            title_en="Branch C",
+            title_uk="Відділення В",
             address="789 Test Street",
             postcode="CD14 3CD",
         )
@@ -370,10 +376,11 @@ class DivisionListViewTests(TestCase):
         Test sorting by title in Ukrainian language.
         """
         activate("uk")
+
         self.client.login(username="testuser", password="password")
         response = self.client.get(
             reverse("locations:division_list", kwargs={"slug": self.division1.slug}),
-            {"sort": "title", "direction": "asc"},
+            {"sort": "title_uk", "direction": "asc"},
         )
         self.assertEqual(response.context["branches"][0], self.branch1)
 
