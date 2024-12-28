@@ -1453,3 +1453,159 @@ class BranchDisplayViewTests(TestCase):
 
         # Verify 404 response
         self.assertEqual(response.status_code, 404)
+
+
+class BranchHideViewTests(TestCase):
+    @patch("locations.signals.update_geocoding")
+    def setUp(self, mock_update_geocoding):
+        """
+        Set up test data for the BranchHideView.
+        """
+        mock_update_geocoding.return_value = None
+
+        # Create test user and permissions
+        self.user = User.objects.create_user(username="testuser", password="password")
+        self.admin_user = User.objects.create_superuser(
+            username="adminuser", password="password"
+        )
+
+        # Add necessary permissions
+        permission_hide = Permission.objects.get(
+            codename="hide",
+            content_type__app_label="locations",
+            content_type__model="branch",
+        )
+        permission_view_division = Permission.objects.get(
+            codename="view_division",
+            content_type__app_label="locations",
+            content_type__model="division",
+        )
+        permission_view_branch = Permission.objects.get(
+            codename="view_branch",
+            content_type__app_label="locations",
+            content_type__model="branch",
+        )
+        self.user.user_permissions.add(
+            permission_hide, permission_view_division, permission_view_branch
+        )
+
+        # Create test division and branch
+        self.division = Division.objects.create(
+            title_en="Test Division", title_uk="Тестовий Відділ"
+        )
+        self.branch = Branch.objects.create(
+            division=self.division,
+            title_en="Test Branch",
+            title_uk="Тестове Відділення",
+            address="123 Test Street",
+            postcode="AB12 3CD",
+            status=Branch.Status.DISPLAY,
+        )
+
+        # URLs for testing
+        self.hide_url = reverse(
+            "locations:division_branch_hide",
+            kwargs={
+                "division_slug": self.division.slug,
+                "branch_slug": self.branch.slug,
+            },
+        )
+        self.redirect_url = reverse(
+            "locations:division_list", kwargs={"slug": self.division.slug}
+        )
+
+        self.logger = logging.getLogger("django.request")
+        self.logger.setLevel(logging.CRITICAL)
+
+    def tearDown(self):
+        """
+        Clean up after each test.
+        """
+        self.client.logout()
+        self.logger.setLevel(logging.DEBUG)
+
+    def test_hide_valid_branch(self):
+        """
+        Verify that a valid branch can be hidden successfully.
+        """
+        # Ensure branch is initially DISPLAY
+        self.assertEqual(self.branch.status, Branch.Status.DISPLAY)
+
+        # Login user with permissions
+        self.client.login(username="testuser", password="password")
+
+        # Perform POST request
+        response = self.client.post(self.hide_url)
+
+        # Verify redirection
+        self.assertRedirects(response, self.redirect_url)
+
+        # Refresh from database and verify status change
+        self.branch.refresh_from_db()
+        self.assertEqual(self.branch.status, Branch.Status.HIDE)
+
+    def test_already_hidden_branch(self):
+        """
+        Verifies hiding an already hidden branch does not raise errors.
+        """
+        # Set branch to HIDE initially
+        self.branch.status = Branch.Status.HIDE
+        self.branch.save()
+
+        # Login user with permissions
+        self.client.login(username="testuser", password="password")
+
+        # Perform POST request
+        response = self.client.post(self.hide_url)
+
+        # Verify redirection
+        self.assertRedirects(response, self.redirect_url)
+
+        # Ensure branch is still HIDE
+        self.branch.refresh_from_db()
+        self.assertEqual(self.branch.status, Branch.Status.HIDE)
+
+    def test_unauthenticated_access(self):
+        """
+        Verify that unauthenticated users cannot access the hide endpoint.
+        """
+        # Perform POST request without a login
+        response = self.client.post(self.hide_url)
+
+        # Verify redirection to login page
+        login_url = reverse("account_login")
+        expected_url = f"{login_url}?next={self.hide_url}"
+        self.assertRedirects(response, expected_url)
+
+    def test_unauthorized_access(self):
+        """
+        Verify that users without the 'hide' permission cannot hide a branch.
+        """
+        # Remove permission from user
+        self.user.user_permissions.clear()
+
+        # Login user without permissions
+        self.client.login(username="testuser", password="password")
+
+        # Perform POST request
+        response = self.client.post(self.hide_url)
+
+        # Verify access is forbidden
+        self.assertEqual(response.status_code, 403)
+
+    def test_nonexistent_branch(self):
+        """
+        Verify that attempting to hide a nonexistent branch returns 404.
+        """
+        # Login user with permissions
+        self.client.login(username="testuser", password="password")
+
+        # Perform POST request with invalid branch slug
+        invalid_url = reverse(
+            "locations:division_branch_hide",
+            kwargs={"division_slug": self.division.slug, "branch_slug": "invalid-slug"},
+        )
+        response = self.client.post(invalid_url)
+
+        # Verify 404 response
+        self.assertEqual(response.status_code, 404)

@@ -392,7 +392,7 @@ class BranchDisplayView(DivisionMixin, View):
         return redirect("locations:division_list", slug=division_slug)
 
 
-class BranchHideView(View):
+class BranchHideView(DivisionMixin, View):
     login_url = "account_login"
     redirect_field_name = "next"
     permission_required = "locations.hide"
