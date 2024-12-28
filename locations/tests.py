@@ -15,6 +15,7 @@ from accounts.admin import CustomUser
 from locations.forms import BranchForm, PersonForm, EmailForm
 from locations.models import Phone, Branch, Division
 from locations.validators import validate_uk_phone_number, format_uk_phone_number
+from populate.populate_augb import title_uk
 
 User = get_user_model()
 
@@ -868,3 +869,239 @@ class DivisionOrderViewTests(TestCase):
             response.content,
             {"error": "You do not have permission to change the Division order."},
         )
+
+
+class BranchCreateUpdateViewTests(TestCase):
+
+    @patch("locations.signals.division_pre_save_receiver")
+    @patch("locations.signals.update_geocoding")
+    @patch("locations.signals.branch_pre_save_receiver")
+    def setUp(
+        self,
+        mock_division_pre_save_receiver,
+        mock_update_geocoding,
+        branch_pre_save_receiver,
+    ):
+        """
+        Set up test data for the BranchCreateUpdateView.
+        """
+
+        mock_division_pre_save_receiver.return_value = None
+        mock_update_geocoding.return_value = None
+        branch_pre_save_receiver.return_value = None
+
+        # Activate English for consistent URLs
+        activate("en")
+
+        # Create a user with necessary permissions
+        self.user = User.objects.create_user(username="testuser", password="password")
+        permissions = Permission.objects.filter(
+            codename__in=["view_division", "view_branch", "add_branch", "change_branch"]
+        )
+        self.user.user_permissions.add(*permissions)
+
+        # Create a test division
+        self.division = Division.objects.create(
+            title_en="Test Division", title_uk="Випробувальний відділ"
+        )
+
+        # Create a test branch for update tests
+        self.branch = Branch.objects.create(
+            division=self.division,
+            title_en="Test Branch",
+            title_uk="Тестове відділення",
+            address="123 Test St",
+        )
+
+        # Log in the test user
+        self.client.login(username="testuser", password="password")
+
+        # URLs for testing
+        self.create_url = reverse(
+            "locations:division_branch_create",
+            kwargs={"division_slug": self.division.slug},
+        )
+        self.update_url = reverse(
+            "locations:division_branch_update",
+            kwargs={
+                "division_slug": self.division.slug,
+                "branch_slug": self.branch.slug,
+            },
+        )
+
+        self.redirect_url = reverse(
+            "locations:division_list", kwargs={"slug": self.division.slug}
+        )
+
+        self.logger = logging.getLogger("django.request")
+        self.logger.setLevel(logging.CRITICAL)
+
+    def tearDown(self):
+        """
+        Clean up after each test.
+        """
+        self.client.logout()
+        self.logger.setLevel(logging.DEBUG)
+
+    def test_get_create_branch(self):
+        """
+        Verify that the GET request for creating a branch loads the form.
+        """
+        response = self.client.get(self.create_url)
+
+        # Check response code
+        self.assertEqual(response.status_code, 200)
+
+        # Check template usage
+        self.assertTemplateUsed(response, "locations/manage/branch/form.html")
+
+        # Check context variables
+        self.assertIn("branch_form", response.context)
+        self.assertIsInstance(response.context["branch_form"], BranchForm)
+
+        self.assertIn("phone_formset", response.context)
+        self.assertIn("email_formset", response.context)
+
+    def test_get_update_branch(self):
+        """
+        Verify that the GET request for editing a branch preloads the existing data.
+        """
+        response = self.client.get(self.update_url)
+
+        # Check response code
+        self.assertEqual(response.status_code, 200)
+
+        # Ensure preloaded data appears
+        self.assertEqual(response.context["branch_form"].instance, self.branch)
+        self.assertEqual(
+            response.context["branch_form"].initial["title_en"], "Test Branch"
+        )
+
+    def test_post_create_valid_branch(self):
+        """
+        Verify that a valid branch can be created successfully.
+        """
+        # Test data
+        data = {
+            "title_en": "New Branch",
+            "title_uk": "Нове відділення",
+            "address": "456 New St",
+            "postcode": "AB12 3CD",
+        }
+        phone_data = {
+            "phones-TOTAL_FORMS": "1",
+            "phones-INITIAL_FORMS": "0",
+            "phones-0-number": "+44 1234 567890",
+        }
+        email_data = {
+            "emails-TOTAL_FORMS": "1",
+            "emails-INITIAL_FORMS": "0",
+            "emails-0-email": "test@example.com",
+        }
+
+        # Submit form
+        response = self.client.post(
+            self.create_url,
+            {**data, **phone_data, **email_data},
+        )
+
+        # Debug logs if validation fails
+        if response.status_code == 200:
+            print("Branch Form Errors:", response.context["branch_form"].errors)
+            print("Phone Formset Errors:", response.context["phone_formset"].errors)
+            print("Email Formset Errors:", response.context["email_formset"].errors)
+
+        # Assert redirection after valid submission
+        self.assertRedirects(
+            response, self.redirect_url, status_code=302, target_status_code=200
+        )
+
+        # Assert branch creation
+        self.assertEqual(Branch.objects.filter(title_en="New Branch").count(), 1)
+
+    def test_post_update_valid_branch(self):
+        """
+        Verify that a branch can be updated successfully.
+        """
+        data = {
+            "title_en": "Updated Branch",
+            "address_en": "789 Updated St",
+            "postcode": "AB13 4CD",
+        }
+        phone_data = {"phones-TOTAL_FORMS": "1", "phones-INITIAL_FORMS": "0"}
+        email_data = {"emails-TOTAL_FORMS": "1", "emails-INITIAL_FORMS": "0"}
+
+        response = self.client.post(
+            self.update_url,
+            {**data, **phone_data, **email_data},
+        )
+
+        # Check redirection
+        self.assertRedirects(response, self.redirect_url)
+
+        # Verify branch update
+        self.branch.refresh_from_db()
+        self.assertEqual(self.branch.title_en, "Updated Branch")
+        self.assertEqual(self.branch.address_en, "789 Updated St")
+
+    def test_post_invalid_branch(self):
+        """
+        Verify that invalid branch data does not save and renders the form again.
+        """
+        data = {
+            "title": "",
+            "address": "123 Test St",
+        }
+        response = self.client.post(
+            self.create_url, data, content_type="application/json"
+        )
+
+        # Check that the response does NOT redirect (stays on the form page)
+        self.assertEqual(response.status_code, 200)
+
+        # Ensure no new branch was created
+        self.assertEqual(Branch.objects.count(), 1)
+
+    def test_missing_permissions(self):
+        """
+        Verify that users without permissions cannot access the view.
+        """
+        self.client.logout()
+
+        # Log in as a user without permissions
+        user = User.objects.create_user(username="noperm", password="password")
+        self.client.login(username="noperm", password="password")
+
+        # Attempt to access the page
+        response = self.client.get(self.create_url)
+        self.assertEqual(response.status_code, 403)
+
+        response = self.client.post(self.create_url, {})
+        self.assertEqual(response.status_code, 403)
+
+    def test_unauthenticated_access(self):
+        """
+        Verify that unauthenticated users are redirected to the login page.
+        """
+        self.client.logout()
+
+        response = self.client.get(self.create_url)
+        self.assertRedirects(
+            response, f"{reverse('account_login')}?next={self.create_url}"
+        )
+
+    def test_religious_keyword_detection(self):
+        """
+        Verify the religious context is correctly detected.
+        """
+        # Create a religious division
+        religious_division = Division.objects.create(title_en="Church of Peace")
+        create_url = reverse(
+            "locations:division_branch_create",
+            kwargs={"division_slug": religious_division.slug},
+        )
+
+        response = self.client.get(create_url)
+
+        # Ensure 'is_religious' context is True
+        self.assertTrue(response.context["is_religious"])
