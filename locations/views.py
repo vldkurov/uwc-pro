@@ -356,7 +356,7 @@ class BranchCreateUpdateView(DivisionMixin, TemplateResponseMixin, View):
         )
 
 
-class BranchDeleteView(DeleteView):
+class BranchDeleteView(DivisionMixin, DeleteView):
     model = Branch
     template_name = "locations/manage/branch/delete.html"
     context_object_name = "branch"

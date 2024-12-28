@@ -1112,3 +1112,167 @@ class BranchCreateUpdateViewTests(TestCase):
 
         # Ensure 'is_religious' context is True
         self.assertTrue(response.context["is_religious"])
+
+
+class BranchDeleteViewTests(TestCase):
+    @patch("locations.signals.update_geocoding")
+    def setUp(self, mock_update_geocoding):
+        """
+        Set up test data for BranchDeleteView.
+        """
+        mock_update_geocoding.return_value = None
+
+        # Activate English language for consistent URLs
+        activate("en")
+
+        # Create test users
+        self.admin_user = User.objects.create_superuser(
+            username="adminuser", password="password"
+        )
+        self.user = User.objects.create_user(username="testuser", password="password")
+
+        # Assign permissions to the regular user
+        permissions = Permission.objects.filter(
+            codename__in=["view_division", "delete_branch"]
+        )
+        self.user.user_permissions.add(*permissions)
+
+        # Create a test division
+        self.division = Division.objects.create(
+            title_en="Test Division", title_uk="Тестовий Відділ"
+        )
+
+        # Create a test branch
+        self.branch = Branch.objects.create(
+            division=self.division,
+            title_en="Test Branch",
+            title_uk="Тестове Відділення",
+            address="123 Test Street",
+            postcode="AB12 3CD",
+        )
+
+        # URLs for testing
+        self.delete_url = reverse(
+            "locations:division_branch_delete",
+            kwargs={
+                "division_slug": self.division.slug,
+                "branch_slug": self.branch.slug,
+            },
+        )
+        self.redirect_url = reverse(
+            "locations:division_list", kwargs={"slug": self.division.slug}
+        )
+
+        # Log in the test user
+        self.client.login(username="testuser", password="password")
+
+        self.logger = logging.getLogger("django.request")
+        self.logger.setLevel(logging.CRITICAL)
+
+    def tearDown(self):
+        """
+        Clean up after each test.
+        """
+        self.client.logout()
+        self.logger.setLevel(logging.DEBUG)
+
+    # ---------------------------------
+    # TEST CASES
+    # ---------------------------------
+
+    def test_delete_valid_branch(self):
+        """
+        Verify that a valid branch can be deleted successfully.
+        """
+        # Perform the delete request
+        response = self.client.post(self.delete_url)
+
+        # Check redirection
+        self.assertRedirects(response, self.redirect_url)
+
+        # Verify the branch is deleted
+        self.assertFalse(
+            Branch.objects.filter(id=self.branch.id).exists(),
+            "Branch was not deleted.",
+        )
+
+    def test_delete_branch_no_permission(self):
+        """
+        Verify that a user without delete permissions cannot delete a branch.
+        """
+        # Remove permission
+        self.user.user_permissions.clear()
+
+        # Attempt to delete the branch
+        response = self.client.post(self.delete_url)
+
+        # Check forbidden access
+        self.assertEqual(response.status_code, 403)
+
+        # Ensure the branch still exists
+        self.assertTrue(Branch.objects.filter(id=self.branch.id).exists())
+
+    def test_delete_branch_not_authenticated(self):
+        """
+        Verify that unauthenticated users cannot delete a branch.
+        """
+        # Log out the user
+        self.client.logout()
+
+        # Attempt to delete the branch
+        response = self.client.post(self.delete_url)
+
+        # Check redirection to login page
+        login_url = reverse("account_login")
+        expected_url = f"{login_url}?next={self.delete_url}"
+        self.assertRedirects(response, expected_url)
+
+        # Ensure the branch still exists
+        self.assertTrue(Branch.objects.filter(id=self.branch.id).exists())
+
+    def test_delete_nonexistent_branch(self):
+        """
+        Verify that trying to delete a nonexistent branch results in a 404.
+        """
+        # Construct a URL with an invalid slug
+        invalid_url = reverse(
+            "locations:division_branch_delete",
+            kwargs={"division_slug": self.division.slug, "branch_slug": "invalid-slug"},
+        )
+
+        # Attempt to delete
+        response = self.client.post(invalid_url)
+
+        # Check 404 response
+        self.assertEqual(response.status_code, 404)
+
+    def test_delete_branch_from_another_division(self):
+        """
+        Verify that a branch in another division cannot be deleted.
+        """
+        # Create a new division and branch
+        another_division = Division.objects.create(
+            title_en="Another Division", title_uk="Інший Відділ"
+        )
+        another_branch = Branch.objects.create(
+            division=another_division,
+            title_en="Another Branch",
+            address="456 Another Street",
+            postcode="AB12 3CD",
+        )
+
+        # Attempt to delete using the wrong division slug
+        invalid_url = reverse(
+            "locations:division_branch_delete",
+            kwargs={
+                "division_slug": self.division.slug,
+                "branch_slug": another_branch.slug,
+            },
+        )
+        response = self.client.post(invalid_url)
+
+        # Check 404 response
+        self.assertEqual(response.status_code, 404)
+
+        # Ensure the branch still exists
+        self.assertTrue(Branch.objects.filter(id=another_branch.id).exists())
