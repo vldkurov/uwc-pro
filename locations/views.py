@@ -461,7 +461,10 @@ class PersonUpdateView(DivisionMixin, UpdateView):
     permission_required = "locations.change_person"
 
 
-class PersonDeleteView(DeleteView):
+class PersonDeleteView(DivisionMixin, DeleteView):
     model = Person
     template_name = "locations/manage/person/delete.html"
     success_url = reverse_lazy("locations:person_list")
+    login_url = "account_login"
+    redirect_field_name = "next"
+    permission_required = "locations.delete_person"

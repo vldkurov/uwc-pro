@@ -2023,3 +2023,105 @@ class PersonUpdateViewTests(TestCase):
         self.person.refresh_from_db()
         self.assertEqual(self.person.first_name_en, "Jane")
         self.assertEqual(self.person.last_name_en, "Smith")
+
+
+class PersonDeleteViewTests(TestCase):
+    def setUp(self):
+        # Create test user and permissions
+        self.admin_user = User.objects.create_superuser(
+            username="adminuser", password="password"
+        )
+        self.user = User.objects.create_user(username="testuser", password="password")
+        self.no_permission_user = User.objects.create_user(
+            username="no_permission", password="password"
+        )
+
+        permissions = Permission.objects.filter(
+            codename__in=[
+                "delete_person",
+                "view_person",
+                "view_division",
+                "add_division",
+            ]
+        )
+        self.user.user_permissions.add(*permissions)
+
+        # Create a test person
+        self.person = Person.objects.create(first_name="John", last_name="Doe")
+
+        # Update URL
+        self.delete_url = reverse(
+            "locations:person_delete", kwargs={"pk": self.person.id}
+        )
+        self.success_url = reverse("locations:person_list")
+
+        self.logger = logging.getLogger("django.request")
+        self.logger.setLevel(logging.CRITICAL)
+
+    def tearDown(self):
+        """
+        Clean up after each test.
+        """
+        self.client.logout()
+        self.logger.setLevel(logging.DEBUG)
+
+    def test_unauthenticated_user_redirected_to_login(self):
+        """
+        Unauthenticated users should be redirected to the login page.
+        """
+        # Get the login URL dynamically
+        login_url = reverse("account_login")
+
+        # Expected redirect URL including 'next' parameter
+        expected_url = f"{login_url}?next={self.delete_url}"
+
+        # Perform the GET request without authentication
+        response = self.client.get(self.delete_url)
+
+        # Check the redirection URL
+        self.assertRedirects(response, expected_url)
+
+    def test_user_without_permission_denied_access(self):
+        """
+        Users without the delete permission should receive 403 Forbidden.
+        """
+        self.client.login(username="no_permission", password="password")
+        response = self.client.get(self.delete_url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_user_with_permission_sees_confirmation_page(self):
+        """
+        Users with the correct permission should see the confirmation page.
+        """
+        self.user.user_permissions.add(Permission.objects.get(codename="delete_person"))
+        self.client.login(username="testuser", password="password")
+        response = self.client.get(self.delete_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "locations/manage/person/delete.html")
+
+    def test_successful_deletion(self):
+        """
+        Verify a person can be deleted successfully.
+        """
+        self.user.user_permissions.add(Permission.objects.get(codename="delete_person"))
+        self.client.login(username="testuser", password="password")
+
+        response = self.client.post(self.delete_url)
+        self.assertRedirects(response, self.success_url)
+
+        # Verify that the person no longer exists in the database
+        with self.assertRaises(Person.DoesNotExist):
+            Person.objects.get(pk=self.person.id)
+
+    def test_superuser_can_delete(self):
+        """
+        Superusers should be able to delete a person regardless of permissions.
+        """
+        self.client.login(username="adminuser", password="password")
+
+        response = self.client.post(self.delete_url)
+        self.assertRedirects(response, self.success_url)
+
+        # Verify deletion
+        with self.assertRaises(Person.DoesNotExist):
+            Person.objects.get(pk=self.person.id)
