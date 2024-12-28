@@ -406,10 +406,13 @@ class BranchHideView(DivisionMixin, View):
         return redirect("locations:division_list", slug=division_slug)
 
 
-class PersonListView(ListView):
+class PersonListView(DivisionMixin, ListView):
     model = Person
     context_object_name = "persons"
     template_name = "locations/manage/person/list.html"
+    login_url = "account_login"
+    redirect_field_name = "next"
+    permission_required = "locations.view_person"
 
     def get_queryset(self):
         language = get_language()
@@ -438,11 +441,14 @@ class PersonListView(ListView):
         return context
 
 
-class PersonCreateView(CreateView):
+class PersonCreateView(DivisionMixin, CreateView):
     model = Person
     form_class = PersonForm
     template_name = "locations/manage/person/form.html"
     success_url = reverse_lazy("locations:division_redirect")
+    login_url = "account_login"
+    redirect_field_name = "next"
+    permission_required = "locations.add_person"
 
 
 class PersonUpdateView(UpdateView):

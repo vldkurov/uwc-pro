@@ -2,6 +2,7 @@ import json
 import logging
 from unittest.mock import patch
 from urllib.parse import quote
+from bs4 import BeautifulSoup
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
@@ -12,7 +13,7 @@ from django.urls import reverse
 from django.utils.translation import activate, get_language
 
 from locations.forms import BranchForm, PersonForm, EmailForm
-from locations.models import Phone, Branch, Division
+from locations.models import Phone, Branch, Division, Person
 from locations.validators import validate_uk_phone_number, format_uk_phone_number
 
 
@@ -1609,3 +1610,286 @@ class BranchHideViewTests(TestCase):
 
         # Verify 404 response
         self.assertEqual(response.status_code, 404)
+
+
+class PersonListViewTests(TestCase):
+    def setUp(self):
+        """
+        Set up test data for PersonListView.
+        """
+        # Create a user with permission to view persons
+        self.user = User.objects.create_user(username="testuser", password="password")
+        permission = Permission.objects.get(codename="view_person")
+        self.user.user_permissions.add(permission)
+
+        # Create test persons
+        self.person1 = Person.objects.create(
+            first_name_uk="Боб",
+            last_name_uk="Браун",
+            first_name_en="Bob",
+            last_name_en="Brown",
+        )
+        self.person2 = Person.objects.create(
+            first_name_uk="Джон",
+            last_name_uk="Доу",
+            first_name_en="John",
+            last_name_en="Doe",
+        )
+        self.person3 = Person.objects.create(
+            first_name_uk="Аліса",
+            last_name_uk="Сміт",
+            first_name_en="Alice",
+            last_name_en="Smith",
+        )
+
+        # URL for testing
+        self.url = reverse("locations:person_list")
+
+        self.logger = logging.getLogger("django.request")
+        self.logger.setLevel(logging.CRITICAL)
+
+    def tearDown(self):
+        """
+        Clean up after each test.
+        """
+        self.client.logout()
+        self.logger.setLevel(logging.DEBUG)
+
+    def test_person_list(self):
+        self.client.login(username="testuser", password="password")
+        response = self.client.get(reverse("locations:person_list"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "locations/manage/person/list.html")
+        self.assertContains(response, "<h2>Alphabetical Index</h2>")
+
+    def test_url_exists_at_correct_location(self):
+        self.client.login(username="testuser", password="password")
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_sorted_list_english(self):
+        """
+        Verify sorting by last name in English.
+        """
+        activate("en")
+        self.client.login(username="testuser", password="password")
+        response = self.client.get(self.url)
+
+        persons = response.context["persons"]
+        self.assertEqual(persons[0].last_name_en, "Brown")
+        self.assertEqual(persons[1].last_name_en, "Doe")
+        self.assertEqual(persons[2].last_name_en, "Smith")
+
+    def test_sorted_list_ukrainian(self):
+        """
+        Verify sorting by last name in Ukrainian.
+        """
+        activate("uk")
+        self.client.login(username="testuser", password="password")
+        response = self.client.get(self.url)
+
+        persons = response.context["persons"]
+        self.assertEqual(persons[0].last_name_uk, "Браун")
+        self.assertEqual(persons[1].last_name_uk, "Доу")
+        self.assertEqual(persons[2].last_name_uk, "Сміт")
+
+    def test_grouping_by_initial_english(self):
+        """
+        Verify grouping logic by first letter in English.
+        """
+        activate("en")
+        self.client.login(username="testuser", password="password")
+        response = self.client.get(self.url)
+
+        grouped_persons = response.context["grouped_persons"]
+        self.assertIn("B", grouped_persons)
+        self.assertIn("D", grouped_persons)
+        self.assertIn("S", grouped_persons)
+
+        self.assertEqual(len(grouped_persons["B"]), 1)
+        self.assertEqual(len(grouped_persons["D"]), 1)
+        self.assertEqual(len(grouped_persons["S"]), 1)
+
+    def test_unauthorized_access(self):
+        """
+        Verify unauthorized users receive a 403 Forbidden.
+        """
+        unauthorized_user = User.objects.create_user(
+            username="unauthorized", password="password"
+        )
+        self.client.login(username="unauthorized", password="password")
+
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_unauthenticated_access(self):
+        """
+        Verify unauthenticated users are redirected to the login page.
+        """
+        response = self.client.get(self.url)
+        login_url = reverse("account_login")
+        self.assertRedirects(response, f"{login_url}?next={self.url}")
+
+    def test_empty_dataset(self):
+        """
+        Verify behaviour when no persons are present.
+        """
+        # Clear all persons
+        Person.objects.all().delete()
+
+        self.client.login(username="testuser", password="password")
+        response = self.client.get(self.url)
+
+        persons = response.context["persons"]
+        grouped_persons = response.context["grouped_persons"]
+
+        self.assertEqual(len(persons), 0)
+        self.assertEqual(len(grouped_persons), 0)
+
+
+class PersonCreateViewTests(TestCase):
+    def setUp(self):
+        """
+        Set up test data and permissions for PersonCreateView tests.
+        """
+        activate("en")
+
+        self.user = User.objects.create_user(username="testuser", password="password")
+        self.admin_user = User.objects.create_superuser(
+            username="adminuser", password="password"
+        )
+
+        # Assign permission for adding a person
+        permissions = Permission.objects.filter(
+            codename__in=["add_person", "view_person", "view_division", "add_division"]
+        )
+        self.user.user_permissions.add(*permissions)
+
+        # URLs
+        self.create_url = reverse("locations:person_create")
+        self.success_url = reverse("locations:division_redirect")
+
+        self.logger = logging.getLogger("django.request")
+        self.logger.setLevel(logging.CRITICAL)
+
+    def tearDown(self):
+        """
+        Clean up after each test.
+        """
+        self.client.logout()
+        self.logger.setLevel(logging.DEBUG)
+
+    def test_unauthenticated_user_redirected_to_login(self):
+        """
+        Unauthenticated users should be redirected to login page.
+        """
+        # Get the login URL dynamically
+        login_url = reverse("account_login")
+
+        # Expected redirect URL including 'next' parameter
+        expected_url = f"{login_url}?next={self.create_url}"
+
+        # Perform GET request without logging in
+        response = self.client.get(self.create_url)
+
+        # Verify the redirect URL matches the expected URL
+        self.assertRedirects(response, expected_url)
+
+    def test_user_without_permission_denied_access(self):
+        """
+        Users without 'add_person' permission should receive 403 Forbidden.
+        """
+        # Log in as a user without permissions
+        self.client.login(username="testuser", password="password")
+        self.user.user_permissions.clear()  # Remove all permissions
+
+        response = self.client.get(self.create_url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_form_displayed_correctly(self):
+        """
+        Verify that the form renders correctly for users with permission.
+        """
+        # Login and make GET request
+        self.client.login(username="testuser", password="password")
+        response = self.client.get(self.create_url)
+
+        # Verify response status and template
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "locations/manage/person/form.html")
+
+        # Parse HTML response with BeautifulSoup
+        soup = BeautifulSoup(response.content, "html.parser")
+
+        # Locate form tag
+        form = soup.find("form", {"method": "post"})
+        self.assertIsNotNone(form, "Form tag not found")
+
+        # Check the presence of specific input fields by name
+        self.assertTrue(
+            soup.find("input", {"name": "first_name_en"}),
+            "Field 'first_name_en' not found",
+        )
+        self.assertTrue(
+            soup.find("input", {"name": "last_name_en"}),
+            "Field 'last_name_en' not found",
+        )
+        self.assertTrue(
+            soup.find("input", {"name": "first_name_uk"}),
+            "Field 'first_name_uk' not found",
+        )
+        self.assertTrue(
+            soup.find("input", {"name": "last_name_uk"}),
+            "Field 'last_name_uk' not found",
+        )
+
+        # Verify the presence of submitted button
+        self.assertTrue(
+            form.find("button", {"type": "submit"}), "Submit button not found"
+        )
+
+    def test_create_valid_person(self):
+        """
+        Verify that a valid person can be created successfully.
+        """
+        self.client.login(username="testuser", password="password")
+
+        data = {
+            "first_name_en": "John",
+            "last_name_en": "Doe",
+            "first_name_uk": "Джон",
+            "last_name_uk": "До",
+        }
+
+        # Follow redirects and capture the response
+        response = self.client.post(self.create_url, data, follow=True)
+
+        # Verify the final response status
+        self.assertEqual(response.status_code, 200)
+
+        # Check that the person was created successfully
+        self.assertEqual(Person.objects.count(), 1)
+        person = Person.objects.first()
+        self.assertEqual(person.first_name_en, "John")
+        self.assertEqual(person.last_name_en, "Doe")
+
+    def test_superuser_can_create_person(self):
+        """
+        Superusers should be able to create a person regardless of permissions.
+        """
+        self.client.login(username="adminuser", password="password")
+
+        data = {
+            "first_name_en": "Admin",
+            "last_name_en": "User",
+        }
+
+        response = self.client.post(self.create_url, data)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, self.success_url)
+
+        # Verify object creation
+        self.assertEqual(Person.objects.count(), 1)
+        person = Person.objects.first()
+        self.assertEqual(person.first_name_en, "Admin")
+        self.assertEqual(person.last_name_en, "User")
