@@ -257,6 +257,12 @@ def get_subscription_details(subscription_id):
 
 def subscription_success(request):
     subscription_id = request.GET.get("subscription_id")
+    if not subscription_id:
+        return render(
+            request,
+            "payments/subscription_error.html",
+            {"error": "Missing subscription ID."},
+        )
     try:
         if subscription_id:
             response = get_subscription_details(subscription_id)
