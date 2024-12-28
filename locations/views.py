@@ -319,11 +319,27 @@ class BranchCreateUpdateView(DivisionMixin, TemplateResponseMixin, View):
             print("Email formset validation failed:")
             print(email_formset.errors)
 
+        # if is_valid:
+        #     branch = branch_form.save(commit=False)
+        #     branch.division = self.division
+        #
+        #     branch.save()
+        #     phone_formset.save()
+        #     email_formset.save()
+        #
+        #     return redirect("locations:division_list", slug=self.division.slug)
+
         if is_valid:
+            # Save the branch first
             branch = branch_form.save(commit=False)
             branch.division = self.division
+            branch.save()  # Save the branch before saving related formsets
 
-            branch.save()
+            # Assign branch instance to formsets
+            phone_formset.instance = branch
+            email_formset.instance = branch
+
+            # Save formsets
             phone_formset.save()
             email_formset.save()
 
