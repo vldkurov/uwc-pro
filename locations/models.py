@@ -27,7 +27,9 @@ class Division(models.Model):
         null=True,
     )
     title = models.CharField(
-        _("Division Title"), max_length=100, unique=True, blank=False, null=False
+        _("Division Title"),
+        max_length=100,
+        unique=True,
     )
     slug = models.SlugField(max_length=255, unique=True)
     order = OrderField(blank=True)

@@ -103,5 +103,7 @@
         {% else %}
             <p class="alert alert-warning">{% trans 'No results found.' %}</p>
         {% endif %}
+    {% else %}
+        <p class="alert alert-warning">{% trans 'No results found.' %}</p>
     {% endif %}
 {% endblock content %}

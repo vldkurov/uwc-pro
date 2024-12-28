@@ -8,6 +8,9 @@ from .models import Division, Branch
 
 @receiver(pre_save, sender=Division)
 def division_pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.title_en and not instance.title_uk:
+        return
+
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
 

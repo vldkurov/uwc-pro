@@ -8,23 +8,54 @@ from django.core.exceptions import ValidationError
 from django.forms import inlineformset_factory, Select
 from django.forms.widgets import Textarea
 
-from locations.models import Branch, Phone, Email, Person
+from locations.models import Branch, Phone, Email, Person, Division
 from locations.validators import format_uk_phone_number
+
+
+class DivisionForm(forms.ModelForm):
+
+    class Meta:
+        model = Division
+        fields = ["title_en", "title_uk"]
+
+    def clean_title_en(self):
+        title_en = self.cleaned_data.get("title_en")
+        if not title_en:
+            raise forms.ValidationError("This field is required in English.")
+        return title_en
+
+    def clean_title_uk(self):
+        title_uk = self.cleaned_data.get("title_uk")
+        if not title_uk:
+            raise forms.ValidationError("This field is required in Ukrainian.")
+        return title_uk
+
+    def clean(self):
+        cleaned_data = super().clean()
+        title_en = cleaned_data.get("title_en")
+        title_uk = cleaned_data.get("title_uk")
+
+        if title_en and title_uk and title_en == title_uk:
+            raise forms.ValidationError(
+                "English and Ukrainian titles cannot be the same."
+            )
+
+        return cleaned_data
 
 
 class BranchForm(forms.ModelForm):
     """
     BranchForm is a Django ModelForm for managing the creation and validation of branch
-    data in a web application. It specializes in organizing form fields and ensuring data
+    data in a web application. It specialises in organising form fields and ensuring data
     integrity according to specific validation rules and UI enhancements, particularly for
     branch titles, addresses, and postcodes.
 
-    This class configures the form layout and widgets using crispy-forms and customizes the
+    This class configures the form layout and widgets using crispy-forms and customises the
     field labels to improve user experience. It contains methods to clean and validate
     individual form fields like postcodes and applies transformations to ensure data is
     formatted correctly before processing.
 
-    :ivar helper: A FormHelper instance used to customize the layout and appearance of the form.
+    :ivar helper: A FormHelper instance used to customise the layout and appearance of the form.
     :type helper: FormHelper
     """
 
