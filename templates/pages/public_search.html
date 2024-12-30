@@ -13,7 +13,7 @@
         {% if results %}
             <h5>
                 {% with results|length as total_result %}
-                    Found {{ total_result }} result{{ total_result|pluralize }} for "{{ query }}".
+                    {% trans 'Found' %} {{ total_result }} {% trans 'result' %}{{ total_result|pluralize }} {% trans 'for' %} "{{ query }}".
                 {% endwith %}
             </h5>
 

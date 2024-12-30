@@ -1,4 +1,5 @@
 {% extends 'pages/_pages_base.html' %}
+{% load i18n %}
 
 {% block title %}{{ page.title|default:"Default Page" }}{% endblock title %}
 
@@ -26,7 +27,7 @@
                         <div id="content-{{ content.content.id }}">
                             <video controls>
                                 <source src="{{ content.content.content }}" type="video/mp4">
-                                Your browser does not support the video tag.
+                                {% trans 'Your browser does not support the video tag.' %}
                             </video>
                         </div>
                     {% elif content.type == 'url' %}
@@ -56,7 +57,7 @@
                                 <div id="content-{{ content.content.id }}">
                                     <video controls>
                                         <source src="{{ content.content.content }}" type="video/mp4">
-                                        Your browser does not support the video tag.
+                                        {% trans 'Your browser does not support the video tag.' %}
                                     </video>
                                 </div>
 
@@ -92,7 +93,7 @@
                             <div id="content-{{ content.content.id }}">
                                 <video controls>
                                     <source src="{{ content.content.content }}" type="video/mp4">
-                                    Your browser does not support the video tag.
+                                    {% trans 'Your browser does not support the video tag.' %}
                                 </video>
                             </div>
                         {% elif content.type == 'url' %}
@@ -105,13 +106,11 @@
             {% endif %}
         </div>
     {% empty %}
-        <p>No sections available.</p>
+        <p>{% trans 'No sections available.' %}</p>
     {% endfor %}
 
-    <br>
-    
     <p>
-        <a href="{% url 'home' %}">Back to Home</a>
+        <a href="{% url 'home' %}">{% trans 'Back to Home' %}</a>
     </p>
 
 {% endblock content %}
