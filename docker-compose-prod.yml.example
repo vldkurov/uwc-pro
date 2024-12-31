@@ -1,0 +1,37 @@
+services:
+  web:
+    build: .
+    command: gunicorn django_project.wsgi -b 0.0.0.0:8000
+    volumes:
+      - .:/uwc
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - "DJANGO_SECRET_KEY=your_secret_key_here"
+      - "GOOGLE_PROJECT_ID=your_google_project_id_here"
+      - "GOOGLE_PRIVATE_KEY_ID=your_private_key_id_here"
+      - "GOOGLE_PRIVATE_KEY=your_google_private_key_here"
+      - "GOOGLE_CLIENT_EMAIL=your_google_client_email_here"
+      - "GOOGLE_CLIENT_ID=your_google_client_id_here"
+      - "GOOGLE_AUTH_URI=https://accounts.google.com/o/oauth2/auth"
+      - "GOOGLE_TOKEN_URI=https://oauth2.googleapis.com/token"
+      - "GOOGLE_AUTH_PROVIDER_CERT_URL=https://www.googleapis.com/oauth2/v1/certs"
+      - "GOOGLE_CLIENT_CERT_URL=your_google_client_cert_url_here"
+      - "GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here"
+      - "PAYPAL_CLIENT_ID=your_paypal_client_id_here"
+      - "PAYPAL_CLIENT_SECRET=your_paypal_client_secret_here"
+      - "PAYPAL_MODE=sandbox"
+
+  db:
+    image: postgres:16
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+    ports:
+      - "5434:5432"
+
+volumes:
+  postgres_data:
