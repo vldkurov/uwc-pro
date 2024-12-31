@@ -1,0 +1,30 @@
+services:
+  web:
+    build: .
+    command: gunicorn django_project.wsgi -b 0.0.0.0:8000
+    volumes:
+      - .:/uwc
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    env_file:
+      - .env
+    environment:
+      - "DJANGO_SECRET_KEY=your_secret_key_here"
+      - "DJANGO_DEBUG=True"
+      - "DJANGO_SECURE_SSL_REDIRECT=False"
+      - "DATABASE_URL=postgres://user:password@db/postgres"
+      - "GOOGLE_APPLICATION_CREDENTIALS=/uwc/populate/your_credentials.json"
+
+  db:
+    image: postgres:16
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+    ports:
+      - "5434:5432"
+
+volumes:
+  postgres_data:
