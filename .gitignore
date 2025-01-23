@@ -80,4 +80,4 @@ cython_debug/
 .DS_Store
 docker-compose-prod.yml
 data/
-populate/
+docker-compose.yml
