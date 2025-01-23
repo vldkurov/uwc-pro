@@ -129,7 +129,7 @@ Important:
 
 1.	Copy the example environment file:
 
-cp .env.example .env
+	cp .env.example .env
 
 2. Open the .env file and update it with your specific values (e.g. API keys, database settings).
 3. Ensure the .env file is not included in version control to protect sensitive information.

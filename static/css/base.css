@@ -21,6 +21,27 @@ img {
     height: auto;
 }
 
+/* High contrast feature */
 
+.high-contrast {
+    background-color: #000;
+    color: #fff;
+}
 
+.high-contrast a {
+    color: #00ffff;
+}
+
+.high-contrast button,
+.high-contrast input,
+.high-contrast select,
+.high-contrast textarea {
+    border: 2px solid #00ffff;
+    /*background-color: #000;*/
+    color: #fff;
+}
+
+.high-contrast img {
+    border: 2px solid #00ffff;
+}
 
