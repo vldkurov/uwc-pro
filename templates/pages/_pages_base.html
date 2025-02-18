@@ -23,10 +23,10 @@
                 <img class="d-inline-block" width="60" height="60" src="{% static 'img/UWC-Logo-Final_wotext.webp' %}"
                      alt="UWC Logo">
                 <span class="ms-1 fs-6 border-start ps-2" style="border-color: black; border-width: 1px;">
-            <span class="d-block">{% trans 'The Ukrainian' %}</span>
-            <span class="d-block">{% trans 'Welcome' %}</span>
-            <span class="d-block">{% trans 'Centre' %}</span>
-        </span>
+                    <span class="d-block">{% trans 'The Ukrainian' %}</span>
+                    <span class="d-block">{% trans 'Welcome' %}</span>
+                    <span class="d-block">{% trans 'Centre' %}</span>
+                </span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent"
@@ -61,12 +61,12 @@
                         <a class="btn btn-outline-info" aria-current="page"
                            href="{% url 'create_donation' %}">{% trans 'Donate' %}</a>
                     </li>
-{#                    <li class="nav-item">#}
-{#                        <a class="nav-link" href="{% url 'account_login' %}" aria-label="Log In">Log In</a>#}
-{#                    </li>#}
-{#                    <li class="nav-item">#}
-{#                        <a class="nav-link" href="{% url 'account_signup' %}" aria-label="Create User">Create User</a>#}
-{#                    </li>#}
+                    {#                    <li class="nav-item">#}
+                    {#                        <a class="nav-link" href="{% url 'account_login' %}" aria-label="Log In">Log In</a>#}
+                    {#                    </li>#}
+                    {#                    <li class="nav-item">#}
+                    {#                        <a class="nav-link" href="{% url 'account_signup' %}" aria-label="Create User">Create User</a>#}
+                    {#                    </li>#}
                 </ul>
                 <form class="d-flex" role="search" action="{% url 'public_search' %}" method="get">
                     <input class="form-control mx-2" type="search" placeholder="{% trans 'Search' %}" name="query"
