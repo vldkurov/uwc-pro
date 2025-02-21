@@ -16,6 +16,7 @@ import string
 from email.policy import default
 from pathlib import Path
 
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from environs import Env
 
@@ -193,7 +194,7 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 
 # django-allauth config
 LOGIN_REDIRECT_URL = "dashboard"
-ACCOUNT_LOGOUT_REDIRECT = "home"
+ACCOUNT_LOGOUT_REDIRECT_URL = reverse_lazy("page", kwargs={"slug": "home"})
 SITE_ID = 1
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
