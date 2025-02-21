@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     # path("", views.HomePageView.as_view(), name="home"),
+    path("", views.GenericPageView.as_view(), {"slug": "home"}, name="home"),
     re_path(
         r"^(?!public-search)(?P<slug>[\w-]+)/$",
         views.GenericPageView.as_view(),
