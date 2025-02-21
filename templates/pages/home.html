@@ -2,11 +2,58 @@
 {% load i18n %}
 {% load static %}
 
-{% block title %}{% trans 'Home' %}{% endblock title %}
+{% block title %}{{ page.title|default:"Default Page" }}{% endblock title %}
 
 {% block content %}
-    
-    <h1>Welcome to UWC Home Page</h1>
-    <img class="logo" src="{% static 'img/UWC-Logo-Final_wotext.webp' %}" alt="UWC Logo">
+
+    {% for item in sections %}
+        {% if item.section.title|lower == 'hero' or item.section.title|lower == 'головний банер' %}
+            <div class="section"
+                 style="
+                 height: 920px;
+                 width: 100vw;
+                 position: relative;
+                 left: calc(-50vw + 50%);"
+            >
+                {% for content in item.contents %}
+                    {% if content.type == 'image' %}
+                        <div id="content-{{ content.content.id }}"
+                             style="
+                                     position: absolute;
+                                     top: 0;
+                                     left: 0;
+                                     width: 100%;
+                                     height: 100%;
+                                     background-size: cover;
+                                     background-position: center;
+                                     background-repeat: no-repeat;
+                                     background-image: url('{{ content.content.content.url }}');
+                                     filter: brightness(50%);
+                                     z-index: 1;
+                                     ">
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                {% for content in item.contents %}
+                    {% if content.type == 'text' %}
+                        <div id="content-{{ content.content.id }}"
+                             class="position-absolute w-100 bottom-0 start-0 d-flex justify-content-center align-items-center z-2"
+                             style="background-color: #FFD700">
+                            <div class="container d-flex justify-content-between align-items-center py-4">
+                                <p class="w-100 fw-semibold m-0 fs-4 text" style="color: #0057B8;">
+                                    {{ content.content.content }}
+                                </p>
+                                <a class="btn shadow-sm text-nowrap" style="background-color: #0057B8; color: white"
+                                   aria-current="page"
+                                   href="{% url 'create_donation' %}">{% trans 'Donate now' %}
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endfor %}
 
 {% endblock content %}

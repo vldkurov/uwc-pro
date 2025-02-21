@@ -17,36 +17,34 @@
 <body>
 
 <header>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
-        <div class="container-fluid">
-            <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
-                <img class="d-inline-block" width="60" height="60" src="{% static 'img/UWC-Logo-Final_wotext.webp' %}"
+    <nav class="navbar navbar-expand-lg fixed-top" style="background-color: white">
+        <div class="container-fluid d-flex align-items-center" style="height: 96px;">
+
+            <!-- Logo -->
+            <a class="navbar-brand d-flex align-items-center position-absolute top-0 start-0"
+               href="{% url 'page' slug='home' %}">
+                <img class="d-inline-block" width="135" height="135" src="{% static 'img/UWC-Logo-Final_wotext.webp' %}"
                      alt="UWC Logo">
-                <span class="ms-1 fs-6 border-start ps-2" style="border-color: black; border-width: 1px;">
-                    <span class="d-block">{% trans 'The Ukrainian' %}</span>
-                    <span class="d-block">{% trans 'Welcome' %}</span>
-                    <span class="d-block">{% trans 'Centre' %}</span>
-                </span>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+            <!-- Burger button for mobile navigation -->
+            <button class="navbar-toggler ms-auto d-lg-none" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"
+                    aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-                <ul class="navbar-nav mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">{% trans 'Home' %}</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                           aria-expanded="false">{% trans 'Who we are' %}
-                        </a>
+
+            <!-- Desktop navigation menu -->
+            <div style="width: 135px"></div>
+            <div class="d-none d-lg-flex align-items-center flex-grow-1 justify-content-start">
+                <ul class="navbar-nav mb-2 mb-lg-0 align-items-center">
+                    <li class="nav-item dropdown me-3">
+                        <a class="nav-link dropdown-toggle p-0 text-uppercase fw-light" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">{% trans 'Who we are' %}</a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item"
-                                   href="{% url 'page' slug='about-us' %}">{% trans 'About Us' %}</a>
-                            </li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                                   href="{% url 'page' slug='about-us' %}">{% trans 'About Us' %}</a></li>
+                            <li><a class="dropdown-item" href="#">{% trans 'Help & Advice' %}</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -54,89 +52,250 @@
                                    href="{% url 'locations_redirect' %}">{% trans 'Locations' %}</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'page' slug='get-involved' %}">{% trans 'Get Involved' %}</a>
+                    <li class="nav-item dropdown me-3">
+                        <a class="nav-link dropdown-toggle p-0 text-uppercase fw-light" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">{% trans 'Arrivals' %}</a>
+                        <ul class="dropdown-menu">
+                            <li><h6 class="dropdown-header">{% trans 'Pre-arrivals & visas' %}</h6></li>
+                            <li><a class="dropdown-item" href="#">{% trans 'Immediate Essentials' %}</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><h6 class="dropdown-header">{% trans "After you're here" %}</h6></li>
+                            <li><a class="dropdown-item" href="#">{% trans 'Essentials upon arrival' %}</a></li>
+                            <li><a class="dropdown-item" href="#">{% trans 'Long-term Living' %}</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item me-3">
+                        <a class="nav-link p-0 text-uppercase fw-light" href="#">{% trans 'Sponsors' %}</a>
+                    </li>
+                    <li class="nav-item dropdown me-3">
+                        <a class="nav-link dropdown-toggle p-0 text-uppercase fw-light" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">{% trans "News & Events" %}</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">{% trans 'Schedule & Workshops' %}</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item me-3">
+                        <a class="nav-link p-0 text-uppercase fw-light"
+                           href="{% url 'page' slug='get-involved' %}">{% trans 'Get Involved' %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-outline-info" aria-current="page"
-                           href="{% url 'create_donation' %}">{% trans 'Donate' %}</a>
+                        <form class="d-flex" role="search" action="{% url 'public_search' %}" method="get">
+                            <input class="form-control mx-2 fw-light" type="search" placeholder="{% trans 'Search' %}"
+                                   name="query" aria-label="Search" value="{{ query|default_if_none:'' }}">
+                            <button class="btn btn-outline-secondary fw-light"
+                                    type="submit">{% trans 'Search' %}</button>
+                        </form>
                     </li>
-                    {#                    <li class="nav-item">#}
-                    {#                        <a class="nav-link" href="{% url 'account_login' %}" aria-label="Log In">Log In</a>#}
-                    {#                    </li>#}
-                    {#                    <li class="nav-item">#}
-                    {#                        <a class="nav-link" href="{% url 'account_signup' %}" aria-label="Create User">Create User</a>#}
-                    {#                    </li>#}
                 </ul>
-                <form class="d-flex" role="search" action="{% url 'public_search' %}" method="get">
-                    <input class="form-control mx-2" type="search" placeholder="{% trans 'Search' %}" name="query"
-                           aria-label="Search" value="{{ query|default_if_none:'' }}">
-                    <button class="btn btn-outline-success" type="submit">{% trans 'Search' %}</button>
-                </form>
-                <div class="mr-auto">
-                    <ul class="navbar-nav d-flex align-items-center">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                               aria-expanded="false">
-                                {% get_current_language as LANGUAGE_CODE %}
-                                {% if LANGUAGE_CODE == 'en' %}
-                                    <img src="{% static 'img/flags/gb.svg' %}" alt="English" width="20" height="15">
-                                    English
-                                {% elif LANGUAGE_CODE == 'uk' %}
-                                    <img src="{% static 'img/flags/ua.svg' %}" alt="Українська" width="20" height="15">
-                                    Українська
-                                {% endif %}
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <form action="{% url 'set_language' %}" method="post" id="language-selector">
-                                        {% csrf_token %}
-                                        <button class="dropdown-item" type="submit" name="language" value="en">
-                                            <img src="{% static 'img/flags/gb.svg' %}" alt="English" width="20"
-                                                 height="15" class="me-2"> English
-                                        </button>
-                                        <button class="dropdown-item" type="submit" name="language" value="uk">
-                                            <img src="{% static 'img/flags/ua.svg' %}" alt="Українська" width="20"
-                                                 height="15" class="me-2">
-                                            Українська
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </li>
-                        <!-- High-Contrast Mode Button -->
-                        <li class="nav-item">
-                            <button id="high-contrast-toggle"
-                                    class="btn p-0"
-                                    style="border: none;"
-                                    aria-label="Toggle High Contrast Mode">
-                                <i class="bi bi-circle-half me-2 text-secondary"></i>
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'account_login' %}"
-                               aria-label="Log In">
-                                {% if user.is_authenticated %}
-                                    <img src="{{ user.email|gravatar_with_type:'30,retro' }}" alt="Gravatar">
-                                {% else %}
-                                    {% trans 'Log In' %}
-                                {% endif %}
-                            </a>
-                        </li>
-                        {#                <li class="nav-item">#}
-                        {#                    <a class="nav-link" href="{% url 'account_signup' %}" aria-label="Create User">Create User</a>#}
-                        {#                </li>#}
-                    </ul>
-                </div>
+            </div>
+            <div class="d-none d-lg-flex align-items-center">
+                <ul class="navbar-nav mb-lg-0 me-3">
+                    <li class="nav-item me-3">
+                        <a class="btn shadow-sm" style="background-color: #0057B8; color: white"
+                           href="{% url 'create_donation' %}">
+                            {% trans 'Donate' %}
+                        </a>
+                    </li>
+                    <li class="nav-item d-flex align-items-center me-3">
+                        <div class="d-flex flex-column align-items-start">
+                            <p style="font-size: x-small" class="m-0 fw-semibold">{% trans 'Contact us' %}</p>
+                            <a href="tel:+442039607595" class="lh-1 link-underline link-underline-opacity-0"
+                               style="color: #0057B8">020 3960 7595</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown d-flex align-items-center me-3">
+                        <a class="nav-link dropdown-toggle p-0 fw-light" href="#" role="button"
+                           data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            {% get_current_language as LANGUAGE_CODE %}
+                            {% if LANGUAGE_CODE == 'en' %}
+                                <img src="{% static 'img/flags/gb.svg' %}" alt="English" width="20" height="15">
+
+                            {% elif LANGUAGE_CODE == 'uk' %}
+                                <img src="{% static 'img/flags/ua.svg' %}" alt="Українська" width="20"
+                                     height="15">
+
+                            {% endif %}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <form action="{% url 'set_language' %}" method="post" id="language-selector">
+                                    {% csrf_token %}
+                                    <button class="dropdown-item fw-light" type="submit" name="language"
+                                            value="en">
+                                        <img src="{% static 'img/flags/gb.svg' %}" alt="English" width="20"
+                                             height="15" class="me-2"> English
+                                    </button>
+                                    <button class="dropdown-item fw-light" type="submit" name="language"
+                                            value="uk">
+                                        <img src="{% static 'img/flags/ua.svg' %}" alt="Українська" width="20"
+                                             height="15" class="me-2">
+                                        Українська
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item d-flex align-items-center">
+                        <button
+                                class="btn p-0 high-contrast-toggle"
+                                style="border: none;"
+                                aria-label="Toggle High Contrast Mode">
+                            <i class="bi bi-circle-half me-2 text-secondary"></i>
+                        </button>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
+
+    <!-- Offcanvas menu for mobile navigation -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">{% trans 'Menu' %}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle p-0 text-uppercase fw-light" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        {% trans 'Who we are' %}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'page' slug='about-us' %}">{% trans 'About Us' %}</a>
+                        </li>
+                        <li><a class="dropdown-item" href="#">{% trans 'Help & Advice' %}</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'locations_redirect' %}">{% trans 'Locations' %}</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown mt-1">
+                    <a class="nav-link dropdown-toggle p-0 text-uppercase fw-light" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        {% trans 'Arrivals' %}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><h6 class="dropdown-header">{% trans 'Pre-arrivals & visas' %}</h6></li>
+                        <li><a class="dropdown-item" href="#">{% trans 'Immediate Essentials' %}</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><h6 class="dropdown-header">{% trans "After you're here" %}</h6></li>
+                        <li><a class="dropdown-item" href="#">{% trans 'Essentials upon arrival' %}</a></li>
+                        <li><a class="dropdown-item" href="#">{% trans 'Long-term Living' %}</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item mt-1">
+                    <a class="nav-link p-0 text-uppercase fw-light" href="#">{% trans 'Sponsors' %}</a>
+                </li>
+                <li class="nav-item dropdown mt-1">
+                    <a class="nav-link dropdown-toggle p-0 text-uppercase fw-light" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        {% trans "News & Events" %}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">{% trans 'Schedule & Workshops' %}</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item mt-1">
+                    <a class="nav-link p-0 text-uppercase fw-light"
+                       href="{% url 'page' slug='get-involved' %}">{% trans 'Get Involved' %}</a>
+                </li>
+                <li class="nav-item mt-3">
+                    <form class="d-flex" role="search" action="{% url 'public_search' %}" method="get">
+                        <input class="form-control me-2 fw-light" type="search" placeholder="{% trans 'Search' %}"
+                               name="query" aria-label="Search" value="{{ query|default_if_none:'' }}">
+                        <button class="btn btn-outline-secondary fw-light"
+                                type="submit">{% trans 'Search' %}</button>
+                    </form>
+                </li>
+                <li class="nav-item mt-3">
+                    <a class="btn shadow-sm w-100" style="background-color: #0057B8; color: white"
+                       href="{% url 'create_donation' %}">
+                        {% trans 'Donate' %}
+                    </a>
+                </li>
+                <li class="nav-item mt-3">
+                    <div class="d-flex flex-column align-items-start">
+                        <p style="font-size: x-small" class="m-0 fw-semibold">{% trans 'Contact us' %}</p>
+                        <a href="tel:+442039607595" class="lh-1 link-underline link-underline-opacity-0"
+                           style="color: #0057B8">020 3960 7595</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown d-flex align-items-center mt-3">
+                    <a class="nav-link dropdown-toggle p-0 fw-light" href="#" role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% if LANGUAGE_CODE == 'en' %}
+                            <img src="{% static 'img/flags/gb.svg' %}" alt="English" width="20" height="15">
+
+                        {% elif LANGUAGE_CODE == 'uk' %}
+                            <img src="{% static 'img/flags/ua.svg' %}" alt="Українська" width="20"
+                                 height="15">
+
+                        {% endif %}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <form action="{% url 'set_language' %}" method="post" id="language-selector">
+                                {% csrf_token %}
+                                <button class="dropdown-item fw-light" type="submit" name="language"
+                                        value="en">
+                                    <img src="{% static 'img/flags/gb.svg' %}" alt="English" width="20"
+                                         height="15" class="me-2"> English
+                                </button>
+                                <button class="dropdown-item fw-light" type="submit" name="language"
+                                        value="uk">
+                                    <img src="{% static 'img/flags/ua.svg' %}" alt="Українська" width="20"
+                                         height="15" class="me-2">
+                                    Українська
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+
+                </li>
+                <li class="nav-item d-flex align-items-center mt-3">
+                    <button
+                            class="btn p-0 high-contrast-toggle"
+                            style="border: none;"
+                            aria-label="Toggle High Contrast Mode">
+                        <i class="bi bi-circle-half me-2 text-secondary"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
 </header>
 
+<!-- Main content area -->
 <div class="container">
     {% block content %}
     {% endblock content %}
 </div>
+
+<!-- Footer -->
+<footer>
+    <ul>
+        <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" href="{% url 'account_login' %}" aria-label="Log In">
+                {% if user.is_authenticated %}
+                    <img src="{{ user.email|gravatar_with_type:'30,retro' }}" alt="Gravatar">
+                {% else %}
+                    <i class="bi bi-door-closed me-2"></i> <span class="fw-light">{% trans 'Staff Only' %}</span>
+                {% endif %}
+            </a>
+        </li>
+    </ul>
+</footer>
+
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -146,7 +305,7 @@
 <script>
     $(document).ready(function () {
         const $body = $('body');
-        const $toggleButton = $('#high-contrast-toggle');
+        const $toggleButton = $('.high-contrast-toggle');
 
         $toggleButton.on('click', function (e) {
             e.preventDefault();
@@ -164,6 +323,177 @@
 {% block extra_js %}{% endblock %}
 </body>
 </html>
+
+{# ------------------------------------------------------------------------------------- #}
+
+{#{% load gravatar_tag %}#}
+{#{% load static %}#}
+{#{% load i18n %}#}
+{##}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>{% block title %}{% trans 'Ukrainian Welcome Centre' %}{% endblock title %}</title>#}
+{#    <link rel="shortcut icon" href="{% static 'img/UWC-Logo-Final_favicon.webp' %}" type="image/x-icon">#}
+{#    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"#}
+{#          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">#}
+{#    <link rel="stylesheet"#}
+{#          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">#}
+{#    <link rel="stylesheet" href="{% static 'css/base.css' %}">#}
+{#</head>#}
+{#<body>#}
+{##}
+{#<header>#}
+{#    <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">#}
+{#        <div class="container-fluid">#}
+{#            <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">#}
+{#                <img class="d-inline-block" width="60" height="60" src="{% static 'img/UWC-Logo-Final_wotext.webp' %}"#}
+{#                     alt="UWC Logo">#}
+{#                <span class="ms-1 fs-6 border-start ps-2" style="border-color: black; border-width: 1px;">#}
+{#                    <span class="d-block">{% trans 'The Ukrainian' %}</span>#}
+{#                    <span class="d-block">{% trans 'Welcome' %}</span>#}
+{#                    <span class="d-block">{% trans 'Centre' %}</span>#}
+{#                </span>#}
+{#            </a>#}
+{#            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"#}
+{#                    data-bs-target="#navbarSupportedContent"#}
+{#                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">#}
+{#                <span class="navbar-toggler-icon"></span>#}
+{#            </button>#}
+{#            <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">#}
+{#                <ul class="navbar-nav mb-2 mb-lg-0">#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">{% trans 'Home' %}</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item dropdown">#}
+{#                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"#}
+{#                           aria-expanded="false">{% trans 'Who we are' %}#}
+{#                        </a>#}
+{#                        <ul class="dropdown-menu">#}
+{#                            <li><a class="dropdown-item"#}
+{#                                   href="{% url 'page' slug='about-us' %}">{% trans 'About Us' %}</a>#}
+{#                            </li>#}
+{#                            <li><a class="dropdown-item" href="#">Another action</a></li>#}
+{#                            <li>#}
+{#                                <hr class="dropdown-divider">#}
+{#                            </li>#}
+{#                            <li><a class="dropdown-item"#}
+{#                                   href="{% url 'locations_redirect' %}">{% trans 'Locations' %}</a></li>#}
+{#                        </ul>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="{% url 'page' slug='get-involved' %}">{% trans 'Get Involved' %}</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="btn btn-outline-info" aria-current="page"#}
+{#                           href="{% url 'create_donation' %}">{% trans 'Donate' %}</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="{% url 'account_login' %}" aria-label="Log In">Log In</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="{% url 'account_signup' %}" aria-label="Create User">Create User</a>#}
+{#                    </li>#}
+{#                </ul>#}
+{#                <form class="d-flex" role="search" action="{% url 'public_search' %}" method="get">#}
+{#                    <input class="form-control mx-2" type="search" placeholder="{% trans 'Search' %}" name="query"#}
+{#                           aria-label="Search" value="{{ query|default_if_none:'' }}">#}
+{#                    <button class="btn btn-outline-success" type="submit">{% trans 'Search' %}</button>#}
+{#                </form>#}
+{#                <div class="mr-auto">#}
+{#                    <ul class="navbar-nav d-flex align-items-center">#}
+{#                        <li class="nav-item dropdown">#}
+{#                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"#}
+{#                               aria-expanded="false">#}
+{#                                {% get_current_language as LANGUAGE_CODE %}#}
+{#                                {% if LANGUAGE_CODE == 'en' %}#}
+{#                                    <img src="{% static 'img/flags/gb.svg' %}" alt="English" width="20" height="15">#}
+{#                                    English#}
+{#                                {% elif LANGUAGE_CODE == 'uk' %}#}
+{#                                    <img src="{% static 'img/flags/ua.svg' %}" alt="Українська" width="20" height="15">#}
+{#                                    Українська#}
+{#                                {% endif %}#}
+{#                            </a>#}
+{#                            <ul class="dropdown-menu dropdown-menu-end">#}
+{#                                <li>#}
+{#                                    <form action="{% url 'set_language' %}" method="post" id="language-selector">#}
+{#                                        {% csrf_token %}#}
+{#                                        <button class="dropdown-item" type="submit" name="language" value="en">#}
+{#                                            <img src="{% static 'img/flags/gb.svg' %}" alt="English" width="20"#}
+{#                                                 height="15" class="me-2"> English#}
+{#                                        </button>#}
+{#                                        <button class="dropdown-item" type="submit" name="language" value="uk">#}
+{#                                            <img src="{% static 'img/flags/ua.svg' %}" alt="Українська" width="20"#}
+{#                                                 height="15" class="me-2">#}
+{#                                            Українська#}
+{#                                        </button>#}
+{#                                    </form>#}
+{#                                </li>#}
+{#                            </ul>#}
+{#                        </li>#}
+{#                        <!-- High-Contrast Mode Button -->#}
+{#                        <li class="nav-item">#}
+{#                            <button id="high-contrast-toggle"#}
+{#                                    class="btn p-0"#}
+{#                                    style="border: none;"#}
+{#                                    aria-label="Toggle High Contrast Mode">#}
+{#                                <i class="bi bi-circle-half me-2 text-secondary"></i>#}
+{#                            </button>#}
+{#                        </li>#}
+{#                        <li class="nav-item">#}
+{#                            <a class="nav-link" href="{% url 'account_login' %}"#}
+{#                               aria-label="Log In">#}
+{#                                {% if user.is_authenticated %}#}
+{#                                    <img src="{{ user.email|gravatar_with_type:'30,retro' }}" alt="Gravatar">#}
+{#                                {% else %}#}
+{#                                    {% trans 'Log In' %}#}
+{#                                {% endif %}#}
+{#                            </a>#}
+{#                        </li>#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link" href="{% url 'account_signup' %}" aria-label="Create User">Create User</a>#}
+{#                </li>#}
+{#                    </ul>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </nav>#}
+{#</header>#}
+{##}
+{#<div class="container">#}
+{#    {% block content %}#}
+{#    {% endblock content %}#}
+{#</div>#}
+{#<script src="https://code.jquery.com/jquery-3.7.1.min.js"#}
+{#        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>#}
+{#<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"#}
+{#        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"#}
+{#        crossorigin="anonymous"></script>#}
+{#<script src="{% static 'js/base.js' %}"></script>#}
+{#<script>#}
+{#    $(document).ready(function () {#}
+{#        const $body = $('body');#}
+{#        const $toggleButton = $('#high-contrast-toggle');#}
+{##}
+{#        $toggleButton.on('click', function (e) {#}
+{#            e.preventDefault();#}
+{#            $body.toggleClass('high-contrast');#}
+{##}
+{#            const isHighContrast = $body.hasClass('high-contrast');#}
+{#            localStorage.setItem('high-contrast', isHighContrast);#}
+{#        });#}
+{##}
+{#        if (localStorage.getItem('high-contrast') === 'true') {#}
+{#            $body.addClass('high-contrast');#}
+{#        }#}
+{#    });#}
+{#</script>#}
+{#{% block extra_js %}{% endblock %}#}
+{#</body>#}
+{#</html>#}
+
+{# -------------------------------------------------------------------------- #}
 
 
 {#{% load gravatar_tag %}#}
