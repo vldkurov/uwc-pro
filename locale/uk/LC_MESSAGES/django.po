@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-21 12:19+0000\n"
-"PO-Revision-Date: 2025-02-21 14:17+0000\n"
+"POT-Creation-Date: 2025-02-21 18:42+0000\n"
+"PO-Revision-Date: 2025-02-21 18:42+0000\n"
 "Last-Translator:   <vokur@msn.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -19,11 +19,11 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 "X-Translated-Using: django-rosetta 0.10.1\n"
 
-#: django_project/settings.py:161
+#: django_project/settings.py:157
 msgid "English"
 msgstr "English"
 
-#: django_project/settings.py:161
+#: django_project/settings.py:157
 msgid "Ukrainian"
 msgstr "Українська"
 
@@ -120,7 +120,6 @@ msgid "Content ID not found."
 msgstr "Content ID не знайдено."
 
 #: locations/models.py:30
-#| msgid "Section Title"
 msgid "Division Title"
 msgstr "Назва підрозділу"
 
@@ -141,7 +140,6 @@ msgid "Address"
 msgstr "Адреса"
 
 #: locations/models.py:84
-#| msgid "Confirm Email Address"
 msgid "Formatted Address"
 msgstr "Відформатована адреса"
 
@@ -214,7 +212,6 @@ msgid "Phones"
 msgstr "Телефони"
 
 #: locations/models.py:231
-#| msgid "Confirm Email Address"
 msgid "Email Address"
 msgstr "Адреса електронної пошти"
 
@@ -403,12 +400,10 @@ msgstr "Панель управління"
 
 #: templates/hub/_hub_base.html:55 templates/pages/_pages_base.html:52
 #: templates/pages/_pages_base.html:174 templates/pages/locations.html:4
-#| msgid "Sections"
 msgid "Locations"
 msgstr "Місцезнаходження"
 
 #: templates/hub/_hub_base.html:58
-#| msgid "Sections"
 msgid "Add Location"
 msgstr "Додати місцезнаходження"
 
@@ -425,27 +420,22 @@ msgid "Log Out"
 msgstr "Вийти"
 
 #: templates/hub/global_search.html:7
-#| msgid "Search"
 msgid "Global Search"
 msgstr "Глобальний пошук"
 
 #: templates/hub/global_search.html:10 templates/pages/public_search.html:10
-#| msgid "Search"
 msgid "Search Results"
 msgstr "Результати пошуку"
 
 #: templates/hub/global_search.html:25 templates/pages/public_search.html:25
-#| msgid "Page"
 msgid "Page:"
 msgstr "Сторінка:"
 
 #: templates/hub/global_search.html:30 templates/pages/public_search.html:30
-#| msgid "Section"
 msgid "Section:"
 msgstr "Розділ:"
 
 #: templates/hub/global_search.html:35 templates/pages/public_search.html:35
-#| msgid "Text"
 msgid "Text:"
 msgstr "Текст:"
 
@@ -454,7 +444,6 @@ msgid "File:"
 msgstr "Файл:"
 
 #: templates/hub/global_search.html:46 templates/pages/public_search.html:45
-#| msgid "Image"
 msgid "Image:"
 msgstr "Зображення:"
 
@@ -468,7 +457,6 @@ msgstr "URL:"
 
 #: templates/hub/global_search.html:61 templates/pages/public_search.html:60
 #: templates/pages/public_search.html:86
-#| msgid "Section Title"
 msgid "Division:"
 msgstr "Відділ:"
 
@@ -478,7 +466,6 @@ msgid "Branch:"
 msgstr "Відділення:"
 
 #: templates/hub/global_search.html:70 templates/pages/public_search.html:69
-#| msgid "Confirm Email Address"
 msgid "Address:"
 msgstr "Адреса:"
 
@@ -491,7 +478,6 @@ msgid "Donor:"
 msgstr "Донор:"
 
 #: templates/hub/global_search.html:91
-#| msgid "Sections"
 msgid "Donation:"
 msgstr "Пожертва:"
 
@@ -520,12 +506,10 @@ msgid "All pages"
 msgstr "Всі сторінки"
 
 #: templates/hub/manage/page/list.html:22
-#| msgid "Edit"
 msgid "Edit page"
 msgstr "Редагувати сторінку"
 
 #: templates/hub/manage/page/list.html:26
-#| msgid "Delete"
 msgid "Delete page"
 msgstr "Видалити сторінку"
 
@@ -553,12 +537,10 @@ msgstr "Створити нову сторінку"
 
 #: templates/locations/manage/branch/form.html:37
 #: templates/locations/manage/person/list.html:12
-#| msgid "Section Title"
 msgid "Back to Division list"
 msgstr "Назад до списку підрозділів"
 
 #: templates/locations/manage/branch/form.html:62
-#| msgid "List"
 msgid "List all"
 msgstr "Перерахувати всіх"
 
@@ -636,10 +618,6 @@ msgstr "Повернутися додому"
 msgid "Ukrainian Welcome Centre"
 msgstr "Український Привітальний Центр"
 
-#: templates/pages/_pages_base.html:43 templates/pages/_pages_base.html:165
-msgid "Who we are"
-msgstr "Хто ми"
-
 #: templates/pages/_pages_base.html:46 templates/pages/_pages_base.html:168
 msgid "About Us"
 msgstr "Про нас"
@@ -694,13 +672,16 @@ msgid "Donate"
 msgstr "Пожертвуйте"
 
 #: templates/pages/_pages_base.html:103 templates/pages/_pages_base.html:226
-#| msgid "Contents"
 msgid "Contact us"
 msgstr "Зв'яжіться з нами"
 
 #: templates/pages/_pages_base.html:157
 msgid "Menu"
 msgstr "Меню"
+
+#: templates/pages/_pages_base.html:165
+msgid "Who we are"
+msgstr "Хто ми"
 
 #: templates/pages/_pages_base.html:292
 msgid "Staff Only"
@@ -725,12 +706,15 @@ msgstr "Назад додому"
 msgid "Donate now"
 msgstr "Пожертвуйте зараз"
 
+#: templates/pages/home.html:58
+msgid "Hello World"
+msgstr "Привіт, світ"
+
 #: templates/pages/page.html:44
 msgid "No content available for this page."
 msgstr "Для цієї сторінки немає вмісту."
 
 #: templates/pages/public_search.html:7
-#| msgid "Search"
 msgid "Public Search"
 msgstr "Громадський пошук"
 
