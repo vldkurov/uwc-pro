@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-26 19:44+0000\n"
-"PO-Revision-Date: 2024-11-14 18:44+0000\n"
+"POT-Creation-Date: 2025-02-21 12:19+0000\n"
+"PO-Revision-Date: 2025-02-21 13:47+0000\n"
 "Last-Translator:   <vokur@msn.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -19,149 +19,217 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Translated-Using: django-rosetta 0.10.1\n"
 
-#: django_project/settings.py:154
+#: django_project/settings.py:161
 msgid "English"
 msgstr "English"
 
-#: django_project/settings.py:154
+#: django_project/settings.py:161
 msgid "Ukrainian"
 msgstr "Ukrainian"
 
 #: hub/forms.py:31
 msgid "This field is required."
-msgstr ""
+msgstr "This field is required."
 
 #: hub/forms.py:33
 msgid "Title must be provided."
-msgstr ""
+msgstr "Title must be provided."
 
-#: hub/models.py:36
+#: hub/forms.py:58 pages/forms.py:6 templates/hub/_hub_base.html:81
+#: templates/hub/_hub_base.html:83 templates/pages/_pages_base.html:85
+#: templates/pages/_pages_base.html:88 templates/pages/_pages_base.html:212
+#: templates/pages/_pages_base.html:215
+msgid "Search"
+msgstr "Search"
+
+#: hub/models.py:38
 msgid "Page Title"
 msgstr "Page Title"
 
-#: hub/models.py:43
+#: hub/models.py:45
 msgid "Page"
 msgstr "Page"
 
-#: hub/models.py:44 templates/hub/_hub_base.html:48
+#: hub/models.py:46 templates/hub/_hub_base.html:50
 msgid "Pages"
 msgstr "Pages"
 
-#: hub/models.py:75
+#: hub/models.py:88
 msgid "Section Title"
 msgstr "Section Title"
 
-#: hub/models.py:77
+#: hub/models.py:90
 msgid "Section Title Draft"
 msgstr "Section Title Draft"
 
-#: hub/models.py:93
+#: hub/models.py:106
 msgid "Section"
 msgstr "Section"
 
-#: hub/models.py:94
+#: hub/models.py:107
 msgid "Sections"
 msgstr "Sections"
 
-#: hub/models.py:136 hub/models.py:186
+#: hub/models.py:160 hub/models.py:242
 msgid "Content"
 msgstr "Content"
 
-#: hub/models.py:137
+#: hub/models.py:161
 msgid "Contents"
 msgstr "Contents"
 
-#: hub/models.py:187
+#: hub/models.py:243
 msgid "Content Draft"
 msgstr "Content Draft"
 
-#: locations/models.py:25
-#, fuzzy
+#: hub/views.py:353
+msgid "Invalid model name."
+msgstr "Invalid model name."
+
+#: hub/views.py:598
+#, python-brace-format
+msgid "File '{value}' not found in storage: {e}"
+msgstr "File '{value}' not found in storage: {e}"
+
+#: hub/views.py:759
+msgid "You do not have permission to change the section order."
+msgstr "You do not have permission to change the section order."
+
+#: hub/views.py:786 hub/views.py:855
+msgid "Request data is empty or invalid."
+msgstr "Request data is empty or invalid."
+
+#: hub/views.py:795
+msgid "Invalid section ID provided."
+msgstr "Invalid section ID provided."
+
+#: hub/views.py:801
+msgid "Section ID not found."
+msgstr "Section ID not found."
+
+#: hub/views.py:845
+msgid "You do not have permission to change the content order."
+msgstr "You do not have permission to change the content order."
+
+#: hub/views.py:865
+msgid "Invalid content ID provided."
+msgstr "Invalid content ID provided."
+
+#: hub/views.py:871
+msgid "Content ID not found."
+msgstr "Content ID not found."
+
+#: locations/models.py:30
 #| msgid "Section Title"
 msgid "Division Title"
-msgstr "Section Title"
+msgstr "Division Title"
 
-#: locations/models.py:34 locations/models.py:57
+#: locations/models.py:41 locations/models.py:78
 msgid "Division"
-msgstr ""
+msgstr "Division"
 
-#: locations/models.py:35
+#: locations/models.py:42
 msgid "Divisions"
-msgstr ""
+msgstr "Divisions"
 
-#: locations/models.py:59
+#: locations/models.py:80 templates/locations/manage/division/list.html:67
 msgid "Branch Name"
-msgstr ""
+msgstr "Branch Name"
 
-#: locations/models.py:61
+#: locations/models.py:82 templates/locations/manage/division/list.html:108
 msgid "Address"
-msgstr ""
+msgstr "Address"
 
-#: locations/models.py:62
+#: locations/models.py:84
+#| msgid "Confirm Email Address"
+msgid "Formatted Address"
+msgstr "Formatted Address"
+
+#: locations/models.py:86 templates/locations/manage/division/list.html:99
 msgid "Postcode"
-msgstr ""
+msgstr "Postcode"
 
-#: locations/models.py:69
-msgid "Branch Chair"
-msgstr ""
-
-#: locations/models.py:77
+#: locations/models.py:93 templates/locations/manage/division/list.html:77
 msgid "Parish Priest"
-msgstr ""
+msgstr "Parish Priest"
 
-#: locations/models.py:79
+#: locations/models.py:101 templates/locations/manage/division/list.html:88
+msgid "Branch Chair"
+msgstr "Branch Chair"
+
+#: locations/models.py:109
+#| msgid "Branch Chair"
+msgid "Branch Secretary"
+msgstr "Branch Secretary"
+
+#: locations/models.py:112
+msgid "Other Details"
+msgstr "Other Details"
+
+#: locations/models.py:114
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
-#: locations/models.py:86 locations/models.py:123 locations/models.py:141
+#: locations/models.py:117
+msgid "Latitude"
+msgstr "Latitude"
+
+#: locations/models.py:118
+msgid "Longitude"
+msgstr "Longitude"
+
+#: locations/models.py:125 locations/models.py:200 locations/models.py:229
 msgid "Branch"
-msgstr ""
+msgstr "Branch"
 
-#: locations/models.py:87
+#: locations/models.py:126
 msgid "Branches"
-msgstr ""
+msgstr "Branches"
 
-#: locations/models.py:106
+#: locations/models.py:169
 msgid "First Name"
-msgstr ""
+msgstr "First Name"
 
-#: locations/models.py:107
+#: locations/models.py:171
 msgid "Last Name"
-msgstr ""
+msgstr "Last Name"
 
-#: locations/models.py:110
+#: locations/models.py:174
 msgid "Person"
-msgstr ""
+msgstr "Person"
 
-#: locations/models.py:111
+#: locations/models.py:175
 msgid "People"
-msgstr ""
+msgstr "People"
 
-#: locations/models.py:125
+#: locations/models.py:203
 msgid "Phone Number"
-msgstr ""
+msgstr "Phone Number"
 
-#: locations/models.py:128
+#: locations/models.py:211
 msgid "Phone"
-msgstr ""
+msgstr "Phone"
 
-#: locations/models.py:129
+#: locations/models.py:212
 msgid "Phones"
-msgstr ""
+msgstr "Phones"
 
-#: locations/models.py:143
-#, fuzzy
+#: locations/models.py:231
 #| msgid "Confirm Email Address"
 msgid "Email Address"
-msgstr "Confirm Email Address"
+msgstr "Email Address"
 
-#: locations/models.py:146
+#: locations/models.py:234
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
-#: locations/models.py:147
+#: locations/models.py:235
 msgid "Emails"
-msgstr ""
+msgstr "Emails"
+
+#: payments/forms.py:9
+msgid "or enter your own amount (£):"
+msgstr "or enter your own amount (£):"
 
 #: templates/account/email/base_message.txt:1
 #, python-format
@@ -290,12 +358,12 @@ msgstr "Bad Token"
 #, python-format
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
-"used. Please request a <a href=\"%(passwd_reset_url)s\">new password reset</"
-"a>."
+"used. Please request a <a href=\"%(passwd_reset_url)s\">new password "
+"reset</a>."
 msgstr ""
 "The password reset link was invalid, possibly because it has already been "
-"used. Please request a <a href=\"%(passwd_reset_url)s\">new password reset</"
-"a>."
+"used. Please request a <a href=\"%(passwd_reset_url)s\">new password "
+"reset</a>."
 
 #: templates/account/password_reset_from_key_done.html:25
 msgid "Your password has been changed successfully."
@@ -309,48 +377,127 @@ msgstr "Return to site"
 msgid "UWC Admin"
 msgstr "UWC Admin"
 
-#: templates/hub/_hub_base.html:28 templates/pages/_pages_base.html:24
+#: templates/hub/_hub_base.html:30
 msgid "The Ukrainian"
 msgstr "The Ukrainian"
 
-#: templates/hub/_hub_base.html:29 templates/pages/_pages_base.html:25
+#: templates/hub/_hub_base.html:31
 msgid "Welcome"
 msgstr "Welcome"
 
-#: templates/hub/_hub_base.html:30 templates/pages/_pages_base.html:26
+#: templates/hub/_hub_base.html:32
 msgid "Centre"
 msgstr "Centre"
 
-#: templates/hub/_hub_base.html:41 templates/hub/_hub_base.html:146
+#: templates/hub/_hub_base.html:43 templates/hub/_hub_base.html:153
 msgid "Offcanvas"
 msgstr "Offcanvas"
 
-#: templates/hub/_hub_base.html:45
+#: templates/hub/_hub_base.html:47
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: templates/hub/_hub_base.html:53 templates/hub/_hub_base.html:56
-#, fuzzy
+#: templates/hub/_hub_base.html:55 templates/pages/_pages_base.html:52
+#: templates/pages/_pages_base.html:174 templates/pages/locations.html:4
 #| msgid "Sections"
 msgid "Locations"
-msgstr "Sections"
+msgstr "Locations"
 
-#: templates/hub/_hub_base.html:63
+#: templates/hub/_hub_base.html:58
+#| msgid "Sections"
+msgid "Add Location"
+msgstr "Add Location"
+
+#: templates/hub/_hub_base.html:65
 msgid "Panel"
 msgstr "Panel"
 
-#: templates/hub/_hub_base.html:74 templates/hub/_hub_base.html:76
-#: templates/pages/_pages_base.html:65 templates/pages/_pages_base.html:67
-msgid "Search"
-msgstr "Search"
-
-#: templates/hub/_hub_base.html:126
+#: templates/hub/_hub_base.html:133
 msgid "Change password"
 msgstr "Change Password"
 
-#: templates/hub/_hub_base.html:132
+#: templates/hub/_hub_base.html:139
 msgid "Log Out"
 msgstr "Log Out"
+
+#: templates/hub/global_search.html:7
+#| msgid "Search"
+msgid "Global Search"
+msgstr "Global Search"
+
+#: templates/hub/global_search.html:10 templates/pages/public_search.html:10
+#| msgid "Search"
+msgid "Search Results"
+msgstr "Search Results"
+
+#: templates/hub/global_search.html:25 templates/pages/public_search.html:25
+#| msgid "Page"
+msgid "Page:"
+msgstr "Page:"
+
+#: templates/hub/global_search.html:30 templates/pages/public_search.html:30
+#| msgid "Section"
+msgid "Section:"
+msgstr "Section:"
+
+#: templates/hub/global_search.html:35 templates/pages/public_search.html:35
+#| msgid "Text"
+msgid "Text:"
+msgstr "Text:"
+
+#: templates/hub/global_search.html:41 templates/pages/public_search.html:40
+msgid "File:"
+msgstr "File:"
+
+#: templates/hub/global_search.html:46 templates/pages/public_search.html:45
+#| msgid "Image"
+msgid "Image:"
+msgstr "Image:"
+
+#: templates/hub/global_search.html:51 templates/pages/public_search.html:50
+msgid "Video:"
+msgstr "Video:"
+
+#: templates/hub/global_search.html:56 templates/pages/public_search.html:55
+msgid "URL:"
+msgstr "URL:"
+
+#: templates/hub/global_search.html:61 templates/pages/public_search.html:60
+#: templates/pages/public_search.html:86
+#| msgid "Division"
+msgid "Division:"
+msgstr "Division:"
+
+#: templates/hub/global_search.html:66 templates/pages/public_search.html:65
+#: templates/pages/public_search.html:82
+#| msgid "Branch"
+msgid "Branch:"
+msgstr "Branch:"
+
+#: templates/hub/global_search.html:70 templates/pages/public_search.html:69
+#| msgid "Address"
+msgid "Address:"
+msgstr "Address:"
+
+#: templates/hub/global_search.html:75 templates/pages/public_search.html:74
+#| msgid "Person"
+msgid "Person:"
+msgstr "Person:"
+
+#: templates/hub/global_search.html:83
+msgid "Donor:"
+msgstr "Donor:"
+
+#: templates/hub/global_search.html:91
+#| msgid "Sections"
+msgid "Donation:"
+msgstr "Donation:"
+
+#: templates/hub/global_search.html:107 templates/hub/global_search.html:110
+#: templates/pages/public_search.html:104
+#: templates/pages/public_search.html:107
+msgid "No results found."
+msgstr "No results found."
 
 #: templates/hub/manage/page/form.html:14
 #: templates/hub/manage/page/form.html:23
@@ -371,16 +518,14 @@ msgid "All pages"
 msgstr "All pages"
 
 #: templates/hub/manage/page/list.html:22
-#, fuzzy
 #| msgid "Edit"
 msgid "Edit page"
-msgstr "Edit"
+msgstr "Edit page"
 
 #: templates/hub/manage/page/list.html:26
-#, fuzzy
 #| msgid "Delete"
 msgid "Delete page"
-msgstr "Delete"
+msgstr "Delete page"
 
 #: templates/hub/manage/page/list.html:32
 #: templates/hub/manage/section/content_list.html:103
@@ -404,37 +549,412 @@ msgstr "Manage contents"
 msgid "Create new page"
 msgstr "Create new page"
 
+#: templates/locations/manage/branch/form.html:37
+#: templates/locations/manage/person/list.html:12
+#| msgid "Section Title"
+msgid "Back to Division list"
+msgstr "Back to Division list"
+
+#: templates/locations/manage/branch/form.html:62
+#| msgid "List"
+msgid "List all"
+msgstr "List all"
+
+#: templates/locations/manage/branch/form.html:66
+#: templates/locations/manage/person/list.html:17
+#| msgid "Person"
+msgid "Add New Person"
+msgstr "Add New Person"
+
 #: templates/locations/manage/division/list.html:13
+#: templates/locations/manage/division/list.html:180
 msgid "Create Division"
-msgstr ""
+msgstr "Create Division"
+
+#: templates/locations/manage/division/list.html:46
+msgid "Add new location"
+msgstr "Add new location"
 
 #: templates/locations/manage/division/list.html:50
 msgid "Edit"
 msgstr "Edit"
 
-#: templates/locations/manage/division/list.html:53
+#: templates/locations/manage/division/list.html:54
 msgid "Delete"
 msgstr "Delete"
+
+#: templates/locations/manage/division/list.html:117
+msgid "Status"
+msgstr "Status"
+
+#: templates/locations/manage/division/list.html:151
+msgid "Hidden"
+msgstr "Hidden"
+
+#: templates/locations/manage/division/list.html:153
+msgid "Displayed"
+msgstr "Displayed"
+
+#: templates/locations/manage/division/list.html:155
+msgid "Unknown"
+msgstr "Unknown"
+
+#: templates/locations/manage/division/list.html:165
+msgid "No branches available for this division."
+msgstr "No branches available for this division."
+
+#: templates/locations/manage/division/list.html:178
+msgid "No divisions available. Please create one."
+msgstr "No divisions available. Please create one."
+
+#: templates/locations/manage/person/list.html:8
+msgid "Alphabetical Index"
+msgstr "Alphabetical Index"
+
+#: templates/pages/404.html:8
+msgid "Page Not Found"
+msgstr "Page Not Found"
+
+#: templates/pages/404.html:13
+msgid "404—Page Not Found"
+msgstr "404—Page Not Found"
+
+#: templates/pages/404.html:14
+msgid ""
+"We're sorry: the page you are looking for does not exist or is not available"
+" at the moment."
+msgstr ""
+"We're sorry: the page you are looking for does not exist or is not available"
+" at the moment."
+
+#: templates/pages/404.html:15
+msgid "Go Back to Home"
+msgstr "Go Back to Home"
 
 #: templates/pages/_pages_base.html:9
 msgid "Ukrainian Welcome Centre"
 msgstr "Ukrainian Welcome Centre"
 
-#: templates/pages/_pages_base.html:38
+#: templates/pages/_pages_base.html:43 templates/pages/_pages_base.html:165
 msgid "Who we are"
 msgstr "Who we are"
 
-#: templates/pages/_pages_base.html:42
+#: templates/pages/_pages_base.html:46 templates/pages/_pages_base.html:168
 msgid "About Us"
 msgstr "About Us"
 
-#: templates/pages/_pages_base.html:52
-msgid "Home"
-msgstr "Home"
+#: templates/pages/_pages_base.html:47 templates/pages/_pages_base.html:170
+msgid "Help & Advice"
+msgstr "Help & Advice"
 
-#: templates/pages/_pages_base.html:106
-msgid "Log In"
-msgstr "Log In"
+#: templates/pages/_pages_base.html:57 templates/pages/_pages_base.html:181
+msgid "Arrivals"
+msgstr "Arrivals"
+
+#: templates/pages/_pages_base.html:59 templates/pages/_pages_base.html:184
+msgid "Pre-arrivals & visas"
+msgstr "Pre-arrivals & visas"
+
+#: templates/pages/_pages_base.html:60 templates/pages/_pages_base.html:185
+msgid "Immediate Essentials"
+msgstr "Immediate Essentials"
+
+#: templates/pages/_pages_base.html:64 templates/pages/_pages_base.html:189
+msgid "After you're here"
+msgstr "After you're here"
+
+#: templates/pages/_pages_base.html:65 templates/pages/_pages_base.html:190
+msgid "Essentials upon arrival"
+msgstr "Essentials upon arrival"
+
+#: templates/pages/_pages_base.html:66 templates/pages/_pages_base.html:191
+msgid "Long-term Living"
+msgstr "Long-term Living"
+
+#: templates/pages/_pages_base.html:70 templates/pages/_pages_base.html:195
+msgid "Sponsors"
+msgstr "Sponsors"
+
+#: templates/pages/_pages_base.html:74 templates/pages/_pages_base.html:200
+msgid "News & Events"
+msgstr "News & Events"
+
+#: templates/pages/_pages_base.html:76 templates/pages/_pages_base.html:203
+msgid "Schedule & Workshops"
+msgstr "Schedule & Workshops"
+
+#: templates/pages/_pages_base.html:81 templates/pages/_pages_base.html:208
+msgid "Get Involved"
+msgstr "Get Involved"
+
+#: templates/pages/_pages_base.html:98 templates/pages/_pages_base.html:221
+#: templates/payments/donate.html:6 templates/payments/donate.html:15
+msgid "Donate"
+msgstr "Donate"
+
+#: templates/pages/_pages_base.html:103 templates/pages/_pages_base.html:226
+#| msgid "Contents"
+msgid "Contact us"
+msgstr "Contact us"
+
+#: templates/pages/_pages_base.html:157
+msgid "Menu"
+msgstr "Menu"
+
+#: templates/pages/_pages_base.html:292
+msgid "Staff Only"
+msgstr "Staff Only"
+
+#: templates/pages/about-us.html:30 templates/pages/about-us.html:60
+#: templates/pages/about-us.html:96 templates/pages/get-involved.html:30
+#: templates/pages/get-involved.html:60 templates/pages/get-involved.html:96
+msgid "Your browser does not support the video tag."
+msgstr "Your browser does not support the video tag."
+
+#: templates/pages/about-us.html:109 templates/pages/get-involved.html:109
+msgid "No sections available."
+msgstr "No sections available."
+
+#: templates/pages/about-us.html:113 templates/pages/get-involved.html:113
+#: templates/pages/page.html:49
+msgid "Back to Home"
+msgstr "Back to Home"
+
+#: templates/pages/home.html:49
+msgid "Donate now"
+msgstr "Donate now"
+
+#: templates/pages/page.html:44
+msgid "No content available for this page."
+msgstr "No content available for this page."
+
+#: templates/pages/public_search.html:7
+#| msgid "Search"
+msgid "Public Search"
+msgstr "Public Search"
+
+#: templates/pages/public_search.html:16
+msgid "Found"
+msgstr "Found"
+
+#: templates/pages/public_search.html:16
+msgid "result"
+msgstr "result"
+
+#: templates/pages/public_search.html:16
+msgid "for"
+msgstr "for"
+
+#: templates/pages/public_search.html:94
+msgid "No branches associated with this person."
+msgstr "No branches associated with this person."
+
+#: templates/payments/cancel.html:4
+msgid "Cancelled"
+msgstr "Cancelled"
+
+#: templates/payments/cancel.html:8
+msgid "Payment Canceled"
+msgstr "Payment Canceled"
+
+#: templates/payments/cancel.html:9
+msgid "You have canceled the payment process."
+msgstr "You have canceled the payment process."
+
+#: templates/payments/donate.html:17
+msgid "Select a one-time donation amount"
+msgstr "Select a one-time donation amount"
+
+#: templates/payments/donate.html:117
+msgid "Donate via PayPal"
+msgstr "Donate via PayPal"
+
+#: templates/payments/donate.html:127
+msgid "Choose Regular Donations"
+msgstr "Choose Regular Donations"
+
+#: templates/payments/donate.html:133
+msgid "Donation Amount"
+msgstr "Donation Amount"
+
+#: templates/payments/donate.html:139
+msgid "Choose Regularity"
+msgstr "Choose Regularity"
+
+#: templates/payments/donate.html:141
+msgid "Weekly"
+msgstr "Weekly"
+
+#: templates/payments/donate.html:142
+msgid "Monthly"
+msgstr "Monthly"
+
+#: templates/payments/donate.html:143
+msgid "Yearly"
+msgstr "Yearly"
+
+#: templates/payments/donate.html:152
+msgid "Set Up Regular Donation"
+msgstr "Set Up Regular Donation"
+
+#: templates/payments/donor.html:11
+msgid "Back to Search Results"
+msgstr "Back to Search Results"
+
+#: templates/payments/donor.html:18
+msgid "Donation History"
+msgstr "Donation History"
+
+#: templates/payments/donor.html:24
+msgid "Date"
+msgstr "Date"
+
+#: templates/payments/donor.html:25
+msgid "Transaction ID"
+msgstr "Transaction ID"
+
+#: templates/payments/donor.html:26
+msgid "Amount (£)"
+msgstr "Amount (£)"
+
+#: templates/payments/donor.html:38
+msgid "Total"
+msgstr "Total"
+
+#: templates/payments/donor.html:44
+msgid "No donations found for this donor."
+msgstr "No donations found for this donor."
+
+#: templates/payments/error.html:5
+msgid "Error"
+msgstr "Error"
+
+#: templates/payments/error.html:8
+msgid "Error Processing Payment"
+msgstr "Error Processing Payment"
+
+#: templates/payments/subscription_cancel.html:5
+msgid "Subscription Cancelled"
+msgstr "Subscription Cancelled"
+
+#: templates/payments/subscription_cancel.html:8
+msgid "Subscription Canceled"
+msgstr "Subscription Canceled"
+
+#: templates/payments/subscription_cancel.html:9
+msgid "You have canceled the subscription process."
+msgstr "You have canceled the subscription process."
+
+#: templates/payments/subscription_error.html:5
+msgid "Subscription Error"
+msgstr "Subscription Error"
+
+#: templates/payments/subscription_error.html:8
+msgid "Error Processing Subscription"
+msgstr "Error Processing Subscription"
+
+#: templates/payments/subscription_success.html:5
+msgid "Subscription Successful"
+msgstr "Subscription Successful"
+
+#: templates/payments/subscription_success.html:8
+msgid "Welcome to Our Community!"
+msgstr "Welcome to Our Community!"
+
+#: templates/payments/subscription_success.html:10
+#: templates/payments/success.html:10
+msgid "Dear"
+msgstr "Dear"
+
+#: templates/payments/subscription_success.html:13
+msgid "Thank you for subscribing to"
+msgstr "Thank you for subscribing to"
+
+#: templates/payments/subscription_success.html:14
+msgid ""
+"Your support means the world to us and helps us continue making a positive "
+"impact."
+msgstr ""
+"Your support means the world to us and helps us continue making a positive "
+"impact."
+
+#: templates/payments/subscription_success.html:17
+msgid "Here are the details of your subscription:"
+msgstr "Here are the details of your subscription:"
+
+#: templates/payments/subscription_success.html:21
+msgid "Subscription ID:"
+msgstr "Subscription ID:"
+
+#: templates/payments/subscription_success.html:24
+msgid "Plan:"
+msgstr "Plan:"
+
+#: templates/payments/subscription_success.html:27
+msgid "Amount:"
+msgstr "Amount:"
+
+#: templates/payments/subscription_success.html:30
+msgid "Billing Frequency:"
+msgstr "Billing Frequency:"
+
+#: templates/payments/subscription_success.html:31
+msgid "Every"
+msgstr "Every"
+
+#: templates/payments/subscription_success.html:35
+msgid "Status:"
+msgstr "Status:"
+
+#: templates/payments/subscription_success.html:39
+msgid ""
+"If you have any questions or need assistance, feel free to contact us at any"
+" time."
+msgstr ""
+"If you have any questions or need assistance, feel free to contact us at any"
+" time."
+
+#: templates/payments/subscription_success.html:42
+msgid ""
+"Thank you for being a valued supporter. Together, we can achieve amazing "
+"things!"
+msgstr ""
+"Thank you for being a valued supporter. Together, we can achieve amazing "
+"things!"
+
+#: templates/payments/subscription_success.html:45
+msgid "Warm regards,"
+msgstr "Warm regards,"
+
+#: templates/payments/subscription_success.html:46
+msgid "The Team"
+msgstr "The Team"
+
+#: templates/payments/success.html:5
+msgid "Success"
+msgstr "Success"
+
+#: templates/payments/success.html:8
+msgid "Thank you for your donation!"
+msgstr "Thank you for your donation!"
+
+#: templates/payments/success.html:11
+msgid "thank you for your generous donation of"
+msgstr "thank you for your generous donation of"
+
+#: templates/payments/success.html:14
+msgid "Transaction ID:"
+msgstr "Transaction ID:"
+
+#: templates/payments/success.html:17
+msgid "Date:"
+msgstr "Date:"
+
+#~ msgid "Home"
+#~ msgstr "Home"
+
+#~ msgid "Log In"
+#~ msgstr "Log In"
 
 #, fuzzy
 #~ msgid "Section Draft Title"
@@ -442,9 +962,6 @@ msgstr "Log In"
 
 #~ msgid "Menu Title"
 #~ msgstr "Menu Title"
-
-#~ msgid "Text"
-#~ msgstr "Text"
 
 #~ msgid "Media URL"
 #~ msgstr "Media URL"
@@ -457,12 +974,6 @@ msgstr "Log In"
 
 #~ msgid "My Web Site"
 #~ msgstr "My Web Site"
-
-#~ msgid "Image"
-#~ msgstr "Image"
-
-#~ msgid "List"
-#~ msgstr "List"
 
 #, fuzzy
 #~ msgid "Text Value"
