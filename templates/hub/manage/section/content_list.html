@@ -116,7 +116,8 @@
                     {% if content.item %}
                     <div data-id="{{ content.id }}">
                         {% with item=content.item %}
-                            <p>{{ item }} ({{ item|model_name }})</p>
+                            <p class="fst-italic">{{ item }} ({{ item|model_name }})</p>
+                            <p class="fst-italic">{% trans 'Item Content ID:' %} {{ item.id }}</p>
                             <p>{{ item.content|truncatechars:100 }}</p>
                             <div class="d-flex justify-content-end align-items-center" style="border:none;">
 

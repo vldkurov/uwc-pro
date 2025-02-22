@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-21 18:51+0000\n"
-"PO-Revision-Date: 2025-02-21 18:42+0000\n"
+"POT-Creation-Date: 2025-02-22 17:24+0000\n"
+"PO-Revision-Date: 2025-02-22 17:25+0000\n"
 "Last-Translator:   <vokur@msn.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -354,12 +354,12 @@ msgstr "Bad Token"
 #, python-format
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
-"used. Please request a <a href=\"%(passwd_reset_url)s\">new password reset</"
-"a>."
+"used. Please request a <a href=\"%(passwd_reset_url)s\">new password "
+"reset</a>."
 msgstr ""
 "The password reset link was invalid, possibly because it has already been "
-"used. Please request a <a href=\"%(passwd_reset_url)s\">new password reset</"
-"a>."
+"used. Please request a <a href=\"%(passwd_reset_url)s\">new password "
+"reset</a>."
 
 #: templates/account/password_reset_from_key_done.html:25
 msgid "Your password has been changed successfully."
@@ -530,6 +530,11 @@ msgstr "Manage contents"
 msgid "Create new page"
 msgstr "Create new page"
 
+#: templates/hub/manage/section/content_list.html:120
+#| msgid "Content Draft"
+msgid "Item Content ID:"
+msgstr "Item Content ID:"
+
 #: templates/locations/manage/branch/form.html:37
 #: templates/locations/manage/person/list.html:12
 msgid "Back to Division list"
@@ -599,11 +604,11 @@ msgstr "404—Page Not Found"
 
 #: templates/pages/404.html:14
 msgid ""
-"We're sorry: the page you are looking for does not exist or is not available "
-"at the moment."
+"We're sorry: the page you are looking for does not exist or is not available"
+" at the moment."
 msgstr ""
-"We're sorry: the page you are looking for does not exist or is not available "
-"at the moment."
+"We're sorry: the page you are looking for does not exist or is not available"
+" at the moment."
 
 #: templates/pages/404.html:15
 msgid "Go Back to Home"
@@ -697,9 +702,13 @@ msgstr "No sections available."
 msgid "Back to Home"
 msgstr "Back to Home"
 
-#: templates/pages/home.html:49
+#: templates/pages/home.html:61
 msgid "Donate now"
 msgstr "Donate now"
+
+#: templates/pages/home.html:105
+msgid "Learn More"
+msgstr "Learn More"
 
 #: templates/pages/page.html:44
 msgid "No content available for this page."
@@ -884,11 +893,11 @@ msgstr "Status:"
 
 #: templates/payments/subscription_success.html:39
 msgid ""
-"If you have any questions or need assistance, feel free to contact us at any "
-"time."
+"If you have any questions or need assistance, feel free to contact us at any"
+" time."
 msgstr ""
-"If you have any questions or need assistance, feel free to contact us at any "
-"time."
+"If you have any questions or need assistance, feel free to contact us at any"
+" time."
 
 #: templates/payments/subscription_success.html:42
 msgid ""

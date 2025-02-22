@@ -8,18 +8,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-21 18:51+0000\n"
-"PO-Revision-Date: 2025-02-21 18:42+0000\n"
+"POT-Creation-Date: 2025-02-22 17:24+0000\n"
+"PO-Revision-Date: 2025-02-22 17:26+0000\n"
 "Last-Translator:   <vokur@msn.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != "
-"11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % "
-"100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
-"(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 "X-Translated-Using: django-rosetta 0.10.1\n"
 
 #: django_project/settings.py:157
@@ -258,8 +255,8 @@ msgid ""
 "Your email verification code is listed below. Please enter it in your open "
 "browser window."
 msgstr ""
-"Ваш код підтвердження електронної пошти наведений нижче. Будь ласка, введіть "
-"його у відкритому вікні браузера."
+"Ваш код підтвердження електронної пошти наведений нижче. Будь ласка, введіть"
+" його у відкритому вікні браузера."
 
 #: templates/account/email/email_confirmation_message.txt:9
 #, python-format
@@ -331,8 +328,8 @@ msgid ""
 "Forgotten your password? Enter your email address below, and we'll send you "
 "an email allowing you to reset it."
 msgstr ""
-"Забули свій пароль? Введіть свою електронну адресу нижче, і ми надішлемо вам "
-"листа для його скидання."
+"Забули свій пароль? Введіть свою електронну адресу нижче, і ми надішлемо вам"
+" листа для його скидання."
 
 #: templates/account/password_reset.html:58
 #: templates/account/password_reset_done.html:43
@@ -350,8 +347,9 @@ msgid ""
 "We have emailed you. If you have not received it, please check your spam "
 "folder. Otherwise, contact us if you do not receive it in a few minutes."
 msgstr ""
-"Ми надіслали вам листа. Якщо ви його не отримали, перевірте папку зі спамом. "
-"В іншому випадку, зв’яжіться з нами, якщо не отримаєте його за кілька хвилин."
+"Ми надіслали вам листа. Якщо ви його не отримали, перевірте папку зі спамом."
+" В іншому випадку, зв’яжіться з нами, якщо не отримаєте його за кілька "
+"хвилин."
 
 #: templates/account/password_reset_from_key.html:50
 msgid "Bad Token"
@@ -361,8 +359,8 @@ msgstr "Невірний токен"
 #, python-format
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
-"used. Please request a <a href=\"%(passwd_reset_url)s\">new password reset</"
-"a>."
+"used. Please request a <a href=\"%(passwd_reset_url)s\">new password "
+"reset</a>."
 msgstr ""
 "Посилання для зміни пароля було недійсним, можливо, тому, що воно вже було "
 "використано. Надішліть запит на <a href=\"%(passwd_reset_url)s\">скидання "
@@ -537,6 +535,11 @@ msgstr "Керувати вмістом"
 msgid "Create new page"
 msgstr "Створити нову сторінку"
 
+#: templates/hub/manage/section/content_list.html:120
+#| msgid "Content Draft"
+msgid "Item Content ID:"
+msgstr "ID вмісту елемента:"
+
 #: templates/locations/manage/branch/form.html:37
 #: templates/locations/manage/person/list.html:12
 msgid "Back to Division list"
@@ -606,8 +609,8 @@ msgstr "404 — сторінку не знайдено"
 
 #: templates/pages/404.html:14
 msgid ""
-"We're sorry: the page you are looking for does not exist or is not available "
-"at the moment."
+"We're sorry: the page you are looking for does not exist or is not available"
+" at the moment."
 msgstr ""
 "Нам дуже шкода: сторінка, яку ви шукаєте, не існує або недоступна на даний "
 "момент."
@@ -704,9 +707,13 @@ msgstr "Немає доступних розділів."
 msgid "Back to Home"
 msgstr "Назад додому"
 
-#: templates/pages/home.html:49
+#: templates/pages/home.html:61
 msgid "Donate now"
 msgstr "Пожертвуйте зараз"
+
+#: templates/pages/home.html:105
+msgid "Learn More"
+msgstr "Дізнайтеся більше"
 
 #: templates/pages/page.html:44
 msgid "No content available for this page."
@@ -858,7 +865,8 @@ msgid ""
 "Your support means the world to us and helps us continue making a positive "
 "impact."
 msgstr ""
-"Ваша підтримка важлива для нас і допомагає нам продовжувати позитивний вплив."
+"Ваша підтримка важлива для нас і допомагає нам продовжувати позитивний "
+"вплив."
 
 #: templates/payments/subscription_success.html:17
 msgid "Here are the details of your subscription:"
@@ -890,11 +898,11 @@ msgstr "Статус:"
 
 #: templates/payments/subscription_success.html:39
 msgid ""
-"If you have any questions or need assistance, feel free to contact us at any "
-"time."
+"If you have any questions or need assistance, feel free to contact us at any"
+" time."
 msgstr ""
-"Якщо у вас виникли запитання або потрібна допомога, зв’яжіться з нами в будь-"
-"який час."
+"Якщо у вас виникли запитання або потрібна допомога, зв’яжіться з нами в "
+"будь-який час."
 
 #: templates/payments/subscription_success.html:42
 msgid ""
