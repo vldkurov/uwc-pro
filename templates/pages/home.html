@@ -68,6 +68,7 @@
                 {% endfor %}
             </div>
         {% endif %}
+
         {% if item.section.title|lower == 'pre-arrival and visas' or item.section.title|lower == 'попереднє прибуття та візи' %}
             <div class="section mt-5 p-4" style="background-color: #FFFFFF">
                 <div class="row">
@@ -123,6 +124,55 @@
                         {% endfor %}
                     </div>
                 </div>
+            </div>
+        {% endif %}
+
+        {% if item.section.title|lower == 'will you help?' or item.section.title|lower == 'ви допоможете?' %}
+            <div class="section mt-5 position-relative"
+                 style=" width: 100%;">
+
+                {% for content in item.contents %}
+                    {% if content.type == 'image' %}
+                        {% if content.content|stringformat:"s" == "Content 3.1" %}
+                            <div id="content-{{ content.content.id }}"
+                                 class="position-absolute w-100 h-100"
+                                 style="background-size: cover;
+                                         background-position: center;
+                                         background-repeat: no-repeat;
+                                         background-image: url('{{ content.content.content.url }}');
+                                         filter: brightness(50%);
+                                         z-index: 1;">
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+                {% for content in item.contents %}
+                    {% if content.type == 'text' %}
+                        {% if content.content|stringformat:"s" == "Content 3.2" %}
+                            <div id="content-{{ content.content.id }}"
+                                 class="w-100 h-auto d-flex justify-content-center align-items-center z-2 position-relative">
+                                <div class="container">
+                                    <div class="row g-0 gx-2 text-start">
+                                        <div class="col-md-8 p-3">
+                                            <h3 class="text-light fw-semibold">{{ item.section.title }}</h3>
+                                            <p class="fw-light fs-6 text text-wrap text-break m-0" style="color: white;">
+                                                {{ content.content.content }}
+                                            </p>
+                                        </div>
+                                        <div class="col-md-4 p-3 d-flex justify-content-end align-items-center">
+                                            <a class="btn shadow-sm text-nowrap"
+                                               style="background-color: #FFD800; color: #0057B8"
+                                               aria-current="page"
+                                               href="{% url 'create_donation' %}">{% trans 'Donate now' %}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
             </div>
         {% endif %}
 
