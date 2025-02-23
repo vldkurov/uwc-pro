@@ -292,6 +292,64 @@
             </div>
         {% endif %}
 
+        {% if item.section.title|lower == 'ukrainian heritage' or item.section.title|lower == 'українська спадщина' %}
+            <div class="section mt-5 p-4 shadow-sm" style="background-color: #FFFFFF">
+                <div class="row">
+                    <div class="col-md-12 col-lg text-center">
+                        {% for content in item.contents %}
+                            {% if content.type == 'image' %}
+                                {% if content.content|stringformat:"s" == "Content 6.5" %}
+                                    <div id="content-{{ content.content.id }}">
+                                        <img src="{{ content.content.content.url }}"
+                                             alt="{{ content.content.title }}"
+                                             class="img-fluid"
+                                        >
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="col-md-12 col-lg">
+                        <div class="row">
+                            <p style="color: #0057B8;">{{ item.section.title }}</p>
+                            {% for content in item.contents %}
+                                {% if content.type == 'text' %}
+                                    {% if content.content|stringformat:"s" == "Content 6.1" %}
+                                        <div id="content-{{ content.content.id }}">
+                                            <h3 class="fw-bolder">{{ content.content.content }}</h3>
+                                        </div>
+                                    {% endif %}
+                                    {% if content.content|stringformat:"s" == "Content 6.2" %}
+                                        <div id="content-{{ content.content.id }}">
+                                            <p class="fw-light">{{ content.content.content }}</p>
+                                        </div>
+                                    {% endif %}
+                                    {% if content.content|stringformat:"s" == "Content 6.3" %}
+                                        <div id="content-{{ content.content.id }}">
+                                            <p class="fw-light">{{ content.content.content }}</p>
+                                        </div>
+                                    {% endif %}
+                                    {% if content.content|stringformat:"s" == "Content 6.4" %}
+                                        <div id="content-{{ content.content.id }}">
+                                            <p class="fw-light">{{ content.content.content }}</p>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="row">
+                            <p>
+                                <a class="btn shadow-sm" style="background-color: #0057B8; color: white"
+                                   href="#">
+                                    {% trans 'Learn More' %}
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
     {% endfor %}
 
 {% endblock content %}
