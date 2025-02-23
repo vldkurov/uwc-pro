@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-22 17:24+0000\n"
-"PO-Revision-Date: 2025-02-22 17:25+0000\n"
+"POT-Creation-Date: 2025-02-23 18:28+0000\n"
+"PO-Revision-Date: 2025-02-23 18:34+0000\n"
 "Last-Translator:   <vokur@msn.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -183,11 +183,11 @@ msgstr "Branch"
 msgid "Branches"
 msgstr "Branches"
 
-#: locations/models.py:169
+#: locations/models.py:169 templates/pages/home.html:512
 msgid "First Name"
 msgstr "First Name"
 
-#: locations/models.py:171
+#: locations/models.py:171 templates/pages/home.html:516
 msgid "Last Name"
 msgstr "Last Name"
 
@@ -211,7 +211,7 @@ msgstr "Phone"
 msgid "Phones"
 msgstr "Phones"
 
-#: locations/models.py:231
+#: locations/models.py:231 templates/pages/home.html:520
 msgid "Email Address"
 msgstr "Email Address"
 
@@ -531,7 +531,6 @@ msgid "Create new page"
 msgstr "Create new page"
 
 #: templates/hub/manage/section/content_list.html:120
-#| msgid "Content Draft"
 msgid "Item Content ID:"
 msgstr "Item Content ID:"
 
@@ -702,13 +701,20 @@ msgstr "No sections available."
 msgid "Back to Home"
 msgstr "Back to Home"
 
-#: templates/pages/home.html:61
+#: templates/pages/home.html:62 templates/pages/home.html:167
+#: templates/pages/home.html:542
 msgid "Donate now"
 msgstr "Donate now"
 
-#: templates/pages/home.html:105
+#: templates/pages/home.html:107 templates/pages/home.html:228
+#: templates/pages/home.html:272 templates/pages/home.html:344
+#: templates/pages/home.html:388 templates/pages/home.html:460
 msgid "Learn More"
 msgstr "Learn More"
+
+#: templates/pages/home.html:524
+msgid "Subscribe"
+msgstr "Subscribe"
 
 #: templates/pages/page.html:44
 msgid "No content available for this page."

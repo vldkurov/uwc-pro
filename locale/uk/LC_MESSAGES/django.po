@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-22 17:24+0000\n"
-"PO-Revision-Date: 2025-02-22 17:26+0000\n"
+"POT-Creation-Date: 2025-02-23 18:28+0000\n"
+"PO-Revision-Date: 2025-02-23 18:34+0000\n"
 "Last-Translator:   <vokur@msn.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -183,11 +183,11 @@ msgstr "Відділення"
 msgid "Branches"
 msgstr "Відділення"
 
-#: locations/models.py:169
+#: locations/models.py:169 templates/pages/home.html:512
 msgid "First Name"
 msgstr "Ім'я"
 
-#: locations/models.py:171
+#: locations/models.py:171 templates/pages/home.html:516
 msgid "Last Name"
 msgstr "Прізвище"
 
@@ -211,7 +211,7 @@ msgstr "Телефон"
 msgid "Phones"
 msgstr "Телефони"
 
-#: locations/models.py:231
+#: locations/models.py:231 templates/pages/home.html:520
 msgid "Email Address"
 msgstr "Адреса електронної пошти"
 
@@ -536,7 +536,6 @@ msgid "Create new page"
 msgstr "Створити нову сторінку"
 
 #: templates/hub/manage/section/content_list.html:120
-#| msgid "Content Draft"
 msgid "Item Content ID:"
 msgstr "ID вмісту елемента:"
 
@@ -707,13 +706,20 @@ msgstr "Немає доступних розділів."
 msgid "Back to Home"
 msgstr "Назад додому"
 
-#: templates/pages/home.html:61
+#: templates/pages/home.html:62 templates/pages/home.html:167
+#: templates/pages/home.html:542
 msgid "Donate now"
 msgstr "Пожертвуйте зараз"
 
-#: templates/pages/home.html:105
+#: templates/pages/home.html:107 templates/pages/home.html:228
+#: templates/pages/home.html:272 templates/pages/home.html:344
+#: templates/pages/home.html:388 templates/pages/home.html:460
 msgid "Learn More"
 msgstr "Дізнайтеся більше"
+
+#: templates/pages/home.html:524
+msgid "Subscribe"
+msgstr "Підпишіться"
 
 #: templates/pages/page.html:44
 msgid "No content available for this page."

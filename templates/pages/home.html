@@ -466,6 +466,89 @@
             </div>
         {% endif %}
 
+        {% if item.section.title|lower == 'newsletter' or item.section.title|lower == 'інформаційний бюлетень' %}
+            <div class="section shadow-sm mt-4"
+                 style="
+                 height: 600px;
+                 width: 100vw;
+                 position: relative;
+                 left: calc(-50vw + 50%);"
+            >
+                {% for content in item.contents %}
+                    {% if content.type == 'image' %}
+                        <div id="content-{{ content.content.id }}"
+                             style="
+                                     position: absolute;
+                                     top: 0;
+                                     left: 0;
+                                     width: 100%;
+                                     height: 100%;
+                                     background-size: cover;
+                                     background-position: center;
+                                     background-repeat: no-repeat;
+                                     background-image: url('{{ content.content.content.url }}');
+                                     filter: brightness(50%);
+                                     z-index: 1;
+                                     ">
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                {% for content in item.contents %}
+                    {% if content.type == 'text' %}
+                        {% if content.content|stringformat:"s" == "Content 9.3" %}
+                            <div id="content-{{ content.content.id }}"
+                                 class="position-absolute w-100 top-0 start-0 d-flex justify-content-center align-items-center z-2"
+                                 style="background-color: #FFD700">
+
+                                <div class="container d-flex justify-content-between align-items-center py-5">
+                                    <p class="fw-normal fs-4 text m-0" style="color: #0057B8;">
+                                        {{ content.content.content }}
+                                    </p>
+                                    <form action="#" method="POST" class="d-flex align-items-center">
+                                        {% csrf_token %}
+                                        <label class="me-1">
+                                            <input type="text" name="first_name" class="form-control"
+                                                   placeholder="{% trans 'First Name' %}" required>
+                                        </label>
+                                        <label class="me-1">
+                                            <input type="text" name="last_name" class="form-control"
+                                                   placeholder="{% trans 'Last Name' %}" required>
+                                        </label>
+                                        <label class="me-1">
+                                            <input type="email" name="email" class="form-control "
+                                                   placeholder="{% trans 'Email Address' %}" required>
+                                        </label>
+                                        <button type="submit" class="btn shadow-sm"
+                                                style="background-color: #0057B8; color: white;">
+                                            {% trans 'Subscribe' %}
+                                        </button>
+                                    </form>
+                                </div>
+
+                            </div>
+                        {% endif %}
+
+                        {% if content.content|stringformat:"s" == "Content 9.2" %}
+                            <div id="content-{{ content.content.id }}"
+                                 class="position-absolute w-100 top-50 start-0 z-2">
+                                <div class="container d-flex flex-column justify-content-center align-items-center">
+                                    <p class="fw-semibold m-0 fs-1 text text-light">
+                                        {{ content.content.content }}
+                                    </p>
+                                    <a class="btn btn-lg shadow-sm text-nowrap"
+                                       style="background-color: #0057B8; color: white"
+                                       aria-current="page"
+                                       href="{% url 'create_donation' %}">{% trans 'Donate now' %}
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
     {% endfor %}
 
 {% endblock content %}
