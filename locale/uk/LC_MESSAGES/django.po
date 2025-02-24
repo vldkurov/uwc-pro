@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-23 18:28+0000\n"
-"PO-Revision-Date: 2025-02-23 18:34+0000\n"
+"POT-Creation-Date: 2025-02-24 11:22+0000\n"
+"PO-Revision-Date: 2025-02-24 11:25+0000\n"
 "Last-Translator:   <vokur@msn.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -378,7 +378,7 @@ msgstr "Повернутися на сайт"
 msgid "UWC Admin"
 msgstr "UWC Адмін"
 
-#: templates/hub/_hub_base.html:30
+#: templates/hub/_hub_base.html:30 templates/pages/_pages_base.html:298
 msgid "The Ukrainian"
 msgstr "Український"
 
@@ -687,9 +687,40 @@ msgstr "Зв'яжіться з нами"
 msgid "Menu"
 msgstr "Меню"
 
-#: templates/pages/_pages_base.html:292
+#: templates/pages/_pages_base.html:299
+#| msgid "Ukrainian Welcome Centre"
+msgid "Welcome Centre"
+msgstr "Вітальний центр"
+
+#: templates/pages/_pages_base.html:322
 msgid "Staff Only"
 msgstr "Лише персонал"
+
+#: templates/pages/_pages_base.html:339
+#| msgid "About Us"
+msgid "About us"
+msgstr "Про нас"
+
+#: templates/pages/_pages_base.html:342
+msgid "Feedback"
+msgstr "Зворотній зв'язок"
+
+#: templates/pages/_pages_base.html:345
+msgid "Legal"
+msgstr "Юридичний"
+
+#: templates/pages/_pages_base.html:348
+#| msgid "Ukrainian Welcome Centre"
+msgid "The Ukrainian Welcome Centre"
+msgstr "Український Вітальний Центр"
+
+#: templates/pages/_pages_base.html:349
+msgid "a project of the Eparchy of the Holy Family of London"
+msgstr "проект Лондонської єпархії Пресвятої Родини"
+
+#: templates/pages/_pages_base.html:350
+msgid "registered charity number"
+msgstr "зареєстрований номер благодійної організації"
 
 #: templates/pages/about-us.html:30 templates/pages/about-us.html:60
 #: templates/pages/about-us.html:96 templates/pages/get-involved.html:30
