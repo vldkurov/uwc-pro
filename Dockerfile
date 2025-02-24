@@ -23,12 +23,3 @@ RUN pip install -r requirements.txt
 
 # Copy project
 COPY . .
-
-# Collect static files
-RUN python manage.py collectstatic --noinput
-
-# Run migrations
-RUN python manage.py migrate
-
-# Set command for Heroku
-CMD gunicorn django_project.wsgi:application --bind 0.0.0.0:8000

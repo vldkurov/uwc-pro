@@ -1,0 +1,47 @@
+body {
+    min-height: 75rem;
+    padding-top: 7.0rem;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    background-color: #EFF5FE;
+}
+
+h1 {
+    color: blueviolet;
+}
+
+.logo {
+    height: 70px;
+    width: auto;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* High contrast feature */
+
+.high-contrast {
+    background-color: #000;
+    color: #fff;
+}
+
+.high-contrast a {
+    color: #00ffff;
+}
+
+.high-contrast button,
+.high-contrast input,
+.high-contrast select,
+.high-contrast textarea {
+    border: 2px solid #00ffff;
+    /*background-color: #000;*/
+    color: #fff;
+}
+
+.high-contrast img {
+    border: 2px solid #00ffff;
+}
+
