@@ -75,3 +75,5 @@ cython_debug/
 .git
 .gitignore
 /docker-compose.yml
+/docker-compose-prod-v1.yml
+!/docker-compose.prod.yml

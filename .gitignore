@@ -78,7 +78,9 @@ dmypy.json
 cython_debug/
 .idea/
 .DS_Store
-docker-compose-prod.yml
+docker-compose-prod-v1.yml
 data/
 docker-compose.yml
 populate/uwc-client-a21bb1b9ee10.json
+!/docker-compose-prod-v1.yml
+!/docker-compose.prod.yml

@@ -8,10 +8,14 @@ build:
 
 release:
   image: web
+#  command:
+#    - python manage.py migrate
+#    - python manage.py collectstatic --noinput
+#    - python manage.py compilemessages
   command:
-    - python manage.py migrate
-    - python manage.py collectstatic --noinput
-    - python manage.py compilemessages
+    - sh -c "python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             python manage.py compilemessages"
 
 run:
   web: gunicorn django_project.wsgi:application
