@@ -39,8 +39,9 @@
             <div class="d-none d-lg-flex align-items-center flex-grow-1 justify-content-start">
                 <ul class="navbar-nav mb-2 mb-lg-0 align-items-center">
                     <li class="nav-item dropdown me-2">
-                        <a class="nav-link dropdown-toggle p-0 text-uppercase fw-light fs-6" href="#" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">{% trans 'Who we are' %}</a>
+                        <a class="nav-link dropdown-toggle p-0 text-uppercase fw-light" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false"
+                           style="font-size: 0.8rem;">{% trans 'Who we are' %}</a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item"
                                    href="{% url 'page' slug='about-us' %}">{% trans 'About Us' %}</a></li>
@@ -53,8 +54,9 @@
                         </ul>
                     </li>
                     <li class="nav-item dropdown me-2">
-                        <a class="nav-link dropdown-toggle p-0 text-uppercase fw-light fs-6" href="#" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">{% trans 'Arrivals' %}</a>
+                        <a class="nav-link dropdown-toggle p-0 text-uppercase fw-light" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false"
+                           style="font-size: 0.8rem;">{% trans 'Arrivals' %}</a>
                         <ul class="dropdown-menu">
                             <li><h6 class="dropdown-header">{% trans 'Pre-arrivals & visas' %}</h6></li>
                             <li><a class="dropdown-item" href="#">{% trans 'Immediate Essentials' %}</a></li>
@@ -67,25 +69,29 @@
                         </ul>
                     </li>
                     <li class="nav-item me-2">
-                        <a class="nav-link p-0 text-uppercase fw-light fs-6" href="#">{% trans 'Sponsors' %}</a>
+                        <a class="nav-link p-0 text-uppercase fw-light" href="#"
+                           style="font-size: 0.8rem;">{% trans 'Sponsors' %}</a>
                     </li>
                     <li class="nav-item dropdown me-2">
-                        <a class="nav-link dropdown-toggle p-0 text-uppercase fw-light fs-6" href="#" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">{% trans "News & Events" %}</a>
+                        <a class="nav-link dropdown-toggle p-0 text-uppercase fw-light" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false"
+                           style="font-size: 0.8rem;">{% trans "News & Events" %}</a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">{% trans 'Schedule & Workshops' %}</a></li>
                         </ul>
                     </li>
                     <li class="nav-item me-2">
-                        <a class="nav-link p-0 text-uppercase fw-light fs-6"
-                           href="{% url 'page' slug='get-involved' %}">{% trans 'Get Involved' %}</a>
+                        <a class="nav-link p-0 text-uppercase fw-light"
+                           href="{% url 'page' slug='get-involved' %}"
+                           style="font-size: 0.8rem;">{% trans 'Get Involved' %}</a>
                     </li>
                     <li class="nav-item">
                         <form class="d-flex" role="search" action="{% url 'public_search' %}" method="get">
                             <input class="form-control mx-2 fw-light" type="search" placeholder="{% trans 'Search' %}"
-                                   name="query" aria-label="Search" value="{{ query|default_if_none:'' }}">
+                                   name="query" aria-label="Search" value="{{ query|default_if_none:'' }}"
+                                   style="font-size: 0.8rem;">
                             <button class="btn btn-outline-secondary fw-light"
-                                    type="submit">{% trans 'Search' %}</button>
+                                    type="submit" style="font-size: 0.8rem;">{% trans 'Search' %}</button>
                         </form>
                     </li>
                 </ul>
@@ -93,7 +99,7 @@
             <div class="d-none d-lg-flex align-items-center">
                 <ul class="navbar-nav mb-lg-0 me-2">
                     <li class="nav-item me-2">
-                        <a class="btn shadow-sm" style="background-color: #0057B8; color: white"
+                        <a class="btn shadow-sm" style="background-color: #0057B8; color: white; font-size: 0.8rem;"
                            href="{% url 'create_donation' %}">
                             {% trans 'Donate' %}
                         </a>
@@ -102,7 +108,7 @@
                         <div class="d-flex flex-column align-items-start">
                             <p style="font-size: x-small" class="m-0 fw-semibold">{% trans 'Contact us' %}</p>
                             <a href="tel:+442039607595" class="lh-1 link-underline link-underline-opacity-0"
-                               style="color: #0057B8">020 3960 7595</a>
+                               style="color: #0057B8; font-size: 0.8rem">020 3960 7595</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown d-flex align-items-center me-2">
