@@ -44,7 +44,7 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
-*.mo
+#*.mo
 instance/
 .webassets-cache
 .scrapy
