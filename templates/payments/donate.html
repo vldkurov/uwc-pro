@@ -9,24 +9,25 @@
 
     <div class="container text-center">
 
-        <div class="row gap-2 d-flex justify-content-center">
+        <div class="py-5">
+            <div class="row gap-2 d-flex justify-content-center">
 
-            <div class="col-6 col-md border p-2 shadow-sm rounded-2" style="background-color: #e9ecef;">
-                <h3>{% trans 'Donate' %}</h3>
-                <!-- One-time donations -->
-                <p>{% trans 'Select a one-time donation amount' %}:</p>
-                <div id="preset-buttons">
-                    <form method="post" action="{% url 'create_donation' %}">
-                        {% csrf_token %}
-                        <!-- Hidden input to store the amount -->
-                        <input type="hidden" id="hidden-amount" name="amount" value="">
+                <div class="col-6 col-md border p-2 shadow-sm rounded-2" style="background-color: #e9ecef;">
+                    <h3>{% trans 'Donate' %}</h3>
+                    <!-- One-time donations -->
+                    <p>{% trans 'Select a one-time donation amount' %}:</p>
+                    <div id="preset-buttons">
+                        <form method="post" action="{% url 'create_donation' %}">
+                            {% csrf_token %}
+                            <!-- Hidden input to store the amount -->
+                            <input type="hidden" id="hidden-amount" name="amount" value="">
 
-                        <!-- Buttons -->
-                        <div class="container text-center">
-                            <div class="row gap-2">
-                                <div class="col px-0">
-                                    <button type="button" class="btn btn-outline-info w-100" value="1.00"
-                                            onclick="handleSubmit(this)">
+                            <!-- Buttons -->
+                            <div class="container text-center">
+                                <div class="row gap-2">
+                                    <div class="col px-0">
+                                        <button type="button" class="btn btn-outline-info w-100" value="1.00"
+                                                onclick="handleSubmit(this)">
                                         <span class="d-flex align-items-center justify-content-center">
                                             <span id="loader" style="display: none;" class="me-2">
                                                 <span class="spinner-border spinner-border-sm" role="status"
@@ -34,11 +35,11 @@
                                         </span>
                                             £1
                                         </span>
-                                    </button>
-                                </div>
-                                <div class="col px-0">
-                                    <button type="button" class="btn btn-outline-info w-100" value="2.00"
-                                            onclick="handleSubmit(this)">
+                                        </button>
+                                    </div>
+                                    <div class="col px-0">
+                                        <button type="button" class="btn btn-outline-info w-100" value="2.00"
+                                                onclick="handleSubmit(this)">
                             <span class="d-flex align-items-center justify-content-center">
                                 <span id="loader" style="display: none;" class="me-2">
                                     <span class="spinner-border spinner-border-sm" role="status"
@@ -46,11 +47,11 @@
                                 </span>
                                 £2
                             </span>
-                                    </button>
-                                </div>
-                                <div class="col px-0">
-                                    <button type="button" class="btn btn-outline-info w-100" value="5.00"
-                                            onclick="handleSubmit(this)">
+                                        </button>
+                                    </div>
+                                    <div class="col px-0">
+                                        <button type="button" class="btn btn-outline-info w-100" value="5.00"
+                                                onclick="handleSubmit(this)">
                             <span class="d-flex align-items-center justify-content-center">
                                 <span id="loader" style="display: none;" class="me-2">
                                     <span class="spinner-border spinner-border-sm" role="status"
@@ -58,11 +59,11 @@
                                 </span>
                                 £5
                             </span>
-                                    </button>
-                                </div>
-                                <div class="col px-0">
-                                    <button type="button" class="btn btn-outline-info w-100" value="10.00"
-                                            onclick="handleSubmit(this)">
+                                        </button>
+                                    </div>
+                                    <div class="col px-0">
+                                        <button type="button" class="btn btn-outline-info w-100" value="10.00"
+                                                onclick="handleSubmit(this)">
                             <span class="d-flex align-items-center justify-content-center">
                                 <span id="loader" style="display: none;" class="me-2">
                                     <span class="spinner-border spinner-border-sm" role="status"
@@ -70,11 +71,11 @@
                                 </span>
                                 £10
                             </span>
-                                    </button>
-                                </div>
-                                <div class="col px-0">
-                                    <button type="button" class="btn btn-outline-info w-100" value="20.00"
-                                            onclick="handleSubmit(this)">
+                                        </button>
+                                    </div>
+                                    <div class="col px-0">
+                                        <button type="button" class="btn btn-outline-info w-100" value="20.00"
+                                                onclick="handleSubmit(this)">
                             <span class="d-flex align-items-center justify-content-center">
                                 <span id="loader" style="display: none;" class="me-2">
                                     <span class="spinner-border spinner-border-sm" role="status"
@@ -82,11 +83,11 @@
                                 </span>
                                 £20
                             </span>
-                                    </button>
-                                </div>
-                                <div class="col px-0">
-                                    <button type="button" class="btn btn-outline-info w-100" value="50.00"
-                                            onclick="handleSubmit(this)">
+                                        </button>
+                                    </div>
+                                    <div class="col px-0">
+                                        <button type="button" class="btn btn-outline-info w-100" value="50.00"
+                                                onclick="handleSubmit(this)">
                             <span class="d-flex align-items-center justify-content-center">
                                 <span id="loader" style="display: none;" class="me-2">
                                     <span class="spinner-border spinner-border-sm" role="status"
@@ -94,21 +95,21 @@
                                 </span>
                                 £50
                             </span>
-                                    </button>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                    </form>
+                        </form>
 
-                </div>
-                <br>
-                <div>
-                    <!-- Custom one-time donation amount input -->
-                    <form method="post" action="{% url 'create_donation' %}" onsubmit="handleSubmit(this)">
-                        {% csrf_token %}
-                        {{ form|crispy }}
-                        <button type="submit" class="btn btn-primary">
+                    </div>
+                    <br>
+                    <div>
+                        <!-- Custom one-time donation amount input -->
+                        <form method="post" action="{% url 'create_donation' %}" onsubmit="handleSubmit(this)">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <button type="submit" class="btn btn-primary">
                             <span class="d-flex">
                                 <div id="loader" style="display: none;" class="me-2">
                                     <span class="spinner-border spinner-border-sm" role="status"
@@ -116,46 +117,49 @@
                                 </div>
                                 {% trans 'Donate via PayPal' %}
                             </span>
-                        </button>
-                    </form>
+                            </button>
+                        </form>
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-6 col-md border p-2 shadow-sm rounded-2" style="background-color: #e9ecef;">
+                <div class="col-6 col-md border p-2 shadow-sm rounded-2" style="background-color: #e9ecef;">
 
-                <!-- Regular donations -->
-                <h3>{% trans 'Choose Regular Donations' %}</h3>
+                    <!-- Regular donations -->
+                    <h3>{% trans 'Choose Regular Donations' %}</h3>
 
-                <form method="post" action="{% url 'create_subscription' %}" onsubmit="handleSubmit(this)">
-                    {% csrf_token %}
-                    <!-- Input for setting the regular donation amount -->
-                    <div class="mb-3">
-                        <label for="amount" class="form-label">{% trans 'Donation Amount' %} (£):</label>
-                        <input type="number" id="amount" name="amount" class="form-control" step="0.01" value="10.00"
-                               required>
-                    </div>
-                    <!-- Dropdown for selecting the donation interval -->
-                    <div class="mb-3">
-                        <label for="interval" class="form-label">{% trans 'Choose Regularity' %}:</label>
-                        <select id="interval" name="interval" class="form-control">
-                            <option value="WEEK">{% trans 'Weekly' %}</option>
-                            <option value="MONTH" selected>{% trans 'Monthly' %}</option>
-                            <option value="YEAR">{% trans 'Yearly' %}</option>
-                        </select>
-                    </div>
-                    <!-- Button to set up a regular donation -->
-                    <button type="submit" class="btn btn-success">
+                    <form method="post" action="{% url 'create_subscription' %}" onsubmit="handleSubmit(this)">
+                        {% csrf_token %}
+                        <!-- Input for setting the regular donation amount -->
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">{% trans 'Donation Amount' %} (£):</label>
+                            <input type="number" id="amount" name="amount" class="form-control" step="0.01"
+                                   value="10.00"
+                                   required>
+                        </div>
+                        <!-- Dropdown for selecting the donation interval -->
+                        <div class="mb-3">
+                            <label for="interval" class="form-label">{% trans 'Choose Regularity' %}:</label>
+                            <select id="interval" name="interval" class="form-control">
+                                <option value="WEEK">{% trans 'Weekly' %}</option>
+                                <option value="MONTH" selected>{% trans 'Monthly' %}</option>
+                                <option value="YEAR">{% trans 'Yearly' %}</option>
+                            </select>
+                        </div>
+                        <!-- Button to set up a regular donation -->
+                        <button type="submit" class="btn btn-success">
                         <span class="d-flex">
                             <div id="loader" style="display: none;" class="me-2">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             </div>
                             {% trans 'Set Up Regular Donation' %}
                         </span>
-                    </button>
-                </form>
+                        </button>
+                    </form>
 
+                </div>
             </div>
         </div>
+
     </div>
 {% endblock content %}
 
