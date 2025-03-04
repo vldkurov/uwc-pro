@@ -12,6 +12,7 @@
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
 </head>
 <body>
@@ -288,49 +289,155 @@
 </div>
 
 <!-- Footer -->
+{#<footer>#}
+{#    <div class="row bg-dark p-5">#}
+{#        <div class="col-lg col-md-12 d-flex flex-column">#}
+{#            <div class="d-flex flex-column">#}
+{#                <div class="row">#}
+{#                    <div class="col"></div>#}
+{#                    <div class="col-auto">#}
+{#                        <div class="d-flex">#}
+{#                            <a class="me-2" href="{% url 'page' slug='home' %}">#}
+{#                                <img class="d-inline-block" width="60" height="60"#}
+{#                                     src="{% static 'img/UWC-Logo-Final_wotext.webp' %}"#}
+{#                                     alt="UWC Logo">#}
+{#                            </a>#}
+{#                            <p class="text-light fs-5 fw-bold m-0 p-o">{% trans 'The Ukrainian' %}#}
+{#                                <br> {% trans 'Welcome Centre' %}#}
+{#                            </p>#}
+{#                        </div>#}
+{#                        <div class="d-flex mt-5 px-2 justify-content-between">#}
+{#                            <a href="https://t.me/yourusername" target="_blank"><i#}
+{#                                    class="fab fa-telegram fa-2x text-white"></i></a>#}
+{#                            <a href="https://www.instagram.com/yourusername" target="_blank"><i#}
+{#                                    class="fab fa-instagram fa-2x text-white"></i></a>#}
+{#                            <a href="https://www.facebook.com/yourusername" target="_blank"><i#}
+{#                                    class="fab fa-facebook fa-2x text-white"></i></a>#}
+{#                            <a href="https://www.linkedin.com/in/yourusername" target="_blank"><i#}
+{#                                    class="fab fa-linkedin fa-2x text-white"></i></a>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="col"></div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="d-flex flex-grow-1 justify-content-start align-items-end py-2 mb-4">#}
+{#                <a class="nav-link text-light fw-lighter" href="{% url 'account_login' %}" aria-label="Log In">#}
+{#                    {% if user.is_authenticated %}#}
+{#                        <img src="{{ user.email|gravatar_with_type:'30,retro' }}" alt="Gravatar">#}
+{#                    {% else %}#}
+{#                        <i class="bi bi-door-closed me-2"></i>#}
+{#                        <span class="fw-light">{% trans 'Staff Only' %}</span>#}
+{#                    {% endif %}#}
+{#                </a>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="col-lg col-md-12">#}
+{#            <p class="text-light fw-lighter">The Ukrainian Welcome Centre <br> 6 Weighhouse Street, <br> London, <br>#}
+{#                W1K 5LT</p>#}
+{#            <p class="text-light fw-lighter">Phone: 10.00 – 16.00 <br> <span class="ps-5">Monday to Friday</span> <br>#}
+{#                <a#}
+{#                        href="tel:+442039607595"#}
+{#                        style="color: inherit; text-decoration: none;"><span class="ps-5">020#}
+{#                3960 7595</span></a></p>#}
+{#            <p class="text-light fw-lighter">Email: <a href="mailto:example@email.com"#}
+{#                                                       style="color: inherit; text-decoration: none;">example@email.com</a>#}
+{#            </p>#}
+{#            <p class="text-light fw-lighter"><a href="#"#}
+{#                                                style="color: inherit; text-decoration: none;">{% trans 'About us' %}</a>#}
+{#            </p>#}
+{#            <p class="text-light fw-lighter"><a href="#"#}
+{#                                                style="color: inherit; text-decoration: none;">{% trans 'Feedback' %}</a>#}
+{#            </p>#}
+{#            <p class="text-light fw-lighter"><a href="#"#}
+{#                                                style="color: inherit; text-decoration: none;">{% trans 'Legal' %}</a>#}
+{#            </p>#}
+{#            <p class="text-light fw-lighter lh-1" style="font-size: 0.7rem;">#}
+{#                © {% now "Y" %} {% trans 'The Ukrainian Welcome Centre' %}, <br>#}
+{#                {% trans 'a project of the Eparchy of the Holy Family of London' %}, <br>#}
+{#                {% trans 'registered charity number' %} 240088#}
+{#            </p>#}
+{#        </div>#}
+{#    </div>#}
+{#</footer>#}
+
 <footer>
-    <div class="row bg-dark p-5">
-        <div class="col-lg col-md-12 d-flex flex-column">
-            <div class="d-flex flex-column">
-                <div class="row">
-                    <div class="col"></div>
-                    <div class="col-auto">
-                        <div class="d-flex">
-                            <a class="me-2" href="{% url 'page' slug='home' %}">
-                                <img class="d-inline-block" width="60" height="60"
-                                     src="{% static 'img/UWC-Logo-Final_wotext.webp' %}"
-                                     alt="UWC Logo">
-                            </a>
-                            <p class="text-light fs-5 fw-bold m-0 p-o">{% trans 'The Ukrainian' %}
-                                <br> {% trans 'Welcome Centre' %}
-                            </p>
-                        </div>
-                        <div class="d-flex mt-5 px-2 justify-content-between">
-                            <a href="https://t.me/yourusername" target="_blank"><i
-                                    class="fab fa-telegram fa-2x text-white"></i></a>
-                            <a href="https://www.instagram.com/yourusername" target="_blank"><i
-                                    class="fab fa-instagram fa-2x text-white"></i></a>
-                            <a href="https://www.facebook.com/yourusername" target="_blank"><i
-                                    class="fab fa-facebook fa-2x text-white"></i></a>
-                            <a href="https://www.linkedin.com/in/yourusername" target="_blank"><i
-                                    class="fab fa-linkedin fa-2x text-white"></i></a>
-                        </div>
-                    </div>
-                    <div class="col"></div>
-                </div>
-            </div>
-            <div class="d-flex flex-grow-1 justify-content-start align-items-end py-2 mb-4">
-                <a class="nav-link text-light fw-lighter" href="{% url 'account_login' %}" aria-label="Log In">
-                    {% if user.is_authenticated %}
-                        <img src="{{ user.email|gravatar_with_type:'30,retro' }}" alt="Gravatar">
-                    {% else %}
-                        <i class="bi bi-door-closed me-2"></i>
-                        <span class="fw-light">{% trans 'Staff Only' %}</span>
-                    {% endif %}
+    <div class="row g-4 g-lg-2 bg-dark p-5">
+        <div class="col-lg col-md-12">
+            <div class="d-flex">
+                <a class="me-2" href="{% url 'page' slug='home' %}">
+                    <img class="d-inline-block" width="60" height="60"
+                         src="{% static 'img/UWC-Logo-Final_wotext.webp' %}"
+                         alt="UWC Logo">
                 </a>
+                <p class="text-light fs-5 fw-bold m-0 p-o">{% trans 'The Ukrainian' %}
+                    <br> {% trans 'Welcome Centre' %}
+                </p>
             </div>
+
+            <div class="d-flex mt-5 px-2 justify-content-between w-50">
+                <a href="https://t.me/yourusername" target="_blank"><i
+                        class="fab fa-telegram fa-2x text-white"></i></a>
+                <a href="https://www.instagram.com/yourusername" target="_blank"><i
+                        class="fab fa-instagram fa-2x text-white"></i></a>
+                <a href="https://www.facebook.com/yourusername" target="_blank"><i
+                        class="fab fa-facebook fa-2x text-white"></i></a>
+                <a href="https://www.linkedin.com/in/yourusername" target="_blank"><i
+                        class="fab fa-linkedin fa-2x text-white"></i></a>
+            </div>
+
         </div>
         <div class="col-lg col-md-12">
+            <p class="text-light fs-5 fw-semibold">{% trans 'Support Us' %}</p>
+        </div>
+        <div class="col-lg col-md-12">
+            <p class="text-light fs-5 fw-semibold">{% trans 'Who we are' %}</p>
+            <ul class="p-0">
+                <li><a class="text-light" href="{% url 'page' slug='about-us' %}">{% trans 'About Us' %}</a></li>
+                <li><a class="text-light" href="#">{% trans 'Help & Advice' %}</a></li>
+                <li><a class="text-light" href="{% url 'locations_redirect' %}">{% trans 'Locations' %}</a></li>
+            </ul>
+        </div>
+        <div class="col-lg col-md-12">
+            <p class="text-light fs-5 fw-semibold">{% trans 'Arrivals' %}</p>
+            <ul class="p-0">
+                <li><p class="text-light m-0 p-0">{% trans 'Pre-arrivals & visas' %}</p>
+                    <ul>
+                        <li><a class="text-light" href="#">{% trans 'Immediate Essentials' %}</a></li>
+                    </ul>
+                </li>
+
+                <li><p class="text-light m-0 p-0">{% trans "After you're here" %}</p>
+                    <ul>
+                        <li><a class="text-light" href="#">{% trans 'Essentials upon arrival' %}</a></li>
+                        <li><a class="text-light" href="#">{% trans 'Long-term Living' %}</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+    <div class="row g-4 g-lg-2 bg-dark p-5">
+        <div class="col-lg col-md-12 d-flex align-items-end">
+            <a class="nav-link text-light fw-lighter" href="{% url 'account_login' %}" aria-label="Log In">
+                {% if user.is_authenticated %}
+                    <img src="{{ user.email|gravatar_with_type:'30,retro' }}" alt="Gravatar">
+                {% else %}
+                    <i class="bi bi-door-closed me-2"></i>
+                    <span class="fw-light">{% trans 'Staff Only' %}</span>
+                {% endif %}
+            </a>
+        </div>
+        <div class="col-lg col-md-12">
+            <p class="text-light fs-5 fw-semibold">{% trans 'Sponsors' %}</p>
+        </div>
+        <div class="col-lg col-md-12">
+            <p class="text-light fs-5 fw-semibold">{% trans 'News & Events' %}</p>
+            <ul class="p-0">
+                <li><a class="text-light" href="#">{% trans 'Schedule & Workshops' %}</a></li>
+            </ul>
+        </div>
+        <div class="col-lg col-md-12">
+            <p class="text-light fs-5 fw-semibold">{% trans 'Contact Us' %}</p>
             <p class="text-light fw-lighter">The Ukrainian Welcome Centre <br> 6 Weighhouse Street, <br> London, <br>
                 W1K 5LT</p>
             <p class="text-light fw-lighter">Phone: 10.00 – 16.00 <br> <span class="ps-5">Monday to Friday</span> <br>
